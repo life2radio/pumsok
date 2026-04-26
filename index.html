@@ -1,130 +1,2064 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#1B4332">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="인생2막라디오">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5K7474H51W"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-5K7474H51W');
+</script>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="인생확언">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1B4332">
+    <link rel="preload" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <title>365일 오늘의 확언 | 인생2막라디오</title>
 
-  <!-- SEO -->
-  <title>인생2막라디오 — 하루를 여는 루틴</title>
-  <meta name="description" content="매일 아침 나를 깨우는 루틴. 다짐, 확언, 기록으로 인생2막을 시작하세요.">
+    <!-- ★ Open Graph / 카카오톡 공유 최적화 -->
+    <meta property="og:type"        content="website">
+    <meta property="og:site_name"   content="인생2막라디오">
+    <meta property="og:title"       content="365일 오늘의 확언 | 인생2막라디오">
+    <meta property="og:description" content="새로운 나를 만나는 365일의 여정. 홈화면에 설치하면 앱처럼 매일 열 수 있어요.">
+    <meta property="og:image"       content="https://life2radio.github.io/affirmation/og-image-v3.png">
+    <meta property="og:url"         content="https://life2radio.github.io/affirmation">
+    <meta property="og:locale"      content="ko_KR">
+    <!-- 트위터/X -->
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="365일 오늘의 확언 | 인생2막라디오">
+    <meta name="twitter:description" content="새로운 나를 만나는 365일의 여정. 홈화면에 추가하면 매일 바로 열려요.">
+    <meta name="twitter:image"       content="https://life2radio.github.io/affirmation/og-image-v3.png">
+    <!-- 카카오톡 -->
+    <meta property="kakao:title"     content="365일 오늘의 확언">
+    <meta property="kakao:description" content="인생2막라디오와 함께 매일 확언으로 나를 채워보세요 🌿">
+    <!-- ★ Google Analytics GA4 — 측정 ID를 교체하세요 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+        // 이벤트 추적 함수
+        window.trackEvent = function(name, params){
+            if(typeof gtag !== 'undefined') gtag('event', name, params||{});
+        };
+        // ★ 주요 행동 자동 GA4 추적
+        window.addEventListener('load', function(){
+            trackEvent('app_open');
+        });
+        // beforeinstallprompt는 메인 스크립트에서 처리
+    </script>
+    <style>
+        :root {
+            --bg-color: #F8F6F2;
+            --primary-color: #1B4332;
+            --accent-color: #C9A84C;
+            --text-color: #2C2C2C;
+            --text-muted: #888888;
+            --border-color: #E8E4DD;
+            --card-bg: #FFFFFF;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.09);
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 22px;
+            --font-base: 18px;
+            --font-sm: 14px;
+            --font-md: 16px;
+            --font-lg: 20px;
+            --font-xl: 22px;
+        }
+        * { box-sizing: border-box; }
+        body { margin:0; padding:0; background-color:var(--bg-color); color:var(--text-color); font-size:var(--font-base); font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','맑은 고딕',sans-serif; line-height:1.7; word-break:keep-all; -webkit-font-smoothing:antialiased; user-select:none; -webkit-user-select:none; -ms-user-select:none; }
+        /* 일반 입력창은 타이핑 허용 (붙여넣기는 JS로 차단) */
+        input, textarea { user-select:text !important; -webkit-user-select:text !important; }
+        #app-container { max-width:600px; margin:0 auto; min-height:100vh; background-color:var(--bg-color); position:relative; padding-bottom:80px; }
+        
+        /* ===== 헤더 ===== */
+        header { position:relative; text-align:center; padding:18px 60px; border-bottom:1px solid var(--border-color); background:var(--bg-color); }
+        #main-header-title { font-size:1.05em; font-weight:700; color:var(--primary-color); letter-spacing:0.5px; }
+        .header-icon-btn { position:absolute; top:50%; transform:translateY(-50%); background:var(--primary-color); color:#FFFFFF; width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.944em; text-decoration:none; cursor:pointer; -webkit-tap-highlight-color:transparent; transition:opacity 0.2s; }
+        .header-icon-btn:hover { opacity:0.85; }
 
-  <!-- 카카오 공유 -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="인생2막라디오 — 하루를 여는 루틴">
-  <meta property="og:description" content="매일 아침 나를 깨우는 루틴. 다짐, 확언, 기록으로 인생2막을 시작하세요.">
-  <meta property="og:image" content="https://life2radio.github.io/routine/og-image.png">
-  <meta property="og:url" content="https://life2radio.github.io/routine">
+        main { padding:20px 18px; }
+        .view-section { display:none; }
+        .view-section.active { display:block; }
 
-  <!-- PWA -->
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="icon-192.png">
+        /* ===== 탭 ===== */
+        .tabs { display:flex; margin-bottom:22px; border-bottom:1px solid var(--border-color); }
+        .tab-btn { flex:1; padding:8px 4px; font-size:0.85em; font-weight:600; color:var(--text-muted); background:none; border:none; border-bottom:2px solid transparent; cursor:pointer; -webkit-tap-highlight-color:transparent; transition:all 0.2s; letter-spacing:0.2px; margin-bottom:-1px; }
+        .tab-btn.active { color:var(--primary-color); border-bottom-color:var(--primary-color); }
 
-  <!-- 스타일 -->
-  <link rel="stylesheet" href="style.css">
+        /* ===== 배경음악 ===== */
+        .bgm-btn-container { display:flex; justify-content:flex-end; margin-bottom:16px; }
+        .btn-bgm { background:none; color:var(--text-muted); border:1px solid var(--border-color); border-radius:20px; padding:7px 16px; font-size:0.722em; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px; transition:all 0.2s; -webkit-tap-highlight-color:transparent; letter-spacing:0.2px; }
+        .btn-bgm.on { border-color:var(--primary-color); color:var(--primary-color); background:#F0F7F4; }
+
+        /* ===== 시작 화면 ===== */
+        #start-view { text-align:center; padding:60px 20px 40px; }
+        .start-btn { width:100%; min-height:56px; font-size:0.944em; font-weight:700; background:var(--primary-color); color:#FFFFFF; border:none; border-radius:var(--radius-md); cursor:pointer; margin-top:24px; letter-spacing:0.3px; }
+
+        /* ===== 날짜 네비 ===== */
+        .date-nav { display:flex; justify-content:center; align-items:center; gap:20px; margin-bottom:4px; }
+        .date-nav-btn { font-size:1.3em; cursor:pointer; background:none; border:none; min-width:44px; min-height:44px; color:var(--primary-color); -webkit-tap-highlight-color:transparent; opacity:0.7; }
+        .date-nav-btn:disabled { opacity:0.2; cursor:not-allowed; }
+        .date-label { font-size:0.9em; color:var(--text-color); text-align:center; margin-bottom:4px; font-weight:500; }
+        .day-label { font-size:1.45em; font-weight:700; color:var(--primary-color); text-align:center; margin-bottom:16px; cursor:pointer; }
+        .readonly-banner { background:rgba(211,47,47,0.06); color:#C62828; text-align:center; padding:8px 14px; border-radius:var(--radius-sm); font-size:0.722em; font-weight:600; margin-bottom:14px; border:1px solid rgba(211,47,47,0.15); }
+
+        /* ===== 기분 체크 ===== */
+        .mood-box { background:var(--card-bg); border-radius:var(--radius-md); padding:22px 20px; text-align:center; margin-bottom:20px; box-shadow:var(--shadow-sm); }
+        .mood-title { font-size:1em; font-weight:600; margin-bottom:18px; color:var(--text-color); }
+        .mood-emojis { display:flex; justify-content:space-around; }
+        .mood-btn { font-size:1.8em; background:transparent; border:2px solid transparent; border-radius:50%; width:58px; height:58px; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; -webkit-tap-highlight-color:transparent; transition:all 0.2s; }
+        .mood-btn.active { background:#F7F4EE; border-color:var(--accent-color); transform:scale(1.08); }
+        .mood-btn:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
+
+        /* ===== 확언 카드 ===== */
+        .blur-overlay-container { position:relative; }
+        .blurred-content { filter:blur(8px); pointer-events:none; user-select:none; }
+        .unlock-message { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(255,255,255,0.96); padding:18px 28px; border-radius:var(--radius-md); font-size:0.889em; font-weight:700; color:var(--primary-color); box-shadow:var(--shadow-md); z-index:10; text-align:center; border:1px solid var(--accent-color); }
+        .affirmation-box { background:var(--primary-color); color:#FFFFFF; border-radius:var(--radius-lg) var(--radius-lg) 0 0; padding:36px 26px; text-align:center; box-shadow:var(--shadow-md); }
+        .theme-text { font-size:0.85em; color:var(--accent-color); margin-bottom:14px; font-weight:700; letter-spacing:1px; }
+        .affirmation-text { font-size:var(--font-xl); font-weight:700; line-height:1.72;  }
+        .action-box { background:var(--card-bg); border-radius:0 0 var(--radius-md) var(--radius-md); padding:22px 24px; margin-bottom:20px; box-shadow:var(--shadow-sm); border:2px solid var(--accent-color); border-top:none; }
+        .action-title { font-size:0.9em; font-weight:700; color:var(--accent-color); margin-bottom:10px; letter-spacing:0.5px; }
+        .action-text { font-size:1.05em; font-weight:500; color:var(--text-color); line-height:1.75; }
+
+        /* ===== 버튼 ===== */
+        .action-buttons { display:flex; flex-direction:column; gap:12px; margin-bottom:20px; }
+        .row-buttons { display:flex; gap:10px; }
+        .btn { flex:1; min-height:52px; font-size:0.833em; font-weight:700; border:none; border-radius:var(--radius-sm); cursor:pointer; -webkit-tap-highlight-color:transparent; display:flex; align-items:center; justify-content:center; transition:all 0.18s; letter-spacing:0.3px; }
+        .btn-sub { background:var(--card-bg); color:var(--text-color); box-shadow:var(--shadow-sm); border:1px solid var(--border-color); }
+        .btn-sub.active-play { background:var(--primary-color); color:#FFFFFF; border-color:var(--primary-color); }
+        .btn-main { background:var(--primary-color); color:#FFFFFF; width:100%; }
+        .btn-main:disabled { background:#C0BDB8; color:#FFFFFF; cursor:not-allowed; }
+        .btn-fav { background:none; border:1px solid var(--border-color); color:var(--text-muted); min-height:48px; font-size:0.778em; width:100%; font-weight:600; cursor:pointer; border-radius:var(--radius-sm); margin-bottom:10px; transition:all 0.2s; -webkit-tap-highlight-color:transparent; letter-spacing:0.2px; }
+        .btn-fav.saved { background:#F7F4EE; border-color:var(--accent-color); color:var(--primary-color); }
+        .btn-oracle { background:var(--primary-color); color:#FFFFFF; width:100%; min-height:52px; font-size:0.833em; font-weight:700; border:none; border-radius:var(--radius-sm); cursor:pointer; margin-bottom:14px; -webkit-tap-highlight-color:transparent; transition:opacity 0.2s; letter-spacing:0.3px; }
+        .btn-oracle:hover { opacity:0.9; }
+        .btn-episode { background:var(--primary-color); color:#FFFFFF; width:100%; min-height:52px; font-size:0.833em; font-weight:700; border:none; border-radius:var(--radius-sm); cursor:pointer; text-decoration:none; display:none; align-items:center; justify-content:center; margin-bottom:14px; letter-spacing:0.3px; }
+
+        /* ===== 에피소드 배너 ===== */
+        #episode-banner { display:none; background:var(--primary-color); border-radius:var(--radius-sm); padding:12px 16px; margin-bottom:14px; }
+        .episode-banner-inner { display:flex; align-items:center; gap:10px; }
+        .episode-banner-text { font-size:0.778em; font-weight:600; color:rgba(255,255,255,0.9); flex:1; line-height:1.4; }
+        .episode-banner-watch { background:var(--accent-color); color:var(--primary-color); border:none; border-radius:6px; padding:7px 14px; font-size:0.722em; font-weight:700; cursor:pointer; white-space:nowrap; -webkit-tap-highlight-color:transparent; }
+        .episode-banner-close { background:none; border:none; font-size:1.0em; cursor:pointer; color:rgba(255,255,255,0.5); padding:0; line-height:1; flex-shrink:0; }
+
+        /* ===== 달력 ===== */
+        .cal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+        .cal-btn { font-size:1.111em; font-weight:700; background:none; border:none; color:var(--primary-color); cursor:pointer; min-height:44px; min-width:44px; opacity:0.7; }
+        .cal-title { font-size:1.0em; font-weight:700; color:var(--text-color);  }
+        .stats-box { background:var(--card-bg); border-radius:var(--radius-md); padding:20px; text-align:center; margin-bottom:16px; box-shadow:var(--shadow-sm); }
+        .stats-main { font-size:var(--font-md); font-weight:700; color:var(--primary-color); margin-bottom:8px; }
+        .stats-sub { font-size:0.778em; color:var(--text-muted); display:flex; justify-content:space-around; font-weight:600; margin-bottom:14px; }
+        .stats-streak { color:#C0392B; }
+        .cal-grid-wrapper { background:var(--card-bg); border-radius:var(--radius-md); padding:18px 10px; margin-bottom:16px; box-shadow:var(--shadow-sm); }
+        .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:8px 4px; text-align:center; }
+        .cal-day-name { font-size:0.722em; font-weight:700; color:var(--text-muted); margin-bottom:8px; letter-spacing:0.2px; }
+        .cal-cell { display:flex; justify-content:center; align-items:center; min-height:44px; }
+        .cal-circle { width:40px; height:40px; border-radius:50%; display:flex; justify-content:center; align-items:center; font-size:0.833em; font-weight:600; }
+        .cal-circle.clickable { cursor:pointer; transition:all 0.15s; }
+        .cal-circle.clickable:hover { transform:scale(1.08); }
+        .cal-circle.checked { background:var(--primary-color); color:#FFFFFF; }
+        .cal-circle.unchecked { background:#F0EDE8; color:var(--text-muted); }
+        .cal-circle.future { color:#D0CCC6; }
+        .cal-circle.emoji-day { background:var(--primary-color); width:44px; height:44px; }
+        
+        /* ===== 통계/차트 ===== */
+        .chart-box { background:var(--card-bg); border-radius:var(--radius-md); padding:20px; text-align:center; margin-bottom:16px; box-shadow:var(--shadow-sm); }
+        .chart-title { font-size:0.944em; font-weight:700; color:var(--primary-color); margin-bottom:4px; }
+        .chart-subtitle { font-size:0.778em; font-weight:600; color:var(--text-muted); margin-bottom:14px; }
+        .chart-legend { font-size:0.722em; margin-bottom:10px; color:var(--text-muted); }
+        .chart-canvas-wrapper { width:100%; position:relative; }
+        canvas { width:100%; height:240px; display:block; }
+        .mission-box { background:var(--card-bg); border-radius:var(--radius-md); padding:20px; text-align:left; margin-bottom:16px; box-shadow:var(--shadow-sm); border-left:3px solid var(--primary-color); }
+        .mission-title { font-size:0.889em; font-weight:700; color:var(--primary-color); margin-bottom:14px; text-align:center; letter-spacing:0.3px; }
+        .mission-item { font-size:0.833em; margin-bottom:7px; font-weight:500; color:var(--text-muted); }
+        .mission-item.done { color:var(--primary-color); font-weight:600; }
+        .badges-box { background:var(--card-bg); border-radius:var(--radius-md); padding:20px; text-align:center; margin-bottom:16px; box-shadow:var(--shadow-sm); }
+        .badges-title { font-size:0.944em; font-weight:700; color:var(--primary-color); margin-bottom:18px; letter-spacing:0.3px; }
+        .badges-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+        .badge-item { background:#F8F6F2; border:1px solid var(--border-color); border-radius:var(--radius-sm); padding:16px 8px; display:flex; flex-direction:column; align-items:center; }
+        .badge-item.locked { opacity:0.3; }
+        .badge-item.full-width { grid-column:1/-1; }
+        .badge-icon { font-size:2.0em; margin-bottom:6px; }
+        .badge-days { font-size:14px; font-weight:700; color:var(--primary-color); white-space:nowrap; }
+        .badge-name { font-size:11px; color:var(--text-muted); font-weight:500; line-height:1.4; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
+
+        /* ===== 즐겨찾기 ===== */
+        .fav-page-title { font-size:1.111em; font-weight:700; color:var(--primary-color); margin:0 0 16px; text-align:center;  }
+        .fav-action-row { display:flex; gap:10px; margin-bottom:18px; }
+        .fav-card { background:var(--card-bg); border-radius:var(--radius-md); padding:18px; margin-bottom:12px; box-shadow:var(--shadow-sm); cursor:pointer; transition:box-shadow 0.2s; }
+        .fav-card:hover { box-shadow:var(--shadow-md); }
+        .fav-card-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+        .fav-card-meta { display:flex; gap:8px; align-items:center; }
+        .fav-card-day { font-size:0.667em; color:var(--text-muted); font-weight:600; letter-spacing:0.3px; }
+        .fav-card-theme { font-size:0.667em; color:var(--accent-color); font-weight:700; letter-spacing:0.5px; }
+        .fav-card-del { background:none; color:#D0CBC3; border:1px solid var(--border-color); border-radius:6px; padding:4px 10px; font-size:0.667em; font-weight:600; cursor:pointer; }
+        .fav-card-text { font-size:var(--font-md); font-weight:500; color:var(--text-color); line-height:1.65;  }
+        .fav-empty { text-align:center; padding:60px 20px; color:var(--text-muted); font-size:0.889em; line-height:2; }
+
+        /* ===== 모달 ===== */
+        .modal-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.55); display:none; align-items:center; justify-content:center; z-index:2000; }
+        .modal-content { background:var(--card-bg); border-radius:var(--radius-lg); padding:32px 24px; width:88%; max-width:400px; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.15); }
+        .modal-icon { font-size:3.111em; margin-bottom:10px; }
+        .modal-title { font-size:1.222em; font-weight:700; color:var(--primary-color); margin-bottom:10px;  }
+        .modal-desc { font-size:0.889em; color:var(--text-muted); margin-bottom:24px; line-height:1.6; white-space:pre-wrap; }
+
+        /* ===== 오라클 ===== */
+        #oracle-modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:none; align-items:flex-end; justify-content:center; z-index:3000; }
+        .oracle-sheet { background:linear-gradient(160deg,#1B4332 0%,#2D6A4F 100%); border-radius:28px 28px 0 0; padding:36px 26px 52px; width:100%; max-width:600px; animation:slideUp 0.3s ease; box-sizing:border-box; }
+        @keyframes slideUp { from{transform:translateY(100%);opacity:0} to{transform:translateY(0);opacity:1} }
+        .oracle-label { font-size:0.78em; color:var(--accent-color); font-weight:700; text-align:center; margin-bottom:10px; letter-spacing:1.5px; }
+        .oracle-theme { font-size:0.85em; color:rgba(255,255,255,0.6); text-align:center; margin-bottom:16px; letter-spacing:0.3px; }
+        .oracle-text { font-size:1.22em; font-weight:700; color:#FFFFFF; text-align:center; line-height:1.75; margin-bottom:20px; }
+        .oracle-action { background:rgba(255,255,255,0.1); border-radius:var(--radius-sm); padding:16px 18px; font-size:0.9em; color:rgba(255,255,255,0.82); text-align:center; margin-bottom:26px; line-height:1.7; }
+        .oracle-btns { display:flex; gap:10px; }
+        .oracle-btn { flex:1; min-height:54px; font-size:0.9em; font-weight:700; border:none; border-radius:var(--radius-sm); cursor:pointer; -webkit-tap-highlight-color:transparent; letter-spacing:0.2px; }
+        .oracle-btn-retry { background:rgba(255,255,255,0.12); color:#FFFFFF; }
+        .oracle-btn-fav { background:var(--accent-color); color:#1B4332; }
+        .oracle-btn-close { background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.75); }
+
+        /* ===== 토스트 ===== */
+        #toast { position:fixed; bottom:90px; left:50%; transform:translateX(-50%); background:rgba(27,67,50,0.92); color:#FFFFFF; padding:11px 22px; border-radius:20px; font-size:0.778em; font-weight:600; z-index:5000; opacity:0; transition:opacity 0.25s; pointer-events:none; white-space:nowrap; max-width:88vw; text-align:center; letter-spacing:0.2px; backdrop-filter:blur(8px); }
+        #toast.show { opacity:1; }
+
+        /* ===== 완주 ===== */
+        #view-celebration { text-align:center; padding:60px 20px; }
+        .celebration-title { font-size:1.556em; font-weight:700; color:var(--primary-color); margin-top:20px; margin-bottom:16px;  }
+        .celebration-desc { font-size:1.0em; color:var(--text-color); line-height:1.8; margin-bottom:40px; }
+
+        /* ===== 설정 ===== */
+        .setting-size-btn { flex:1; min-height:48px; font-size:0.833em; font-weight:600; border:1px solid var(--border-color); border-radius:var(--radius-sm); cursor:pointer; background:var(--card-bg); color:var(--text-muted); transition:all 0.15s; -webkit-tap-highlight-color:transparent; }
+        .setting-size-btn.active { background:var(--primary-color); color:#FFFFFF; border-color:var(--primary-color); }
+        .fam-chip { min-height:38px; padding:6px 14px; border-radius:20px; border:1.5px solid var(--border-color); background:var(--card-bg); color:var(--text-muted); font-size:0.88em; font-weight:600; cursor:pointer; transition:all 0.15s; -webkit-tap-highlight-color:transparent; }
+        .fam-chip.active { background:var(--primary-color); color:#fff; border-color:var(--primary-color); }
+        .setting-mode-btn { flex:1; min-height:48px; font-size:0.833em; font-weight:600; border:1px solid var(--border-color); border-radius:var(--radius-sm); cursor:pointer; background:var(--card-bg); color:var(--text-muted); transition:all 0.15s; -webkit-tap-highlight-color:transparent; }
+        .setting-mode-btn.active { background:var(--primary-color); color:#FFFFFF; border-color:var(--primary-color); }
+        /* 알림 */
+        .notif-preset-btn { background:#F0F7F4; color:var(--primary-color); border:1px solid #C8DDD2; border-radius:16px; padding:7px 14px; font-size:0.722em; font-weight:600; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+        /* 통계 강화 */
+        .stat-mini-card { background:#F8F6F2; border-radius:var(--radius-sm); padding:16px 10px; text-align:center; }
+        .stat-mini-card .stat-val { font-size:1.444em; font-weight:700; color:var(--primary-color);  }
+        .stat-mini-card .stat-label { font-size:0.667em; color:var(--text-muted); margin-top:4px; font-weight:600; letter-spacing:0.2px; }
+        /* ===== 온보딩 ===== */
+        .ob-dot { width:8px;height:8px;border-radius:50%;background:#E8E5E0;transition:background 0.2s; }
+        .ob-dot.active { background:var(--primary-color); }
+        @keyframes fingerBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+        .stt-bar { width:5px; background:var(--primary-color); border-radius:3px; animation:sttWave 0.8s ease-in-out infinite; }
+        .stt-bar:nth-child(1){height:12px;animation-delay:0s}
+        .stt-bar:nth-child(2){height:24px;animation-delay:0.1s}
+        .stt-bar:nth-child(3){height:36px;animation-delay:0.2s}
+        .stt-bar:nth-child(4){height:24px;animation-delay:0.3s}
+        .stt-bar:nth-child(5){height:12px;animation-delay:0.4s}
+        @keyframes sttWave { 0%,100%{transform:scaleY(0.4)} 50%{transform:scaleY(1)} }
+        .confetti { position:fixed;width:10px;height:10px;border-radius:2px;z-index:9999;pointer-events:none;animation:confettiFall 2s ease-in forwards; }
+        @keyframes confettiFall { 0%{opacity:1;transform:translateY(0) rotate(0deg)} 100%{opacity:0;transform:translateY(100vh) rotate(720deg)} }
+        /* 메모 카드 */
+        .pin-dot { width:16px; height:16px; border-radius:50%; border:2px solid var(--primary-color); background:#fff; transition:background 0.15s; }
+        .pin-dot.filled { background:var(--primary-color); }
+        .pin-key { min-height:60px; font-size:1.333em; font-weight:600; background:var(--card-bg); border:1px solid var(--border-color); border-radius:var(--radius-sm); cursor:pointer; color:var(--primary-color); -webkit-tap-highlight-color:transparent; transition:all 0.12s; }
+        .pin-key:active { background:var(--primary-color); color:#fff; }
+        .memo-card { background:var(--card-bg); border-radius:var(--radius-md); padding:16px; margin-bottom:12px; box-shadow:var(--shadow-sm); }
+        .memo-card-date { font-size:0.667em; color:var(--text-muted); font-weight:600; margin-bottom:6px; letter-spacing:0.3px; }
+        .memo-card-text { font-size:var(--font-md); color:var(--text-color); line-height:1.65; white-space:pre-wrap; }
+        .memo-card-del { float:right; background:none; color:#C8C3BC; border:none; font-size:0.722em; font-weight:600; cursor:pointer; padding:2px 6px; }
+
+        /* ===== 다크모드 ===== */
+        body.dark-mode { --bg-color:#141414; --text-color:#E4E0D8; --text-muted:#888; --border-color:#2A2A2A; --card-bg:#1E1E1E; --shadow-sm:0 2px 8px rgba(0,0,0,0.3); background-color:#141414; color:#E4E0D8; }
+        body.dark-mode #app-container { background-color:#141414; }
+        body.dark-mode nav { background:#1E1E1E; border-top-color:#2A2A2A; }
+        body.dark-mode textarea, body.dark-mode input { background:#1E1E1E!important; color:#E4E0D8!important; border-color:#2A2A2A!important; }
+        body.dark-mode #view-settings > div > div[style*="background:#FFFFFF"],
+        body.dark-mode #view-settings > div > div[style*="background: #FFFFFF"] { background:#1E1E1E!important; border-color:#2A2A2A!important; }
+        body.dark-mode #view-settings div[style*="background:#FFFFFF"] { background:#1E1E1E!important; border-color:#2A2A2A!important; }
+        body.dark-mode #view-settings div[style*="color:#888"] { color:#888!important; }
+
+        /* ===== 네비게이션 ===== */
+        nav { position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:600px; background:var(--card-bg); display:flex; justify-content:space-around; border-top:1px solid var(--border-color); z-index:1000; }
+        .nav-item { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:64px; background:none; border:none; color:var(--text-muted); cursor:pointer; padding:10px 2px; -webkit-tap-highlight-color:transparent; position:relative; transition:color 0.15s; }
+        .nav-item.active { color:var(--primary-color); }
+        .nav-item.active::after { content:''; position:absolute; bottom:0; left:25%; width:50%; height:2px; background:var(--primary-color); border-radius:2px 2px 0 0; }
+        .nav-icon { display:none; }
+        .nav-svg { width:22px; height:22px; display:block; margin-bottom:4px; }
+        .nav-text { font-size:0.611em; font-weight:700; text-align:center; line-height:1.2; letter-spacing:0.3px; }
+    
+        .letter-date-btn{padding:6px 12px;border:1px solid var(--border-color);border-radius:8px;background:var(--card-bg);color:var(--text-muted);font-size:0.8em;cursor:pointer;}
+        .letter-date-btn.active{background:var(--primary-color);color:#fff;border-color:var(--primary-color);}
+    
+        @keyframes ptFloat{0%{opacity:1;transform:translateX(-50%) translateY(0);}100%{opacity:0;transform:translateX(-50%) translateY(-80px);}}
+    </style>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
-
-  <!-- ── 앱 래퍼 ── -->
-  <div id="app">
-
-    <!-- 헤더 -->
-    <header id="app-header">
-      <div id="header-left"></div>
-      <div id="header-title">인생2막라디오</div>
-      <div id="header-right"></div>
+<div id="app-container">
+    <header>
+        <a onclick="switchView('settings')" class="header-icon-btn" style="left:16px;" title="설정">⚙️</a>
+        <a onclick="shareApp()" class="header-icon-btn" style="left:62px;" title="앱 공유">🔗</a>
+        <a onclick="startPsychTest()" class="header-icon-btn" style="left:108px;" title="심리테스트">🧠</a>
+        <span id="main-header-title">오늘의 확언</span>
+        <a onclick="openSearch()" class="header-icon-btn" style="right:110px;" title="검색">🔍</a>
+        <a id="header-bgm-btn" onclick="isBgmOn?(pauseBGM(),updateBgmUI()):openBgmSelector()" class="header-icon-btn" style="right:64px;font-size:1em;" title="배경음악">🎵</a>
+        <a href="https://www.youtube.com/@SecondActRadio" target="_blank" class="header-icon-btn" style="right:16px;" title="유튜브">📺</a>
     </header>
+    <!-- 포인트/레벨 표시 바 -->
+    <div id="point-bar" style="display:flex;align-items:center;gap:8px;padding:6px 16px;background:var(--bg-color);border-bottom:1px solid var(--border-color);font-size:0.78em;">
+        <span id="point-bar-emoji" onclick="openLevelGuide()" style="font-size:16px;cursor:pointer;"></span>
+        <span id="point-bar-level" onclick="openLevelGuide()" style="font-weight:700;color:var(--primary-color);min-width:32px;cursor:pointer;text-decoration:underline dotted;"></span>
+        <div onclick="openLevelGuide()" style="flex:1;background:var(--border-color);border-radius:6px;height:6px;overflow:hidden;cursor:pointer;">
+            <div id="point-bar-progress" style="height:100%;background:var(--primary-color);border-radius:6px;transition:width 0.4s ease;width:0%;"></div>
+        </div>
+        <span id="point-bar-pts" onclick="openPointGuide()" style="color:var(--primary-color);min-width:52px;text-align:right;font-weight:700;cursor:pointer;text-decoration:underline dotted;">0 PT</span>
+    </div>
+    <main>
+        <!-- 홈 -->
+        <div id="view-home" class="view-section active">
+            <div class="tabs">
+                <button id="tab-a" class="tab-btn active" onclick="switchMode('A')">날짜형</button>
+                <button id="tab-b" class="tab-btn" onclick="switchMode('B')">개인 시작일형</button>
+            </div>
+            <div id="start-view">
+                <div style="font-size:60px;margin-bottom:10px;">🌱</div>
+                <div style="font-size:26px;font-weight:bold;color:var(--primary-color);">나만의 365일 확언 여정</div>
+                <p style="font-size:20px;color:#666666;margin-top:15px;">오늘부터 매일 나를 위한<br>긍정의 힘을 채워보세요.</p>
+                <button class="start-btn" onclick="startJourney()">오늘부터 시작하기</button>
+            </div>
+            <div id="affirmation-view">
+                <!-- ★ 새 에피소드 배너 -->
+                <div id="episode-banner">
+                    <div class="episode-banner-inner">
+                        <div class="episode-banner-text" id="banner-title-text"></div>
+                        <button class="episode-banner-watch" onclick="openEpisodeBanner()">보러가기 →</button>
+                        <button class="episode-banner-close" onclick="closeBanner()">✕</button>
+                    </div>
+                </div>
+                        <div id="readonly-banner" class="readonly-banner" style="display:none;">📅 과거 확언을 보고 있습니다 (읽기 전용)</div>
+                <div id="streak-display-home" style="display:none;"></div>
+                <!-- ★ ② 연속달성 마일스톤 진행바 -->
+                <div id="streak-milestone-bar" style="margin:0 4px 14px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                        <div id="streak-milestone-label" onclick="showStreakCriteria()" style="font-size:0.78em;font-weight:700;color:var(--primary-color);cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px;">🔥 연속 달성 현황 ⓘ</div>
+                        <div id="streak-milestone-next" style="font-size:0.75em;color:var(--text-muted);"></div>
+                    </div>
+                    <div id="daily-mission-badge" style="display:none;font-size:0.78em;text-align:center;margin-bottom:6px;padding:4px 0;border-radius:6px;background:var(--card-bg);"></div>
+                    <div style="background:#E8E4DD;border-radius:10px;height:10px;overflow:hidden;margin-bottom:6px;">
+                        <div id="streak-milestone-fill" style="height:100%;background:linear-gradient(90deg,var(--primary-color),var(--accent-color));border-radius:10px;transition:width 0.6s ease;width:0%;"></div>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;font-size:0.68em;color:var(--text-muted);margin-bottom:8px;">
+                        <span>7일🏅</span><span>30일🥈</span><span>100일🏔️</span><span>200일☁️</span><span>300일✨</span>
+                    </div>
+                    <!-- 결석 + 패자부활전 버튼 (결석 있을 때만 표시) -->
+                    <div id="streak-revival-area" style="display:none;background:#FFF3CD;border-radius:10px;padding:10px 12px;margin-top:4px;">
+                        <div style="font-size:0.78em;font-weight:700;color:#856404;margin-bottom:8px;">
+                            ⚠️ 결석 <span id="streak-absent-count" style="color:#E63946;"></span>일 — 패자부활전으로 되살릴 수 있어요!
+                        </div>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                            <button onclick="switchView('home');setTimeout(function(){document.getElementById('secret-code-input')?.focus();document.getElementById('secret-code-box')?.scrollIntoView({behavior:'smooth'});},300)"
+                                style="flex:1;min-height:40px;background:var(--primary-color);color:#fff;border:none;border-radius:8px;font-size:0.78em;font-weight:700;cursor:pointer;">
+                                📺 쇼츠 코드 입력<br><span style="font-size:0.85em;opacity:0.85;">결석 1일 삭제</span>
+                            </button>
+                            <button onclick="switchView('story')"
+                                style="flex:1;min-height:40px;background:var(--accent-color);color:var(--primary-color);border:none;border-radius:8px;font-size:0.78em;font-weight:700;cursor:pointer;">
+                                💌 사연 보내기<br><span style="font-size:0.85em;opacity:0.85;">결석 최대 7일 삭제</span>
+                            </button>
+                            <button onclick="reviveWithPoints()"
+                                style="width:100%;min-height:40px;background:#E8F5E9;color:var(--primary-color);border:1.5px solid var(--primary-color);border-radius:8px;font-size:0.78em;font-weight:700;cursor:pointer;">
+                                💰 포인트 10PT로 결석 1일 삭제<br><span id="revival-pt-info" style="font-size:0.85em;opacity:0.85;">보유 포인트 확인 중...</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="date-nav">
+                    <button class="date-nav-btn" onclick="changeSelectedDate(-1)" id="btn-prev-date">◀</button>
+                    <div style="display:inline-block;text-align:center;">
+                        <div class="date-label" id="date-label"></div>
+                        <div class="day-label" id="day-label" style="margin-bottom:0;"></div>
+                    </div>
+                    <button class="date-nav-btn" onclick="changeSelectedDate(1)" id="btn-next-date">▶</button>
+                </div>
+                <div style="text-align:center;margin-bottom:20px;">
+                    <button class="btn-sub" style="font-size:16px;padding:6px 20px;border-radius:20px;border:none;cursor:pointer;" onclick="resetToToday()">오늘로 돌아가기</button>
+                </div>
+                <div class="mood-box">
+                    <div class="mood-title" id="mood-before-title">오늘 확언을 보기 전 지금 기분은 어떠세요?</div>
+                    <div class="mood-emojis" id="mood-before-container"></div>
+                </div>
+                <!-- ★ ① 감정 기반 추천 (강화) -->
+                <div id="emotion-recommend" style="display:none;border-radius:16px;overflow:hidden;margin-bottom:18px;box-shadow:0 2px 10px rgba(0,0,0,0.08);">
+                    <!-- 감정 메시지 -->
+                    <div style="padding:16px 18px;background:#F0F7F4;border-bottom:1px solid #D0E8DC;">
+                        <div style="font-size:0.85em;font-weight:700;color:var(--primary-color);margin-bottom:4px;" id="recommend-title">💚 오늘의 응원</div>
+                        <div style="font-size:1em;color:var(--text-color);line-height:1.6;font-weight:600;" id="recommend-text"></div>
+                    </div>
+                    <!-- 유튜브 추천 영상 -->
+                    <div id="yt-recommend-box" style="display:none;padding:14px 18px;background:#FFFFFF;">
+                        <div style="font-size:0.78em;color:var(--text-muted);font-weight:700;letter-spacing:0.5px;margin-bottom:8px;">지금 이 영상이 도움이 될 거예요</div>
+                        <a id="yt-recommend-link" href="#" target="_blank" style="display:flex;align-items:center;gap:12px;text-decoration:none;">
+                            <div style="width:48px;height:48px;background:var(--primary-color);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="#FFFFFF"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                            </div>
+                            <div style="flex:1;">
+                                <div style="font-size:0.9em;font-weight:700;color:var(--primary-color);line-height:1.4;" id="yt-recommend-title">인생2막라디오 추천 영상</div>
+                                <div style="font-size:0.78em;color:var(--text-muted);margin-top:2px;" id="yt-recommend-desc"></div>
+                            </div>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5"><polyline points="9 18 15 12 9 6"/></svg>
+                        </a>
+                    </div>
+                </div>
 
-    <!-- 메인 뷰 영역 -->
-    <main id="app-main">
+                <!-- ★ ⑧ 감정 원인 질문 -->
+                <div id="mood-reason-box" style="display:none;background:var(--card-bg);border-radius:16px;padding:18px;margin-bottom:18px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+                    <div style="font-size:0.9em;font-weight:700;color:var(--primary-color);margin-bottom:14px;" id="mood-reason-question">오늘 이런 기분이었던 이유는 뭘까요?</div>
+                    <div id="mood-reason-options" style="display:flex;flex-direction:column;gap:8px;"></div>
+                    <div id="mood-reason-result" style="display:none;margin-top:14px;padding:14px;background:#F0F7F4;border-radius:10px;font-size:0.88em;color:var(--primary-color);line-height:1.7;font-weight:600;"></div>
+                </div>
+                <div id="affirmation-box-wrap" class="blur-overlay-container"></div>
 
-      <!-- 루틴 탭 -->
-      <section id="view-routine" class="view-section active">
-      </section>
+                <!-- ★ 오디오/읽기 버튼 — 확언 바로 아래 -->
+                <div class="action-buttons" style="margin-top:4px;">
+                    <div class="row-buttons">
+                        <button class="btn btn-sub" id="btn-listen" onclick="playTTS(false); addPoint(1,'소리듣기','listen')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="margin-right:6px;flex-shrink:0;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>들어보기</button>
+                        <button class="btn btn-sub" id="btn-loop" onclick="playTTS(true)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="margin-right:6px;flex-shrink:0;"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>반복 듣기</button>
+                        <button class="btn btn-sub" id="btn-stt" onclick="startSTT()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="margin-right:6px;flex-shrink:0;"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>따라 읽기</button>
+                    </div>
+                    <!-- ★ STT 인식창 — 버튼 바로 아래 -->
+                    <div id="stt-box" style="display:none;background:var(--primary-color);border-radius:14px;padding:16px 18px;">
+                        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                            <div id="stt-status" style="font-size:0.9em;font-weight:700;color:#FFFFFF;">🎤 확언을 소리내어 읽어주세요...</div>
+                            <div style="display:flex;gap:8px;">
+                                <button onclick="sttManualSuccess()" style="background:var(--accent-color);border:none;color:#1B4332;border-radius:20px;padding:5px 16px;font-size:0.82em;font-weight:700;cursor:pointer;">✓ 완료</button>
+                                <button onclick="stopSTT()" style="background:rgba(255,255,255,0.2);border:none;color:#FFFFFF;border-radius:20px;padding:5px 12px;font-size:0.82em;font-weight:600;cursor:pointer;">취소</button>
+                            </div>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.2);border-radius:10px;height:8px;overflow:hidden;margin-bottom:6px;">
+                            <div id="stt-progress-bar" style="height:100%;background:var(--accent-color);border-radius:10px;width:0%;transition:width 0.3s ease;"></div>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;">
+                            <div id="stt-wave" style="display:flex;align-items:center;gap:3px;height:16px;">
+                                <div class="stt-bar" style="height:8px;"></div><div class="stt-bar" style="height:12px;"></div><div class="stt-bar" style="height:16px;"></div>
+                                <div class="stt-bar" style="height:12px;"></div><div class="stt-bar" style="height:8px;"></div>
+                            </div>
+                            <div id="stt-result-text" style="font-size:0.78em;color:rgba(255,255,255,0.8);"></div>
+                        </div>
+                    </div>
+                    <button class="btn btn-main" id="btn-complete" onclick="completeToday()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="margin-right:6px;flex-shrink:0;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>오늘 완료 체크</button>
+                </div>
+                <div class="mood-box">
+                    <div class="mood-title">확언을 읽고 난 지금 기분은?</div>
+                    <div class="mood-emojis" id="mood-after-container"></div>
+                </div>
+                <!-- ★ ① 과거의 나 보여주기 -->
+                <div id="past-me-box" style="display:none;background:var(--card-bg);border-radius:14px;padding:18px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.06);text-align:center;">
+                    <div style="font-size:0.78em;font-weight:700;color:var(--text-muted);letter-spacing:0.5px;margin-bottom:12px;" id="past-me-label"></div>
+                    <div style="display:flex;align-items:center;justify-content:center;gap:16px;">
+                        <div style="text-align:center;">
+                            <div style="font-size:36px;" id="past-me-emoji"></div>
+                            <div style="font-size:0.75em;color:var(--text-muted);margin-top:4px;" id="past-me-date"></div>
+                        </div>
+                        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+                            <svg width="28" height="12" viewBox="0 0 28 12" fill="none"><path d="M0 6h22M17 1l6 5-6 5" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round"/></svg>
+                            <div style="font-size:0.72em;color:var(--accent-color);font-weight:700;" id="past-me-change"></div>
+                        </div>
+                        <div style="text-align:center;">
+                            <div style="font-size:36px;" id="now-me-emoji"></div>
+                            <div style="font-size:0.75em;color:var(--text-muted);margin-top:4px;">오늘</div>
+                        </div>
+                    </div>
+                    <div style="margin-top:12px;font-size:0.88em;color:var(--primary-color);font-weight:700;line-height:1.6;" id="past-me-msg"></div>
+                </div>
+                <!-- ★ 연속 긍정 변화 메시지 -->
+                <div id="mood-rise-msg" style="display:none; background-color:#FFF8E7; border:1px solid var(--accent-color); border-radius:14px; padding:14px 18px; margin-bottom:18px; text-align:center;">
+                    <div style="font-size:22px; margin-bottom:4px;" id="mood-rise-icon">⭐</div>
+                    <div style="font-size:18px; color:var(--primary-color); font-weight:bold;" id="mood-rise-text"></div>
+                </div>
+                <a href="#" target="_blank" class="btn-episode" id="btn-episode"></a>
+                <div id="tomorrow-preview" style="display:none;background-color:#FFF8E7;padding:15px;border-radius:12px;margin-bottom:16px;text-align:center;border:1px dashed var(--accent-color);cursor:pointer;" onclick="alert('내일 오면 전체를 볼 수 있어요 😊')">
+                    <div style="font-size:16px;color:var(--primary-color);font-weight:bold;margin-bottom:5px;">내일의 확언 주제: <span id="tmrw-theme"></span></div>
+                    <div style="font-size:18px;color:#555;" id="tmrw-text"></div>
+                </div>
+                <!-- ★ 가상 연대감 카운터 -->
+                <!-- ★ 닉네임 인사말 -->
+                <div id="nickname-greeting-box" style="display:none;text-align:center;padding:8px 0;margin-bottom:6px;">
+                    <div id="nickname-greeting-text" style="font-size:0.95em;font-weight:700;color:var(--primary-color);"></div>
+                </div>
+                <!-- ★ ① 오늘의 핵심 질문 티저 -->
+                <div id="key-question-box" style="display:none;background:var(--card-bg);border-radius:14px;padding:18px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.06);border-left:3px solid var(--accent-color);">
+                    <div style="font-size:0.75em;font-weight:700;color:var(--accent-color);letter-spacing:0.8px;margin-bottom:8px;">오늘의 핵심 질문</div>
+                    <div style="font-size:1em;font-weight:700;color:var(--text-color);line-height:1.6;margin-bottom:12px;" id="key-question-text"></div>
+                    <a id="key-question-link" href="https://www.youtube.com/@SecondActRadio" target="_blank" style="display:flex;align-items:center;gap:8px;text-decoration:none;background:var(--primary-color);border-radius:10px;padding:10px 14px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFFFFF"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        <div style="flex:1;">
+                            <div style="font-size:0.82em;font-weight:700;color:#FFFFFF;" id="key-question-cta">이 질문의 답, 영상에서 확인해보세요</div>
+                            <div style="font-size:0.72em;color:rgba(255,255,255,0.65);margin-top:1px;" id="key-question-duration"></div>
+                        </div>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"><polyline points="9 18 15 12 9 6"/></svg>
+                    </a>
+                    <!-- 키워드 칩 UI -->
+                    <div id="keyword-chip-area" style="margin-top:12px;">
+                        <div style="font-size:0.75em;color:var(--text-muted);margin-bottom:8px;">💊 지금 내 마음과 가장 가까운 키워드를 골라보세요</div>
+                        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;" id="keyword-chips"></div>
+                        <button id="keyword-find-btn" onclick="openKeywordEpisode()" style="display:none;width:100%;min-height:40px;background:var(--accent-color);color:var(--primary-color);border:none;border-radius:10px;font-size:0.85em;font-weight:700;cursor:pointer;">🎬 지금 내게 맞는 영상 찾아주기</button>
+                    </div>
+                </div>
 
-      <!-- 다짐 탭 -->
-      <section id="view-vow" class="view-section">
-      </section>
+                <div id="solidarity-box" style="text-align:center;padding:10px 0;margin-bottom:14px;">
+                    <div style="font-size:0.82em;color:var(--text-muted);">🌿 지금 이 순간 <span id="solidarity-count" style="color:var(--primary-color);font-weight:700;"></span>명이 함께 읽고 있어요</div>
+                </div>
 
-      <!-- 확언 탭 -->
-      <section id="view-affirmation" class="view-section">
-      </section>
+                <!-- ★ 오늘만 볼 수 있는 FOMO 문구 -->
 
-      <!-- 메모 탭 -->
-      <section id="view-memo" class="view-section">
-      </section>
+                <!-- ★ 오늘 추천 영상 1개 (홈) -->
+                <div id="home-yt-recommend" style="display:none;margin-bottom:16px;">
+                    <div style="background:var(--primary-color);border-radius:14px;padding:16px 18px;">
+                        <div style="font-size:0.75em;color:var(--accent-color);font-weight:700;letter-spacing:0.8px;margin-bottom:8px;">오늘 당신에게 필요한 영상</div>
+                        <a id="home-yt-link" href="https://www.youtube.com/watch?v=t7QbS_CJJso&list=PLD0aoVhJxK0qyi9nBysVexOtXJeI77J6O" target="_blank" style="display:flex;align-items:center;gap:12px;text-decoration:none;">
+                            <div style="width:44px;height:44px;background:rgba(255,255,255,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="#FFFFFF"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                            </div>
+                            <div style="flex:1;">
+                                <div style="font-size:0.92em;font-weight:700;color:#FFFFFF;line-height:1.4;" id="home-yt-title">EP.04 변하려 하면 가까운 사람이 멀어지는 이유</div>
+                                <div style="font-size:0.78em;color:rgba(255,255,255,0.7);margin-top:2px;" id="home-yt-hook"></div>
+                                <div style="font-size:0.72em;color:rgba(255,255,255,0.5);margin-top:2px;" id="home-yt-duration"></div>
+                            </div>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"><polyline points="9 18 15 12 9 6"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <!-- ★ ⑤ 유튜브 시크릿 코드 미션 -->
+                <div id="secret-code-box" style="border:1.5px solid var(--accent-color);border-radius:14px;padding:14px 16px;margin-bottom:16px;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;">
+                        <div style="min-width:0;flex:1;">
+                            <div style="font-size:0.8em;font-weight:700;color:var(--accent-color);">🎬 유튜브 시크릿 미션 +10PT</div>
+                            <div style="font-size:0.73em;color:var(--text-muted);margin-top:2px;">Shorts 영상 끝 4자리 코드를 입력하세요</div>
+                        </div>
+                        <a href="https://www.youtube.com/@SecondActRadio/shorts" target="_blank"
+                            onclick="addPoint(2,'쇼츠클릭','shorts_visit')"
+                            style="background:var(--primary-color);color:#fff;text-decoration:none;border-radius:20px;padding:6px 12px;font-size:0.78em;font-weight:700;flex-shrink:0;white-space:nowrap;">
+                            📺 쇼츠
+                        </a>
+                    </div>
+                    <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">
+                        <input id="secret-code-input" type="text" maxlength="4" placeholder="0  0  0  0"
+                            style="flex:1;min-width:0;font-size:1.3em;font-weight:700;text-align:center;padding:10px;border:1.5px solid var(--border-color);border-radius:10px;background:var(--card-bg);color:var(--text-color);letter-spacing:6px;outline:none;box-sizing:border-box;">
+                        <button onclick="checkSecretCode()" style="flex-shrink:0;width:60px;min-height:44px;background:var(--primary-color);color:#fff;border:none;border-radius:10px;font-size:0.88em;font-weight:700;cursor:pointer;">확인</button>
+                    </div>
+                    <div id="secret-code-result" style="font-size:0.8em;color:var(--accent-color);text-align:center;min-height:16px;"></div>
+                </div>
+                <!-- ★ 6단계: 확언 카드 공유 버튼 -->
+                <div style="background:linear-gradient(135deg,#FFF8E7,#FFF3D0);border-radius:12px;padding:12px 14px;margin-bottom:10px;border:1px solid rgba(201,168,76,0.3);">
+                    <div style="font-size:0.75em;color:#8B6914;font-weight:700;margin-bottom:8px;line-height:1.5;">오늘 아침, 소중한 지인들에게<br>품격 있는 확언으로 아침 인사를 건네보세요 🌅</div>
+                    <div style="display:flex;gap:8px;">
+                        <button class="btn-oracle" onclick="openShareCard()" style="flex:1;background:#1B4332;justify-content:center;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="margin-right:5px;flex-shrink:0;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>아침 인사 카드</button>
+                        <button class="btn-oracle" onclick="shareToFamily()" style="flex:1;background:#C9A84C;color:#1B4332;justify-content:center;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="margin-right:5px;flex-shrink:0;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>가족에게 보내기</button>
+                    </div>
+                </div>
+                <div id="oracle-btn-wrap"></div>
+            </div>
+        </div>
 
-      <!-- 테스트 탭 -->
-      <section id="view-test" class="view-section">
-      </section>
+        <!-- 달력 -->
+        <div id="view-calendar" class="view-section">
+            <!-- ★ 300일 다이어리 신청 배너 -->
+            <div id="diary-300-banner" style="display:none;background:linear-gradient(135deg,#C9A84C,#E8C97A);border-radius:16px;padding:20px;margin-bottom:16px;text-align:center;">
+                <div style="font-size:1.1em;font-weight:700;color:#1B4332;margin-bottom:6px;">📖 300일 특별 선물!</div>
+                <div style="font-size:0.85em;color:#3D2600;line-height:1.6;margin-bottom:14px;">1년 안에 300일을 달성하셨어요!<br>'나만의 인생2막 확언 다이어리' 실물 제작 신청이 가능해요.</div>
+                <button onclick="openDiaryApply()" style="background:#1B4332;color:#C9A84C;border:none;border-radius:12px;padding:12px 24px;font-size:0.95em;font-weight:700;cursor:pointer;">📬 다이어리 신청하기</button>
+            </div>
+            <div class="stats-box">
+                <div class="stats-main" id="cal-stat-month">이번 달 0일 완료 / 총 30일</div>
+                <div class="stats-sub">
+                    <span class="stats-streak" id="cal-stat-streak">🔥 0일 연속 중!</span>
+                    <span id="cal-stat-rate">이번 달 완료율: 0%</span>
+                </div>
+                <hr style="border:0;border-top:1px solid #E8E5E0;margin:15px 0;">
+                <!-- 이번 달 미션 -->
+                <div id="monthly-mission-box" style="background:linear-gradient(135deg,#F0F7F4,#E8F4EE);border-radius:12px;padding:14px;margin-bottom:14px;border:1px solid #C8DDD2;">
+                    <div style="font-size:0.9em;font-weight:700;color:var(--primary-color);margin-bottom:8px;">🎯 이번 달 미션</div>
+                    <div id="mission-progress-text" style="font-size:0.83em;color:#555;margin-bottom:8px;line-height:1.6;"></div>
+                    <div style="background:#E0EEE8;border-radius:20px;height:10px;overflow:hidden;margin-bottom:6px;">
+                        <div id="mission-bar" style="height:100%;background:var(--primary-color);border-radius:20px;transition:width 0.4s ease;width:0%;"></div>
+                    </div>
+                    <div id="mission-reward-text" style="font-size:0.78em;color:#888;"></div>
+                </div>
+                <hr style="border:0;border-top:1px solid #E8E5E0;margin:15px 0;">
+                <div style="font-size:16px;color:#555;text-align:left;line-height:1.8;font-weight:bold;">
+                    • 총 체크 일수: <span id="dash-total" style="color:var(--primary-color);">0</span>일<br>
+                    • 평균 기분 변화: <span id="dash-mood" style="color:var(--primary-color);">+0</span>단계 향상<br>
+                    • 즐겨찾기한 확언: <span id="dash-fav" style="color:var(--primary-color);">0</span>개<br>
+                    • 획득한 배지: <span id="dash-badge" style="color:var(--primary-color);">0</span>개
+                </div>
+            </div>
+            <div class="cal-header">
+                <button class="cal-btn" onclick="changeMonth(-1)">◀</button>
+                <div class="cal-title" id="cal-month-title"></div>
+                <button class="cal-btn" onclick="changeMonth(1)">▶</button>
+            </div>
+            <div class="cal-grid-wrapper">
+                <div class="cal-grid">
+                    <div class="cal-day-name" style="color:#D32F2F;">일</div>
+                    <div class="cal-day-name">월</div><div class="cal-day-name">화</div><div class="cal-day-name">수</div>
+                    <div class="cal-day-name">목</div><div class="cal-day-name">금</div>
+                    <div class="cal-day-name" style="color:#4A90E2;">토</div>
+                </div>
+                <div class="cal-grid" id="cal-grid-days" style="margin-bottom:0;"></div>
+            </div>
 
-      <!-- 설정 탭 -->
-      <section id="view-settings" class="view-section">
-      </section>
+            <div class="chart-box">
+                <div class="chart-title">월간 기분 변화 그래프</div>
+                <div class="chart-subtitle" id="chart-avg-text">이번 달 평균 기분 변화: +0단계</div>
+                <div class="chart-legend">
+                    <span style="color:#4A90E2;font-weight:bold;">● 확언 전</span> &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <span style="color:#D4A843;font-weight:bold;">● 확언 후</span>
+                </div>
+                <div class="chart-canvas-wrapper"><canvas id="mood-chart"></canvas></div>
+            </div>
+            <div class="badges-box">
+                <!-- ★ ② 정체성 라벨 -->
+                <div id="identity-box" style="display:none;background:linear-gradient(135deg,#1B4332,#2D6A4F);border-radius:14px;padding:18px;margin-bottom:16px;text-align:center;">
+                    <div style="font-size:0.75em;color:var(--accent-color);font-weight:700;letter-spacing:1px;margin-bottom:8px;">나의 정체성</div>
+                    <div style="font-size:1.2em;font-weight:700;color:#FFFFFF;margin-bottom:6px;" id="identity-label"></div>
+                    <div style="font-size:0.82em;color:rgba(255,255,255,0.75);line-height:1.6;" id="identity-desc"></div>
+                </div>
+                <div class="badges-title">나의 달성 배지 보관함 🎖️</div>
 
+                <!-- 연속 달성 등급 직행 홍보 -->
+                <div style="background:linear-gradient(135deg,#1B4332,#2D6A4F);border-radius:14px;padding:16px;margin-bottom:14px;">
+                    <div style="font-size:14px;font-weight:700;color:#C9A84C;margin-bottom:8px;text-align:center;">🏆 연속 달성하면 등급이 직행해요!</div>
+                    <div style="display:flex;flex-direction:column;gap:6px;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.1);border-radius:8px;padding:8px 12px;">
+                            <span style="font-size:13px;color:rgba(255,255,255,0.9);white-space:nowrap;">🌳 100일 연속 확언 완료</span>
+                            <span style="font-size:13px;font-weight:700;color:#C9A84C;white-space:nowrap;">🏔️ 인생2막러 직행!</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.1);border-radius:8px;padding:8px 12px;">
+                            <span style="font-size:13px;color:rgba(255,255,255,0.9);white-space:nowrap;">🌟 200일 연속 확언 완료</span>
+                            <span style="font-size:13px;font-weight:700;color:#C9A84C;white-space:nowrap;">☁️ 라디오스타 직행!</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(201,168,76,0.3);border-radius:8px;padding:8px 12px;border:1px solid #C9A84C;">
+                            <span style="font-size:13px;color:#fff;font-weight:700;white-space:nowrap;">✨ 300일 연속 확언 완료</span>
+                            <span style="font-size:13px;font-weight:700;color:#C9A84C;white-space:nowrap;">인생챔피언 직행!!</span>
+                        </div>
+                    </div>
+                    <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:8px;text-align:center;">매일 하루도 빠지지 않고 확언을 완료한 날 기준이에요</div>
+                    <button onclick="openPointGuide()" style="width:100%;margin-top:10px;min-height:40px;background:rgba(201,168,76,0.3);color:#C9A84C;border:1px solid #C9A84C;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;">📊 포인트 & 등급 상세 보기 →</button>
+                </div>
+            </div>
+
+                <div class="badges-grid" id="badge-list-container"></div>
+
+                <!-- ★ ④ 다이어리 상시 노출 카드 -->
+                <div id="diary-promo-card" style="display:none;margin-top:20px;border-radius:14px;overflow:hidden;border:1.5px solid var(--accent-color);">
+                    <div style="background:linear-gradient(135deg,#1B4332,#2D6A4F);padding:18px 16px;">
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="font-size:36px;flex-shrink:0;" id="diary-promo-icon">📖</div>
+                            <div>
+                                <div style="font-size:0.95em;font-weight:700;color:var(--accent-color);margin-bottom:4px;">나만의 확언 다이어리 선물</div>
+                                <div style="font-size:0.82em;color:rgba(255,255,255,0.85);line-height:1.5;" id="diary-promo-desc">300일을 달성하면 1년간의 필사와 일기가 담긴 세상에 단 하나뿐인 나만의 다이어리를 선물로 드려요!</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background:#FFF8E7;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;">
+                        <div>
+                            <div style="font-size:0.78em;color:#8B6914;font-weight:700;margin-bottom:2px;">달성 현황</div>
+                            <div style="font-size:0.88em;color:var(--primary-color);font-weight:700;" id="diary-promo-progress">0 / 300일</div>
+                        </div>
+                        <div style="flex:1;margin:0 14px;">
+                            <div style="background:#E8E4DD;border-radius:6px;height:6px;overflow:hidden;">
+                                <div id="diary-promo-fill" style="height:100%;background:var(--accent-color);border-radius:6px;transition:width 0.6s;"></div>
+                            </div>
+                        </div>
+                        <div id="diary-promo-btn-wrap"></div>
+                    </div>
+                </div>
+
+            <!-- ★ 9-3단계: 통계 강화 -->
+            <div style="background:#FFFFFF;border-radius:16px;padding:22px;margin-bottom:16px;border:1px solid #E8E5E0;">
+                <div style="font-size:22px;font-weight:bold;color:var(--primary-color);margin-bottom:18px;">📊 나의 확언 리포트</div>
+                <!-- 4개 요약 카드 -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+                    <div class="stat-mini-card" id="stat-total-days"></div>
+                    <div class="stat-mini-card" id="stat-best-streak"></div>
+                    <div class="stat-mini-card" id="stat-mood-up-days"></div>
+                    <div class="stat-mini-card" id="stat-fav-count"></div>
+                </div>
+                <!-- 요일별 완료 패턴 -->
+                <div style="font-size:19px;font-weight:bold;color:var(--primary-color);margin-bottom:12px;">📅 요일별 완료 패턴</div>
+                <div style="display:flex;justify-content:space-between;align-items:flex-end;height:90px;margin-bottom:6px;" id="weekday-chart"></div>
+                <div style="display:flex;justify-content:space-between;">
+                    <span style="font-size:15px;color:#D32F2F;font-weight:bold;">일</span>
+                    <span style="font-size:15px;color:#666;font-weight:bold;">월</span>
+                    <span style="font-size:15px;color:#666;font-weight:bold;">화</span>
+                    <span style="font-size:15px;color:#666;font-weight:bold;">수</span>
+                    <span style="font-size:15px;color:#666;font-weight:bold;">목</span>
+                    <span style="font-size:15px;color:#666;font-weight:bold;">금</span>
+                    <span style="font-size:15px;color:#4A90E2;font-weight:bold;">토</span>
+                </div>
+                <!-- 가장 많이 읽은 테마 -->
+                <div style="font-size:19px;font-weight:bold;color:var(--primary-color);margin:20px 0 12px;">🏷️ 내가 가장 많이 읽은 테마</div>
+                <div id="theme-rank-list"></div>
+                <!-- 기분 상승 통계 -->
+                <div style="font-size:19px;font-weight:bold;color:var(--primary-color);margin:20px 0 12px;">💚 기분 상승 통계</div>
+                <div id="mood-rise-stats"></div>
+            </div>
+        </div>
+
+        <!-- ★ 5단계: 즐겨찾기 페이지 -->
+        <div id="view-favorites" class="view-section">
+            <div class="fav-page-title">내 최애 확언 ⭐</div>
+            <div class="fav-action-row">
+                <button class="btn btn-sub" onclick="playFavsInOrder()">▶️ 순서재생</button>
+                <button class="btn btn-sub" onclick="playFavsInOrder(true)">🔁 무한반복</button>
+                <button class="btn btn-sub" onclick="playFavRandom()">🎲 랜덤듣기</button>
+                <button class="btn btn-sub" onclick="window.speechSynthesis&&window.speechSynthesis.cancel();showToast('⏹ 재생 중지')" style="background:#FFE8E8;color:#C0392B;">⏹ 중지</button>
+            </div>
+            <div id="fav-list"></div>
+
+            <!-- 심리테스트 섹션 -->
+            <div id="psych-section-in-fav" style="margin:24px 0 16px;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+                    <div style="flex:1;height:1px;background:var(--border-color);"></div>
+                    <span style="font-size:0.8em;color:var(--text-muted);white-space:nowrap;">나를 더 깊이 알고 싶다면</span>
+                    <div style="flex:1;height:1px;background:var(--border-color);"></div>
+                </div>
+                <div style="background:linear-gradient(135deg,#1B4332,#2D6A4F);border-radius:20px;padding:24px 20px;">
+                    <!-- 상단 타이틀 -->
+                    <div style="text-align:center;margin-bottom:18px;">
+                        <div style="font-size:40px;margin-bottom:8px;">🧠</div>
+                        <div style="font-size:1.2em;font-weight:900;color:#fff;margin-bottom:6px;">나는 어떤 사람일까?</div>
+                        <div style="font-size:0.85em;color:#C9A84C;font-weight:700;">3가지 과학 검사로 알아보는 나의 진짜 모습</div>
+                    </div>
+
+                    <!-- 효과/장점 리스트 -->
+                    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;">
+                        <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:10px 14px;display:flex;align-items:flex-start;gap:10px;">
+                            <span style="font-size:1.1em;flex-shrink:0;">💕</span>
+                            <div>
+                                <div style="font-size:0.85em;font-weight:700;color:#fff;">연애·일·관계·돈 스타일 분석</div>
+                                <div style="font-size:0.78em;color:rgba(255,255,255,0.7);margin-top:2px;">내가 왜 그런 선택을 하는지 이유를 알게 돼요</div>
+                            </div>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:10px 14px;display:flex;align-items:flex-start;gap:10px;">
+                            <span style="font-size:1.1em;flex-shrink:0;">📊</span>
+                            <div>
+                                <div style="font-size:0.85em;font-weight:700;color:#fff;">자존감 점수 측정 + 30일 변화 추적</div>
+                                <div style="font-size:0.78em;color:rgba(255,255,255,0.7);margin-top:2px;">확언이 나를 얼마나 바꾸는지 숫자로 확인</div>
+                            </div>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:10px 14px;display:flex;align-items:flex-start;gap:10px;">
+                            <span style="font-size:1.1em;flex-shrink:0;">✨</span>
+                            <div>
+                                <div style="font-size:0.85em;font-weight:700;color:#fff;">나만의 핵심 강점 발견</div>
+                                <div style="font-size:0.78em;color:rgba(255,255,255,0.7);margin-top:2px;">내가 몰랐던 나의 슈퍼파워를 알게 돼요</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 동물 유형 미리보기 -->
+                    <div style="background:rgba(0,0,0,0.2);border-radius:12px;padding:12px;margin-bottom:16px;">
+                        <div style="font-size:0.75em;color:rgba(255,255,255,0.6);text-align:center;margin-bottom:8px;">16가지 동물 유형 중 나는?</div>
+                        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;font-size:0.78em;color:rgba(255,255,255,0.85);">
+                            <div>🦉<br>올빼미</div>
+                            <div>🦊<br>여우</div>
+                            <div>🦁<br>사자</div>
+                            <div>🐬<br>돌고래</div>
+                            <div>🐘<br>코끼리</div>
+                            <div>🦋<br>나비</div>
+                            <div>🐺<br>늑대</div>
+                            <div>🐯<br>호랑이</div>
+                            <div>🐋<br>고래</div>
+                            <div>🦅<br>독수리</div>
+                            <div>🐆<br>표범</div>
+                            <div>🦢<br>백조</div>
+                            <div>🐢<br>거북이</div>
+                            <div>🐝<br>꿀벌</div>
+                            <div>🐱<br>고양이</div>
+                            <div>🦌<br>사슴</div>
+                        </div>
+                    </div>
+
+                    <button onclick="startPsychTest()" style="width:100%;min-height:52px;background:#C9A84C;color:#1B4332;border:none;border-radius:14px;font-size:1em;font-weight:900;cursor:pointer;">
+                        🧠 지금 바로 시작하기 →
+                    </button>
+                    <div style="font-size:0.72em;color:rgba(255,255,255,0.45);margin-top:10px;text-align:center;">
+                        BFI-44 · Rosenberg · VIA 검사 기반 · 약 12분 소요
+                    </div>
+                </div>
+
+                <!-- 카테고리 잠금/해제 카드 -->
+                <div id="psych-preview-list" style="display:flex;flex-direction:column;gap:8px;margin-top:14px;"></div>
+            </div>
+        </div>
+
+        <!-- ★ 7단계: 메모(필사) + 일기장 -->
+        <div id="view-memo" class="view-section">
+            <!-- 탭 -->
+            <div class="tabs" style="margin-bottom:20px;">
+                <button id="memo-tab-a" class="tab-btn active" onclick="switchMemoTab('write')">✏️ 필사</button>
+                <button id="memo-tab-c" class="tab-btn" onclick="switchMemoTab('free')">📌 메모</button>
+                <button id="memo-tab-d" class="tab-btn" onclick="switchMemoTab('letter')">💌 미래편지</button>
+                <button id="memo-tab-b" class="tab-btn" onclick="switchMemoTab('diary')">🔒 일기장</button>
+            </div>
+
+            <!-- 필사 탭 -->
+            <div id="memo-write-view">
+                <div style="background-color:var(--primary-color);border-radius:14px;padding:18px 16px;margin-bottom:16px;">
+                    <div style="font-size:var(--font-sm);color:var(--accent-color);font-weight:bold;margin-bottom:6px;">오늘의 확언 — 따라 써보세요</div>
+                    <div style="font-size:var(--font-xl);color:#FFFFFF;font-weight:bold;line-height:1.6;" id="memo-today-affirmation">확언을 불러오는 중...</div>
+                </div>
+                <textarea id="memo-input" placeholder="여기에 확언을 직접 써보세요. 손으로 쓰는 것처럼 천천히..." style="width:100%;min-height:160px;font-size:var(--font-xl);font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;border:2px solid #E8E5E0;border-radius:14px;padding:16px;box-sizing:border-box;resize:none;line-height:1.7;color:#333;background:#FDFBF7;outline:none;"></textarea>
+                <div style="text-align:right;font-size:var(--font-sm);color:#aaa;margin:6px 4px 14px;" id="memo-char-count">0자</div>
+                <button class="btn btn-main" onclick="saveMemo()" style="font-size:20px;margin-bottom:24px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="margin-right:6px;flex-shrink:0;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>저장</button>
+                <!-- 과거 필사 목록 -->
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;"><div style="font-size:1em;font-weight:bold;color:var(--primary-color);">필사 기록</div><button class="btn btn-sub" style="font-size:0.8em;min-height:38px;padding:0 14px;" onclick="downloadAllMemo()">전체 다운로드</button></div>
+                <div id="memo-list"></div>
+            </div>
+
+            <!-- ★ 자유메모 탭 -->
+            <div id="memo-free-view" style="display:none;">
+                <div style="font-size:18px;color:#888;margin-bottom:16px;line-height:1.6;">확언과 관계없이 기억해두고 싶은 것, 떠오르는 생각, 중요한 내용을 자유롭게 남겨두세요.</div>
+                <input id="free-note-title" type="text" placeholder="제목 (선택)"
+                    style="width:100%;font-size:19px;padding:12px 16px;border:2px solid #E8E5E0;border-radius:12px;box-sizing:border-box;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#FDFBF7;outline:none;margin-bottom:10px;">
+                <textarea id="free-note-body" placeholder="내용을 자유롭게 써보세요..."
+                    style="width:100%;min-height:140px;font-size:19px;padding:14px 16px;border:2px solid #E8E5E0;border-radius:12px;box-sizing:border-box;resize:none;line-height:1.7;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#FDFBF7;outline:none;"></textarea>
+                <div style="text-align:right;font-size:15px;color:#aaa;margin:6px 4px 14px;" id="free-note-count">0자</div>
+                <button class="btn btn-main" onclick="saveFreeNote()" style="font-size:20px;margin-bottom:28px;">저장하기</button>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;"><div style="font-size:1em;font-weight:bold;color:var(--primary-color);">저장된 메모</div><button class="btn btn-sub" style="font-size:0.8em;min-height:38px;padding:0 14px;" onclick="downloadAllFreeNote()">전체 다운로드</button></div>
+                <div id="free-note-list"></div>
+            </div>
+
+            <!-- ★ ④ 미래편지 탭 -->
+            <div id="memo-letter-view" style="display:none;">
+                <!-- 새 편지 쓰기 -->
+                <div id="letter-write-section" style="display:none;">
+                    <div style="background:linear-gradient(135deg,#1B4332,#2D6A4F);border-radius:14px;padding:20px;margin-bottom:16px;text-align:center;">
+                        <div style="font-size:1em;font-weight:700;color:var(--accent-color);margin-bottom:6px;">💌 미래의 나에게 편지 쓰기</div>
+                        <div style="font-size:0.85em;color:rgba(255,255,255,0.8);line-height:1.6;">지금의 마음을 담아 미래의 나에게 편지를 써보세요.</div>
+                    </div>
+                    <div style="background:var(--card-bg);border-radius:12px;padding:14px;margin-bottom:12px;border:1px solid var(--border-color);">
+                        <div style="font-size:0.85em;font-weight:700;color:var(--primary-color);margin-bottom:10px;">📅 개봉일 선택</div>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+                            <button onclick="setLetterDate(1,'day')" class="letter-date-btn" id="ldbtn-1d">내일</button>
+                            <button onclick="setLetterDate(1,'month')" class="letter-date-btn" id="ldbtn-1m">1개월 후</button>
+                            <button onclick="setLetterDate(3,'month')" class="letter-date-btn" id="ldbtn-3m">3개월 후</button>
+                            <button onclick="setLetterDate(6,'month')" class="letter-date-btn" id="ldbtn-6m">6개월 후</button>
+                            <button onclick="setLetterDate(1,'year')" class="letter-date-btn active" id="ldbtn-1y">1년 후</button>
+                        </div>
+                        <div style="font-size:0.82em;color:var(--text-muted);">직접 선택: <input type="date" id="letter-open-date-input" style="margin-left:8px;font-size:0.9em;border:1px solid var(--border-color);border-radius:8px;padding:4px 8px;background:var(--card-bg);color:var(--text-color);" onchange="onLetterDateChange()"/></div>
+                    </div>
+                    <textarea id="letter-input" placeholder="미래의 나에게...&#10;&#10;지금 나는 ___한 상태야. 그때는 꼭 ___하고 싶어. 지금 이 순간 내가 가장 바라는 건..." style="width:100%;min-height:200px;font-size:1em;font-family:'Pretendard','Apple SD Gothic Neo',sans-serif;border:1.5px solid var(--border-color);border-radius:14px;padding:16px;box-sizing:border-box;resize:none;line-height:1.7;color:var(--text-color);background:var(--card-bg);outline:none;"></textarea>
+                    <div style="text-align:right;font-size:0.78em;color:var(--text-muted);margin:6px 4px 14px;" id="letter-char-count">0자</div>
+                    <div style="display:flex;gap:10px;margin-bottom:20px;">
+                        <button class="btn btn-main" onclick="saveLetter()" style="flex:1;">봉인하기 🔒</button>
+                        <button onclick="showLetterList()" style="min-height:50px;padding:0 18px;background:none;border:1px solid var(--border-color);border-radius:12px;font-size:0.9em;color:var(--text-muted);cursor:pointer;">취소</button>
+                    </div>
+                </div>
+                <!-- 편지 목록 -->
+                <div id="letter-list-section">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                        <div style="font-size:0.95em;font-weight:700;color:var(--primary-color);">💌 나의 미래편지</div>
+                        <button onclick="showLetterWrite()" style="background:var(--primary-color);color:#fff;border:none;border-radius:10px;padding:8px 16px;font-size:0.82em;font-weight:700;cursor:pointer;">+ 새 편지 쓰기</button>
+                    </div>
+                    <div id="letter-list-container"></div>
+                </div>
+                <!-- 편지 상세 -->
+                <div id="letter-detail-section" style="display:none;">
+                    <button onclick="closeLetterDetail()" style="background:none;border:none;font-size:0.9em;color:var(--primary-color);cursor:pointer;margin-bottom:14px;font-weight:700;">← 목록으로</button>
+                    <div id="letter-detail-box"></div>
+                </div>
+            </div>
+
+            <!-- 일기장 탭 -->
+            <div id="memo-diary-view" style="display:none;">
+                <!-- PIN 잠금 화면 -->
+                <div id="diary-lock-screen">
+                    <div style="text-align:center;padding:30px 0 20px;">
+                        <div style="font-size:50px;margin-bottom:10px;">🔒</div>
+                        <div style="font-size:22px;font-weight:bold;color:var(--primary-color);margin-bottom:6px;" id="diary-lock-title">비밀번호를 입력하세요</div>
+                        <div style="font-size:17px;color:#888;margin-bottom:24px;" id="diary-lock-sub"></div>
+                        <!-- PIN 표시 -->
+                        <div style="display:flex;justify-content:center;gap:16px;margin-bottom:28px;" id="pin-dots">
+                            <div class="pin-dot"></div><div class="pin-dot"></div>
+                            <div class="pin-dot"></div><div class="pin-dot"></div>
+                        </div>
+                        <!-- 숫자 패드 -->
+                        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:280px;margin:0 auto;" id="pin-pad"></div>
+                        <button onclick="clearPin()" style="margin-top:18px;background:none;border:none;font-size:17px;color:#888;cursor:pointer;font-weight:bold;">← 지우기</button>
+                        <!-- 힌트 / 재설정 — 고정 구조 -->
+                        <div id="pin-hint-area" style="margin-top:20px;">
+                            <!-- 힌트 있을 때 -->
+                            <div id="hint-show-section" style="display:none;">
+                                <button onclick="showPinHint()" style="background:none;border:1px solid #E8E5E0;border-radius:20px;padding:8px 20px;font-size:16px;color:#888;cursor:pointer;font-weight:bold;">💡 힌트 보기</button>
+                                <div id="pin-hint-text" style="display:none;margin-top:10px;font-size:18px;color:var(--primary-color);font-weight:bold;background:#FFF8E7;padding:10px 16px;border-radius:10px;border:1px solid var(--accent-color);"></div>
+                            </div>
+                            <!-- 힌트 없을 때 -->
+                            <div id="hint-set-section" style="display:none;">
+                                <button onclick="toggleHintInput()" style="background:none;border:1px solid var(--accent-color);border-radius:20px;padding:8px 20px;font-size:16px;color:var(--primary-color);cursor:pointer;font-weight:bold;">💡 힌트 설정하기</button>
+                                <div id="pin-hint-inline" style="display:none;margin-top:12px;max-width:280px;margin-left:auto;margin-right:auto;">
+                                    <input id="pin-hint-quick" type="text" placeholder="예: 생일, 좋아하는 숫자..." style="width:100%;font-size:18px;padding:10px 14px;border:2px solid #E8E5E0;border-radius:10px;box-sizing:border-box;font-family:'Malgun Gothic',sans-serif;">
+                                    <button onclick="saveQuickHint()" class="btn btn-main" style="margin-top:10px;font-size:17px;width:100%;">저장</button>
+                                </div>
+                            </div>
+                            <!-- 초기화 확인 -->
+                            <div id="reset-confirm-section" style="display:none;margin-top:10px;">
+                                <div id="reset-hint-preview" style="margin-bottom:12px;"></div>
+                                <div style="font-size:18px;color:#333;font-weight:bold;margin-bottom:14px;line-height:1.6;">비밀번호를 초기화할까요?<br><span style="font-size:15px;color:#888;font-weight:normal;">일기 내용은 그대로 유지돼요.</span></div>
+                                <div style="display:flex;gap:10px;justify-content:center;">
+                                    <button onclick="confirmResetPin()" style="flex:1;min-height:52px;font-size:18px;font-weight:bold;background:#D32F2F;color:#fff;border:none;border-radius:12px;cursor:pointer;">초기화</button>
+                                    <button onclick="hideResetConfirm()" style="flex:1;min-height:52px;font-size:18px;font-weight:bold;background:#E8E5E0;color:#333;border:none;border-radius:12px;cursor:pointer;">취소</button>
+                                </div>
+                            </div>
+                            <!-- 기억나지 않아요 버튼 -->
+                            <div id="forget-pin-section" style="margin-top:14px;display:none;">
+                                <button onclick="resetPin()" style="background:none;border:none;font-size:16px;color:#aaa;cursor:pointer;text-decoration:underline;">비밀번호가 생각나지 않아요</button>
+                            </div>
+                        </div>
+                        <!-- PIN 힌트 설정 (비밀번호 설정 모드일 때 표시) -->
+                        <div id="pin-hint-input-area" style="display:none;margin-top:20px;text-align:left;max-width:280px;margin-left:auto;margin-right:auto;">
+                            <div style="font-size:16px;color:#888;margin-bottom:6px;">💡 기억을 위한 힌트 (선택)</div>
+                            <input id="pin-hint-input" type="text" placeholder="예: 생일, 좋아하는 숫자..." style="width:100%;font-size:18px;padding:10px 14px;border:2px solid #E8E5E0;border-radius:10px;box-sizing:border-box;font-family:'Malgun Gothic',sans-serif;">
+                        </div>
+                    </div>
+                </div>
+                <!-- 일기장 내용 -->
+                <div id="diary-content-screen" style="display:none;">
+                    <!-- 일기 달력 -->
+                    <div style="background:var(--card-bg);border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                            <button onclick="diaryCalPrev()" style="background:none;border:none;font-size:1.3em;cursor:pointer;color:var(--primary-color);padding:4px 10px;">◀</button>
+                            <div style="font-size:1em;font-weight:700;color:var(--primary-color);" id="diary-cal-title"></div>
+                            <button onclick="diaryCalNext()" style="background:none;border:none;font-size:1.3em;cursor:pointer;color:var(--primary-color);padding:4px 10px;">▶</button>
+                        </div>
+                        <div style="display:grid;grid-template-columns:repeat(7,1fr);text-align:center;gap:4px 2px;margin-bottom:6px;">
+                            <div style="font-size:0.72em;font-weight:700;color:#D32F2F;">일</div>
+                            <div style="font-size:0.72em;font-weight:700;color:#888;">월</div>
+                            <div style="font-size:0.72em;font-weight:700;color:#888;">화</div>
+                            <div style="font-size:0.72em;font-weight:700;color:#888;">수</div>
+                            <div style="font-size:0.72em;font-weight:700;color:#888;">목</div>
+                            <div style="font-size:0.72em;font-weight:700;color:#888;">금</div>
+                            <div style="font-size:0.72em;font-weight:700;color:#4A90E2;">토</div>
+                        </div>
+                        <div style="display:grid;grid-template-columns:repeat(7,1fr);text-align:center;gap:6px 2px;" id="diary-cal-grid"></div>
+                    </div>
+
+                    <!-- 선택된 날짜 표시 + 헤더 -->
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                        <div style="font-size:1em;font-weight:700;color:var(--primary-color);" id="diary-date-label"></div>
+                        <div style="display:flex;gap:8px;">
+                            <button onclick="changePinMode()" style="background:none;border:1px solid var(--border-color);border-radius:20px;padding:6px 14px;font-size:0.8em;cursor:pointer;color:#888;font-weight:700;">비밀번호 변경</button>
+                            <button onclick="lockDiary()" style="background:none;border:1px solid var(--border-color);border-radius:20px;padding:6px 14px;font-size:0.8em;cursor:pointer;color:#888;font-weight:700;">잠금</button>
+                        </div>
+                    </div>
+                    <textarea id="diary-input" placeholder="오늘 하루 어떠셨나요? 자유롭게 기록해보세요. 이 일기는 비밀번호로 잠금됩니다." style="width:100%;min-height:200px;font-size:1em;font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;border:1.5px solid var(--border-color);border-radius:14px;padding:16px;box-sizing:border-box;resize:none;line-height:1.7;color:var(--text-color);background:var(--card-bg);outline:none;"></textarea>
+                    <div style="text-align:right;font-size:0.78em;color:#aaa;margin:6px 4px 14px;" id="diary-char-count">0자</div>
+                    <button class="btn btn-main" onclick="saveDiary()" style="margin-bottom:10px;">저장</button>
+                    <div style="display:flex;gap:10px;margin-bottom:24px;">
+                        <button class="btn btn-sub" onclick="shareDiaryEntry()">이 날 일기 공유</button>
+                        <button class="btn btn-sub" onclick="downloadAllDiary()">전체 다운로드</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ★ 심리테스트 -->
+        <div id="view-psych" class="view-section">
+            <div style="padding:24px 20px;text-align:center;">
+                <div style="font-size:48px;margin-bottom:12px;">🧠</div>
+                <div style="font-size:1.3em;font-weight:900;color:var(--primary-color);margin-bottom:8px;">나는 어떤 사람일까?</div>
+                <div style="font-size:0.9em;color:var(--text-muted);line-height:1.8;margin-bottom:24px;">
+                    3가지 과학 검사로 알아보는<br>
+                    연애·일·관계·자존감·강점 분석
+                </div>
+                <div style="background:var(--card-bg);border-radius:16px;padding:20px;margin-bottom:20px;border:1px solid var(--border-color);text-align:left;">
+                    <div style="font-size:0.85em;font-weight:700;color:var(--primary-color);margin-bottom:12px;">🐾 16가지 동물 유형 중 나는?</div>
+                    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center;font-size:0.78em;color:var(--text-muted);">
+                        <div>🦉 올빼미</div><div>🦊 여우</div><div>🦁 사자</div><div>🐬 돌고래</div>
+                        <div>🐘 코끼리</div><div>🦋 나비</div><div>🐺 늑대</div><div>🐯 호랑이</div>
+                        <div>🐋 고래</div><div>🦅 독수리</div><div>🐆 표범</div><div>🦢 백조</div>
+                        <div>🐢 거북이</div><div>🐝 꿀벌</div><div>🐱 고양이</div><div>🦌 사슴</div>
+                    </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                    <button onclick="pMode='quick';psychStartReal('quick')" style="width:100%;min-height:54px;background:#fff;color:var(--primary-color);border:2px solid var(--primary-color);border-radius:16px;font-size:1em;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;">
+                        ⚡ 빠른 테스트 <span style="font-size:0.82em;opacity:0.7;">8분 · 40문항</span>
+                    </button>
+                    <button onclick="pMode='full';psychStartReal('full')" style="width:100%;min-height:54px;background:var(--primary-color);color:#fff;border:none;border-radius:16px;font-size:1em;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;">
+                        🔬 정밀 테스트 <span style="font-size:0.82em;opacity:0.75;">12분 · 66문항</span>
+                    </button>
+                </div>
+                <button onclick="sharePsychInvite()" style="width:100%;min-height:48px;background:var(--card-bg);color:var(--primary-color);border:2px solid var(--primary-color);border-radius:16px;font-size:0.95em;font-weight:700;cursor:pointer;margin-top:10px;">
+                    📤 친구에게 심리테스트 추천하기
+                </button>
+                <div style="font-size:0.78em;color:var(--text-muted);margin-top:12px;">BFI-44 · Rosenberg · VIA · 약 12분 소요 · 무료</div>
+            </div>
+        </div>
+
+        <!-- ★ 8단계: 사연 보내기 -->
+        <div id="view-story" class="view-section">
+            <!-- 헤더 배너 -->
+            <div style="background:linear-gradient(135deg,#1B4332,#2D6A4F);border-radius:16px;padding:24px 20px;text-align:center;margin-bottom:22px;">
+                <div style="font-size:36px;margin-bottom:8px;">💌</div>
+                <div style="font-size:22px;font-weight:bold;color:#FFFFFF;margin-bottom:6px;">인생2막라디오에 사연을 보내세요</div>
+                <div style="font-size:16px;color:rgba(255,255,255,0.75);line-height:1.6;">확언을 통해 변화한 이야기, 위로받은 순간,<br>나누고 싶은 삶의 이야기를 보내주세요.</div>
+            </div>
+
+            <!-- 이름 -->
+            <div style="margin-bottom:14px;">
+                <div style="font-size:18px;font-weight:bold;color:var(--primary-color);margin-bottom:8px;">이름 (선택)</div>
+                <input id="story-name" type="text" placeholder="예: 전주의 60대 주부, 익명도 괜찮아요"
+                    style="width:100%;font-size:19px;padding:12px 16px;border:2px solid #E8E5E0;border-radius:12px;box-sizing:border-box;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#FDFBF7;outline:none;">
+            </div>
+
+            <!-- 이메일 등록 (선택) -->
+            <div style="background:var(--card-bg);border-radius:12px;padding:14px;margin-bottom:14px;border:1px solid var(--border-color);">
+                <div style="font-size:0.85em;font-weight:700;color:var(--primary-color);margin-bottom:10px;">📧 이메일 등록 (선택)</div>
+                <input id="story-email" type="email" placeholder="이메일 주소 (예: abc@gmail.com)"
+                    style="width:100%;box-sizing:border-box;font-size:0.9em;padding:10px 14px;border:1.5px solid var(--border-color);border-radius:10px;background:var(--bg-color);color:var(--text-color);outline:none;margin-bottom:10px;">
+                <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-size:0.82em;color:var(--text-muted);line-height:1.6;">
+                    <input type="checkbox" id="story-marketing" style="width:16px;height:16px;margin-top:2px;flex-shrink:0;accent-color:var(--primary-color);">
+                    <span>인생2막라디오 소식과 채널 정보를 이메일로 받는 것에 동의합니다. <span style="opacity:0.7;">(언제든 철회 가능)</span></span>
+                </label>
+                <div style="font-size:0.75em;color:var(--text-muted);margin-top:8px;">💡 이메일은 사연 전송 시 함께 제출돼요</div>
+            </div>
+
+            <!-- 제목 -->
+            <div style="margin-bottom:14px;">
+                <div style="font-size:18px;font-weight:bold;color:var(--primary-color);margin-bottom:8px;">제목 <span style="color:#D32F2F;">*</span></div>
+                <input id="story-title" type="text" placeholder="사연 제목을 써주세요"
+                    style="width:100%;font-size:19px;padding:12px 16px;border:2px solid #E8E5E0;border-radius:12px;box-sizing:border-box;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#FDFBF7;outline:none;">
+            </div>
+
+            <!-- 사연 내용 -->
+            <div style="margin-bottom:6px;">
+                <div style="font-size:18px;font-weight:bold;color:var(--primary-color);margin-bottom:8px;">사연 내용 <span style="color:#D32F2F;">*</span></div>
+                <textarea id="story-body" placeholder="자유롭게 써주세요. 짧아도, 길어도 괜찮아요 😊"
+                    style="width:100%;min-height:200px;font-size:19px;padding:14px 16px;border:2px solid #E8E5E0;border-radius:12px;box-sizing:border-box;resize:none;line-height:1.7;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#FDFBF7;outline:none;"></textarea>
+            </div>
+            <div style="text-align:right;font-size:15px;color:#aaa;margin-bottom:20px;" id="story-char-count">0자</div>
+
+            <!-- 오늘 확언 포함 옵션 -->
+            <div style="background:#F0F7F4;border-radius:12px;padding:14px 16px;margin-bottom:22px;display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="toggleAffirmInclude()">
+                <div id="affirm-check" style="width:26px;height:26px;border-radius:6px;background:var(--primary-color);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <span style="color:#fff;font-size:16px;font-weight:bold;">✓</span>
+                </div>
+                <div style="font-size:17px;color:var(--primary-color);font-weight:bold;line-height:1.4;">오늘의 확언도 함께 보내기<br><span style="font-size:14px;color:#666;font-weight:normal;">이메일에 오늘 읽은 확언이 자동으로 포함돼요</span></div>
+            </div>
+
+            <!-- 전송 버튼 -->
+            <!-- +10PT 안내 -->
+            <div style="background:#FFF8E8;border-radius:12px;padding:12px 14px;margin-bottom:12px;border-left:3px solid #C9A84C;font-size:0.88em;color:#7A5500;line-height:1.7;">
+                🎁 <b>사연을 보내면 +10PT</b>가 바로 적립돼요!<br>
+                이메일 또는 카카오 1:1 채팅으로 보내실 수 있어요. (월 1회 +10PT)
+            </div>
+            <button class="btn btn-main" onclick="sendStory()" style="font-size:21px;min-height:62px;margin-bottom:10px;">
+                📧 이메일로 보내기
+            </button>
+            <button id="story-kakao-link" type="button"
+               onclick="openKakaoWithConsent()"
+               style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:54px;box-sizing:border-box;background:#FEE500;color:#3A1D1D;border-radius:12px;font-size:0.95em;font-weight:700;cursor:pointer;text-decoration:none;margin-bottom:8px;">
+                💬 인생2막❤️라디오 카카오 오픈채팅으로 보내기
+            </button>
+            <div style="background:#FFF8E7;border-radius:10px;padding:12px 14px;font-size:0.82em;color:#7A5500;line-height:1.8;margin-bottom:8px;">
+                📎 <b>사진·한글파일 등 파일 첨부는 카카오톡으로!</b><br>
+                위 버튼으로 오픈채팅 입장 후<br>
+                카카오톡에서 파일을 바로 첨부해서 보내주세요 😊
+            </div>
+            <button id="story-kakao-done-btn"
+               onclick="onStoryKakaoDone()"
+               style="display:none;width:100%;min-height:46px;background:var(--primary-color);color:#fff;border:none;border-radius:12px;font-size:0.9em;font-weight:700;cursor:pointer;align-items:center;justify-content:center;margin-bottom:14px;">
+                ✅ 카카오에서 보냈어요! (+10PT 받기)
+            </button>
+            <div id="story-kakao-done-msg" style="display:none;text-align:center;padding:8px 0;color:#888;font-size:0.85em;margin-bottom:14px;">
+                💬 이번 달 카카오 사연 보내기 완료 ✅
+            </div>
+
+            <!-- 안내문 -->
+            <div style="background:#FFFFFF;border:1px solid #E8E5E0;border-radius:12px;padding:16px;font-size:16px;color:#888;line-height:1.8;">
+                <div style="font-weight:bold;color:#555;margin-bottom:6px;">📌 보내기 전에 알아두세요</div>
+                • 버튼을 누르면 이메일 앱이 열려요<br>
+                • 받는 분: <span id="story-email-display" style="color:var(--primary-color);font-weight:bold;"></span><br>
+                • 소개된 사연은 채널 콘텐츠에 활용될 수 있어요<br>
+                • 개인 정보는 이름 외 포함하지 않아도 돼요
+            </div>
+        </div>
+
+        <!-- ★ 9-1단계: 앱 설정 페이지 -->
+        <div id="view-settings" class="view-section">
+
+            <!-- 글자 크기 -->
+            <div style="background:#FFFFFF;border-radius:16px;padding:22px;margin-bottom:16px;border:1px solid #E8E5E0;">
+                <div style="font-size:20px;font-weight:bold;color:var(--primary-color);margin-bottom:16px;">🔤 글자 크기</div>
+                <div style="display:flex;gap:10px;">
+                    <button class="setting-size-btn" id="size-normal" onclick="setFontSize('normal')">기본</button>
+                    <button class="setting-size-btn" id="size-large"  onclick="setFontSize('large')">크게</button>
+                    <button class="setting-size-btn" id="size-xlarge" onclick="setFontSize('xlarge')">매우 크게</button>
+                </div>
+            </div>
+
+            <!-- 다크모드 -->
+            <div style="background:#FFFFFF;border-radius:16px;padding:22px;margin-bottom:16px;border:1px solid #E8E5E0;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <div style="font-size:20px;font-weight:bold;color:var(--primary-color);">🌙 다크모드</div>
+                        <div style="font-size:16px;color:#888;margin-top:4px;">어두운 배경으로 변경</div>
+                    </div>
+                    <div id="dark-toggle" onclick="toggleDarkMode()" style="width:56px;height:30px;border-radius:15px;background:#E8E5E0;cursor:pointer;position:relative;transition:background 0.3s;flex-shrink:0;">
+                        <div id="dark-toggle-thumb" style="width:24px;height:24px;border-radius:50%;background:#FFFFFF;position:absolute;top:3px;left:3px;transition:left 0.3s;box-shadow:0 1px 4px rgba(0,0,0,0.2);"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 기본 모드 -->
+            <div style="background:#FFFFFF;border-radius:16px;padding:22px;margin-bottom:16px;border:1px solid #E8E5E0;">
+                <div style="font-size:20px;font-weight:bold;color:var(--primary-color);margin-bottom:14px;">📅 기본 모드</div>
+                <div style="display:flex;gap:10px;">
+                    <button class="setting-mode-btn" id="mode-btn-A" onclick="setDefaultMode('A')">날짜형</button>
+                    <button class="setting-mode-btn" id="mode-btn-B" onclick="setDefaultMode('B')">개인 시작일형</button>
+                </div>
+            </div>
+
+            <!-- 배경음악 기본값 -->
+            <div style="background:#FFFFFF;border-radius:16px;padding:22px;margin-bottom:16px;border:1px solid #E8E5E0;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <div style="font-size:20px;font-weight:bold;color:var(--primary-color);">🎵 음악 자동 시작</div>
+                        <div style="font-size:16px;color:#888;margin-top:4px;">앱 실행 시 배경음악 자동 켜기</div>
+                    </div>
+                    <div id="bgm-auto-toggle" onclick="toggleBgmAuto()" style="width:56px;height:30px;border-radius:15px;background:#E8E5E0;cursor:pointer;position:relative;transition:background 0.3s;flex-shrink:0;">
+                        <div id="bgm-auto-thumb" style="width:24px;height:24px;border-radius:50%;background:#FFFFFF;position:absolute;top:3px;left:3px;transition:left 0.3s;box-shadow:0 1px 4px rgba(0,0,0,0.2);"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 앱 공유하기 -->
+            <div style="background:#FFFFFF;border-radius:16px;padding:22px;margin-bottom:16px;border:1px solid var(--border-color);">
+                <div style="font-size:1em;font-weight:700;color:var(--primary-color);margin-bottom:6px;">이 앱 공유하기</div>
+                <div style="font-size:0.85em;color:var(--text-muted);margin-bottom:16px;line-height:1.6;">지인에게 이 앱을 선물해보세요. 파일 하나로 바로 사용할 수 있어요.</div>
+                <button onclick="shareApp()" style="width:100%;min-height:54px;background:var(--primary-color);color:#FFFFFF;border:none;border-radius:12px;font-size:1em;font-weight:700;cursor:pointer;">이 앱 선물하기</button>
+            </div>
+
+            <!-- 개인정보 설정 -->
+            <div style="background:#FFFFFF;border-radius:16px;padding:22px;margin-bottom:16px;border:1px solid var(--border-color);">
+                <div style="font-size:1em;font-weight:700;color:var(--primary-color);margin-bottom:16px;">👤 나의 개인정보</div>
+
+                <div style="font-size:0.85em;color:var(--text-muted);margin-bottom:6px;">🏅 이름 (2글자 이상)</div>
+                <div style="display:flex;gap:10px;margin-bottom:14px;">
+                    <input id="nickname-input" type="text" placeholder="예: 전주의 60대 주부" maxlength="20"
+                        style="flex:1;font-size:0.95em;padding:10px 14px;border:1.5px solid var(--border-color);border-radius:10px;background:var(--bg-color);color:var(--text-color);outline:none;">
+                    <button onclick="saveNickname()" style="background:var(--primary-color);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:0.9em;font-weight:700;cursor:pointer;">수정</button>
+                </div>
+
+                <div style="font-size:0.85em;color:var(--text-muted);margin-bottom:6px;">📧 이메일 (예: abc@gmail.com)</div>
+                <div style="display:flex;gap:10px;">
+                    <input id="user-email-input" type="text" placeholder="abc@gmail.com"
+                        style="flex:1;font-size:0.95em;padding:10px 14px;border:1.5px solid var(--border-color);border-radius:10px;background:var(--bg-color);color:var(--text-color);outline:none;">
+                    <button onclick="saveUserEmail()" style="background:var(--primary-color);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:0.9em;font-weight:700;cursor:pointer;">수정</button>
+                </div>
+                <div style="font-size:0.75em;color:var(--text-muted);margin-top:8px;">사연 보내기에 자동으로 사용돼요</div>
+            </div>
+
+            <!-- 나에 대해 알려주세요 (아코디언) -->
+            <div style="background:#FFFFFF;border-radius:16px;margin-bottom:16px;border:1px solid var(--border-color);overflow:hidden;">
+                <div onclick="toggleSurveyAccordion()" style="padding:22px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <div style="font-size:1em;font-weight:700;color:var(--primary-color);">📋 나에 대해 알려주세요</div>
+                        <div id="survey-saved-label" style="font-size:0.8em;color:var(--text-muted);margin-top:3px;">선택 사항 · 클릭해서 열기</div>
+                    </div>
+                    <span id="survey-accordion-arrow" style="font-size:1.2em;color:var(--text-muted);transition:transform 0.3s;">▼</span>
+                </div>
+                <div id="survey-accordion-body" style="display:none;padding:0 22px 22px;">
+                    <div style="font-size:0.82em;color:var(--text-muted);margin-bottom:16px;">더 맞춤화된 확언을 준비하는 데 도움이 돼요 😊</div>
+
+                    <div style="font-size:0.88em;font-weight:700;color:var(--primary-color);margin-bottom:8px;">나이대</div>
+                    <div id="survey-age" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;"></div>
+
+                    <div style="font-size:0.88em;font-weight:700;color:var(--primary-color);margin-bottom:8px;">앱을 알게 된 경로</div>
+                    <div id="survey-route" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;"></div>
+
+                    <div style="font-size:0.88em;font-weight:700;color:var(--primary-color);margin-bottom:8px;">나는 어떤 사람인가요?</div>
+                    <div id="survey-type" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;"></div>
+
+                    <div style="font-size:0.88em;font-weight:700;color:var(--primary-color);margin-bottom:8px;">평상시 기분은요?</div>
+                    <div id="survey-mood" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;"></div>
+
+                    <div style="font-size:0.88em;font-weight:700;color:var(--primary-color);margin-bottom:8px;">뭐할 때 기분이 좋아요?</div>
+                    <div id="survey-happy" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;"></div>
+
+                    <button onclick="saveSurveyWithConfirm()" style="width:100%;min-height:44px;background:var(--primary-color);color:#fff;border:none;border-radius:10px;font-size:0.9em;font-weight:700;cursor:pointer;">저장하기</button>
+                </div>
+            </div>
+
+            <!-- 심리테스트 -->
+            <div style="background:#FFFFFF;border-radius:16px;padding:22px;margin-bottom:16px;border:1px solid var(--border-color);">
+                <div style="font-size:1em;font-weight:700;color:var(--primary-color);margin-bottom:6px;">🧠 나는 어떤 사람일까?</div>
+                <div style="font-size:0.85em;color:var(--text-muted);margin-bottom:6px;line-height:1.7;">
+                    연애·일·관계·자존감·강점까지<br>
+                    3가지 과학 검사로 알아보는 나의 진짜 모습
+                </div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">
+                    <span style="background:#F0F7F4;color:#1B4332;border-radius:20px;padding:3px 10px;font-size:0.75em;font-weight:700;">BFI-44 성격검사</span>
+                    <span style="background:#FFF8E7;color:#856404;border-radius:20px;padding:3px 10px;font-size:0.75em;font-weight:700;">Rosenberg 자존감</span>
+                    <span style="background:#F0F7F4;color:#1B4332;border-radius:20px;padding:3px 10px;font-size:0.75em;font-weight:700;">VIA 강점검사</span>
+                </div>
+                <button onclick="startPsychTest()"
+                    style="width:100%;min-height:48px;background:linear-gradient(135deg,#1B4332,#2D6A4F);color:#fff;border:none;border-radius:12px;font-size:0.95em;font-weight:700;cursor:pointer;">
+                    🧠 지금 바로 시작하기 →
+                </button>
+                <div style="font-size:0.72em;color:var(--text-muted);margin-top:8px;text-align:center;">16가지 동물 유형 · 약 10분 소요 · 무료</div>
+            </div>
+
+            <!-- 앱 초기화 (맨 아래 - 위험 구역) -->
+            <div style="background:#FFF5F5;border-radius:16px;padding:22px;margin-bottom:16px;border:1px solid #FFCDD2;">
+                <div style="font-size:16px;font-weight:bold;color:#C0392B;margin-bottom:6px;">🗑️ 앱 데이터 초기화</div>
+                <div style="font-size:14px;color:#888;margin-bottom:16px;line-height:1.6;">모든 기록(완료 체크, 기분, 메모, 일기 등)이 영구 삭제됩니다. 되돌릴 수 없어요.</div>
+                <label style="display:flex;align-items:center;gap:10px;margin-bottom:14px;cursor:pointer;">
+                    <input type="checkbox" id="reset-confirm-check" style="width:18px;height:18px;cursor:pointer;">
+                    <span style="font-size:0.88em;color:#C0392B;font-weight:600;">모든 데이터가 삭제됨을 확인했습니다</span>
+                </label>
+                <button onclick="confirmReset()" style="background:#FFF0F0;color:#D32F2F;border:2px solid #D32F2F;border-radius:12px;padding:12px 24px;font-size:16px;font-weight:bold;cursor:pointer;width:100%;">⚠️ 모든 데이터 초기화</button>
+            </div>
+
+            <!-- 앱 데이터 초기화 -->
+            <!-- ★ 10단계: 알림 설정 (아코디언) -->
+            <div style="background:#FFFFFF;border-radius:16px;margin-bottom:16px;border:1px solid #E8E5E0;overflow:hidden;">
+                <div onclick="toggleNotifGuide()" style="padding:20px 22px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <div style="font-size:1em;font-weight:700;color:var(--primary-color);">⏰ 매일 확언 알림 설정</div>
+                        <div style="font-size:0.82em;color:var(--text-muted);margin-top:3px;">클릭해서 알림 설정하기</div>
+                    </div>
+                    <span id="notif-guide-arrow" style="font-size:1.2em;color:var(--text-muted);transition:transform 0.3s;">▼</span>
+                </div>
+                <div id="notif-guide-body" style="display:none;padding:0 22px 22px;">
+                <div style="font-size:14px;color:#888;margin-bottom:18px;line-height:1.6;">매일 같은 시간에 확언을 읽는 습관이 뇌를 바꿉니다.</div>
+
+                <!-- 안내 박스 -->
+                <div style="background:#FFF8E8;border-radius:12px;padding:16px;margin-bottom:16px;border-left:4px solid #C9A84C;">
+                    <div style="font-size:0.88em;color:#7A6020;line-height:1.8;">
+                        📌 <b>웹앱 특성상 푸시 알림이 완벽하지 않아요.</b><br>
+                        폰 기본 알람 앱으로 설정하시면 매일 확실하게 알림을 받을 수 있어요.
+                    </div>
+                </div>
+
+                <!-- 알람 설정 안내 -->
+                <div style="font-size:0.95em;font-weight:700;color:var(--primary-color);margin-bottom:12px;">📱 폰 알람으로 설정하는 방법</div>
+                <div style="display:flex;gap:10px;margin-bottom:16px;">
+                    <div style="flex:1;background:#F0F7F4;border-radius:12px;padding:14px;text-align:center;">
+                        <div style="font-size:22px;margin-bottom:6px;">🤖</div>
+                        <div style="font-size:0.82em;font-weight:700;color:var(--primary-color);margin-bottom:4px;">안드로이드</div>
+                        <div style="font-size:0.78em;color:#666;line-height:1.6;">시계 앱 → 알람 추가<br>라벨: "오늘의 확언"</div>
+                    </div>
+                    <div style="flex:1;background:#F0F7F4;border-radius:12px;padding:14px;text-align:center;">
+                        <div style="font-size:22px;margin-bottom:6px;">🍎</div>
+                        <div style="font-size:0.82em;font-weight:700;color:var(--primary-color);margin-bottom:4px;">아이폰</div>
+                        <div style="font-size:0.78em;color:#666;line-height:1.6;">시계 앱 → 알람 추가<br>라벨: "오늘의 확언"</div>
+                    </div>
+                </div>
+
+                <div style="font-size:0.8em;color:#aaa;text-align:center;line-height:1.6;">
+                    💡 매일 아침 같은 시간에 앱을 여는 습관만으로도<br>뇌는 루틴을 기억하기 시작해요.
+                </div>
+
+                <!-- 권한 요청 버튼 -->
+                <div id="notif-request-box" style="display:none;">
+                    <button onclick="requestNotifPermission()" class="btn btn-main" style="font-size:19px;min-height:58px;">
+                        📬 아침편지 알림 받기
+                    </button>
+                </div>
+                </div><!-- /notif-guide-body -->
+            </div>
+
+            <!-- 홈화면 추가 안내 (아코디언) -->
+            <div style="background:#FFF8E7;border:2px solid var(--accent-color);border-radius:16px;margin-bottom:16px;overflow:hidden;">
+                <div onclick="toggleInstallGuide()" style="padding:20px 22px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <div style="font-size:1em;font-weight:700;color:var(--primary-color);">📱 내 폰에 앱으로 꺼내두기</div>
+                        <div style="font-size:0.82em;color:var(--text-muted);margin-top:3px;">클릭해서 설치 방법 보기</div>
+                    </div>
+                    <span id="install-guide-arrow" style="font-size:1.2em;color:var(--text-muted);transition:transform 0.3s;">▼</span>
+                </div>
+                <div id="install-guide-body" style="display:none;padding:0 22px 22px;">
+                    <div style="font-size:0.9em;color:#555;line-height:1.8;margin-bottom:14px;">앱처럼 사용하려면 폰에 꺼내두기해보세요!<br>매일 아이콘 하나만 눌러서 바로 확언을 시작할 수 있어요.</div>
+                    <div style="background:#FFFFFF;border-radius:12px;padding:16px;margin-bottom:10px;">
+                        <div style="font-size:0.95em;font-weight:700;color:var(--primary-color);margin-bottom:8px;">🍎 아이폰 (Safari)</div>
+                        <div style="font-size:0.88em;color:#555;line-height:1.9;">
+                            1️⃣ 하단 가운데 <b>공유 버튼 (□↑)</b> 탭<br>
+                            2️⃣ 아래로 스크롤 → <b>"홈 화면에 추가"</b> 탭<br>
+                            3️⃣ 오른쪽 상단 <b>"추가"</b> 탭
+                        </div>
+                    </div>
+                    <div style="background:#FFFFFF;border-radius:12px;padding:16px;margin-bottom:10px;">
+                        <div style="font-size:0.95em;font-weight:700;color:var(--primary-color);margin-bottom:8px;">🤖 안드로이드 크롬</div>
+                        <div style="font-size:0.88em;color:#555;line-height:1.9;">
+                            1️⃣ 오른쪽 상단 <b>⋮ 메뉴</b> 탭<br>
+                            2️⃣ <b>"공유..."</b> 탭<br>
+                            3️⃣ 공유 목록에서 <b>"홈 화면에 추가"</b> 탭<br>
+                            4️⃣ <b>"추가"</b> 탭
+                        </div>
+                    </div>
+                    <div style="background:#FFFFFF;border-radius:12px;padding:16px;">
+                        <div style="font-size:0.95em;font-weight:700;color:var(--primary-color);margin-bottom:8px;">🤖 삼성 인터넷</div>
+                        <div style="font-size:0.88em;color:#555;line-height:1.9;">
+                            1️⃣ 하단 <b>≡ 메뉴</b> 탭<br>
+                            2️⃣ <b>"페이지 추가"</b> 탭<br>
+                            3️⃣ <b>"홈 화면"</b> 선택 → <b>"추가"</b> 탭
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ★ 명예의 전당 -->
+            <div style="background:linear-gradient(135deg,#1B4332,#2D6A4F);border-radius:16px;padding:22px;margin-bottom:16px;">
+                <div style="font-size:1em;font-weight:700;color:var(--accent-color);margin-bottom:6px;text-align:center;">🏆 인생2막 챔피언</div>
+                <div style="font-size:0.82em;color:rgba(255,255,255,0.75);text-align:center;margin-bottom:16px;line-height:1.6;">100일 이상 함께한 분들의 이름을<br>유튜브 영상에서 직접 불러드려요!</div>
+                <div id="hall-of-fame-list" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px;"></div>
+                <div style="font-size:0.8em;color:rgba(255,255,255,0.5);text-align:center;margin-bottom:14px;">다음 발표: 매월 1일 유튜브 영상에서</div>
+                <!-- 100일 인증 버튼 (항상 표시) -->
+                <div id="cert-100-section"></div>
+            </div>
+
+            <div style="text-align:center;color:#aaa;font-size:16px;padding:10px;">인생2막라디오 365일 확언 앱 v1.0</div>
+        </div>
+
+        <!-- ★ 9-4단계: 오늘의 선언 Shorts 연계 -->
+        <div id="view-shorts" class="view-section">
+            <!-- ★ 하루 실천 포인트 가이드 -->
+            <div style="background:var(--card-bg);border-radius:16px;padding:18px;margin-bottom:16px;border:1px solid var(--border-color);">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                    <div style="font-size:0.95em;font-weight:700;color:var(--primary-color);">📊 오늘의 실천 포인트 현황</div>
+                    <button onclick="openPointGuide()" style="background:var(--primary-color);color:#fff;border:none;border-radius:20px;padding:6px 14px;font-size:0.78em;font-weight:700;cursor:pointer;">전체 가이드 →</button>
+                </div>
+                <div id="shorts-pt-progress" style="margin-bottom:10px;">
+                    <div style="background:#E8E5E0;border-radius:20px;height:8px;overflow:hidden;margin-bottom:6px;">
+                        <div id="shorts-pt-bar" style="height:100%;background:var(--primary-color);border-radius:20px;width:0%;transition:width 0.4s;"></div>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;font-size:0.8em;">
+                        <span id="shorts-pt-done" style="color:var(--text-muted);">✓ 0 / 13개 항목</span>
+                        <span id="shorts-pt-score" style="font-weight:700;color:var(--primary-color);">0 / 23 PT</span>
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;" id="shorts-pt-items"></div>
+                <button onclick="openPointGuide()" style="width:100%;margin-top:12px;min-height:44px;background:linear-gradient(135deg,#1B4332,#2D6A4F);color:#C9A84C;border:none;border-radius:12px;font-size:0.88em;font-weight:700;cursor:pointer;">
+                    🏆 포인트 적립 가이드 & 100일 플랜 보기
+                </button>
+            </div>
+
+            <!-- 선언 콘텐츠 영역 (풀잎 이상) -->
+            <div id="shorts-declaration-area">
+            <!-- 헤더 배너 -->
+            <div style="background:linear-gradient(135deg,#1B4332,#2D6A4F);border-radius:16px;padding:22px 20px;text-align:center;margin-bottom:20px;">
+                <div style="font-size:32px;margin-bottom:6px;">📣</div>
+                <div style="font-size:22px;font-weight:bold;color:#FFFFFF;margin-bottom:6px;">오늘의 실천</div>
+                <div style="font-size:15px;color:rgba(255,255,255,0.75);line-height:1.6;">매일 60초, 확언을 소리 내어 따라하는<br>인생2막라디오 Shorts 시리즈</div>
+                <a href="https://www.youtube.com/@SecondActRadio/shorts" target="_blank"
+                    style="display:inline-block;margin-top:14px;background:var(--accent-color);color:var(--primary-color);font-size:17px;font-weight:bold;padding:10px 24px;border-radius:24px;text-decoration:none;">
+                    📺 채널에서 전체 보기
+                </a>
+            </div>
+
+            <!-- 오늘의 추천 Shorts -->
+            <div style="background:#FFF8E7;border:2px solid var(--accent-color);border-radius:16px;padding:18px;margin-bottom:20px;">
+                <div style="font-size:18px;font-weight:bold;color:var(--primary-color);margin-bottom:12px;">⭐ 오늘의 확언과 연결된 Shorts</div>
+                <div id="today-shorts-card"></div>
+            </div>
+
+            <!-- 30편 목록 -->
+            <div style="font-size:20px;font-weight:bold;color:var(--primary-color);margin-bottom:14px;">📋 오늘의 실천 전체 목록</div>
+            <div id="shorts-list"></div>
+
+            </div><!-- /shorts-declaration-area -->
+
+        <!-- 완주 -->
+        <div id="view-celebration" class="view-section">
+            <div style="font-size:90px;">🏆</div>
+            <div class="celebration-title">인생2막 마스터 완주!</div>
+            <div class="celebration-desc">1년 365일, 당신의 꾸준한 노력이<br>찬란하게 빛나는 순간입니다.<br><br>앞으로의 모든 날들도<br>힘차게 응원합니다!</div>
+            <button class="btn btn-main" style="margin-bottom:15px;" onclick="shareSNS()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="margin-right:6px;flex-shrink:0;"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>SNS 공유</button>
+            <button class="btn btn-sub" onclick="switchView('calendar')">내 기록 다시 보기</button>
+        </div>
+
+        <!-- ★ 300일 다이어리 신청 뷰 -->
+        <div id="view-diary-apply" class="view-section">
+        </div>
     </main>
 
-    <!-- 하단 네비게이션 -->
-    <nav id="app-nav">
-      <button class="nav-btn active" data-view="routine">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"/>
-          <polyline points="12 6 12 12 16 14"/>
-        </svg>
-        <span class="nav-label">루틴</span>
-      </button>
-      <button class="nav-btn" data-view="vow">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
-          <path d="M8 12l3 3 5-5"/>
-        </svg>
-        <span class="nav-label">다짐</span>
-      </button>
-      <button class="nav-btn" data-view="affirmation">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-        </svg>
-        <span class="nav-label">확언</span>
-      </button>
-      <button class="nav-btn" data-view="memo">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-        </svg>
-        <span class="nav-label">메모</span>
-      </button>
-      <button class="nav-btn" data-view="test">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/>
-        </svg>
-        <span class="nav-label">테스트</span>
-      </button>
-      <button class="nav-btn" data-view="settings">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="3"/>
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-        </svg>
-        <span class="nav-label">설정</span>
-      </button>
+    <nav>
+        <button class="nav-item active" id="nav-home" onclick="switchView('home')">
+            <svg class="nav-svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+            <span class="nav-text">확언</span>
+        </button>
+        <button class="nav-item" id="nav-calendar" onclick="switchView('calendar')">
+            <svg class="nav-svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            <span class="nav-text">달력</span>
+        </button>
+        <button class="nav-item" id="nav-favorites" onclick="switchView('favorites')">
+            <svg class="nav-svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span class="nav-text">즐겨찾기</span>
+        </button>
+        <button class="nav-item" id="nav-memo" onclick="switchView('memo')">
+            <svg class="nav-svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <span class="nav-text">메모/일기</span>
+        </button>
+        <button class="nav-item" id="nav-shorts" onclick="switchView('shorts')">
+            <svg class="nav-svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                 <span class="nav-text">실천</span>
+        </button>
+        <button class="nav-item" id="nav-story" onclick="switchView('story')">
+            <svg class="nav-svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <span class="nav-text">사연</span>
+        </button>
     </nav>
+</div>
 
-  </div>
+<!-- 배지 모달 -->
+<div id="badge-modal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-icon" id="badge-modal-icon">🌱</div>
+        <div class="modal-title" id="badge-modal-title">7일 달성!</div>
+        <div class="modal-desc" id="badge-modal-desc">씨앗을 심었습니다.</div>
+        <button class="btn btn-main" onclick="closeBadgeModal()">확인</button>
+    </div>
+</div>
 
-  <!-- 토스트 메시지 -->
-  <div id="toast"></div>
+<!-- 인사이트 모달 -->
+<div id="insight-modal" class="modal-overlay">
+    <div class="modal-content" style="background-color:#FDFBF7;border:3px solid var(--accent-color);">
+        <div class="modal-icon">🧠</div>
+        <div class="modal-title">뇌과학 인사이트</div>
+        <div class="modal-desc" id="insight-desc" style="font-size:18px;color:#333;"></div>
+        <a href="https://youtube.com/@SecondActRadio" target="_blank" class="btn btn-sub" style="background-color:#E8E5E0;color:#333;width:100%;text-decoration:none;margin-bottom:10px;display:flex;align-items:center;justify-content:center;min-height:56px;">인생2막라디오 채널 보기</a>
+        <button class="btn btn-main" onclick="document.getElementById('insight-modal').style.display='none'">닫기</button>
+    </div>
+</div>
 
-  <!-- 스크립트 -->
-  <script src="data.js"></script>
-  <script src="app.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').catch(function(){});
-    }
-  </script>
+<!-- ★ 5단계: 구독 유도 모달 -->
+<div id="subscribe-modal" class="modal-overlay">
+    <div class="modal-content" style="border:3px solid var(--primary-color);">
+        <div class="modal-icon">📺</div>
+        <div class="modal-title" style="font-size:22px;line-height:1.4;">인생2막라디오를<br>구독해보세요 🌿</div>
+        <div class="modal-desc" style="font-size:18px;">7일 연속 확언을 실천하신 당신,<br>매주 새로운 뇌과학 확언 콘텐츠가<br>유튜브에서 기다리고 있어요.</div>
+        <a href="https://www.youtube.com/@SecondActRadio" target="_blank" class="btn btn-main" style="text-decoration:none;display:flex;align-items:center;justify-content:center;margin-bottom:10px;" onclick="document.getElementById('subscribe-modal').style.display='none'">지금 구독하러 가기 →</a>
+        <button class="btn btn-sub" onclick="document.getElementById('subscribe-modal').style.display='none'">나중에</button>
+    </div>
+</div>
+
+<!-- ★ 5단계: 오라클 모달 -->
+<div id="oracle-modal" onclick="oracleOverlayClick(event)">
+    <div class="oracle-sheet" id="oracle-sheet">
+        <div class="oracle-label">지금 당신에게 필요한 말</div>
+        <div class="oracle-theme" id="oracle-theme-text"></div>
+        <div class="oracle-text" id="oracle-affirmation-text"></div>
+        <div class="oracle-action" id="oracle-action-text"></div>
+        <div class="oracle-btns">
+            <button class="oracle-btn oracle-btn-retry" onclick="openOracle()">다시 뽑기</button>
+            <button class="oracle-btn oracle-btn-fav" onclick="shareOracle()" style="background:#1B4332;color:#C9A84C;">공유</button>
+            <button class="oracle-btn oracle-btn-fav" onclick="favOracle()" id="oracle-fav-btn">즐겨찾기 저장</button>
+            <button class="oracle-btn oracle-btn-close" onclick="document.getElementById('oracle-modal').style.display='none'">닫기</button>
+        </div>
+    </div>
+</div>
+
+<!-- ★ 6단계: 확언 카드 공유 모달 -->
+<div id="share-modal" class="modal-overlay" style="align-items:center;">
+    <div class="modal-content" style="width:92%;max-width:420px;padding:24px 18px;">
+        <div style="font-size:1.1em;font-weight:700;color:var(--primary-color);margin-bottom:4px;text-align:center;">🌅 오늘의 아침 인사 카드</div>
+        <div style="font-size:0.78em;color:var(--text-muted);text-align:center;margin-bottom:14px;">저장 후 단톡방에 공유해보세요</div>
+        <canvas id="share-canvas" style="width:100%;border-radius:16px;display:block;margin-bottom:16px;box-shadow:0 4px 15px rgba(0,0,0,0.15);"></canvas>
+        <div style="display:flex;gap:10px;margin-bottom:8px;">
+            <button class="btn btn-main" onclick="downloadCard()" style="flex:1;">저장하기</button>
+            <button class="btn btn-sub" onclick="shareCard()" style="flex:1;">📤 확언 카드 공유</button>
+        </div>
+        <button class="btn btn-sub" onclick="document.getElementById('share-modal').style.display='none'" style="width:100%;">닫기</button>
+    </div>
+</div>
+
+<!-- ★ 9-2단계: 확언 검색 모달 -->
+<div id="search-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg-color);z-index:4000;overflow-y:auto;">
+    <div style="max-width:600px;margin:0 auto;padding:16px 20px;">
+        <!-- 검색 헤더 -->
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;padding-top:8px;">
+            <div style="flex:1;display:flex;align-items:center;background:#FFFFFF;border:2px solid var(--primary-color);border-radius:14px;padding:0 14px;height:54px;">
+                <span style="font-size:20px;margin-right:8px;">🔍</span>
+                <input id="search-input" type="text" placeholder="오늘의 확언 찾기... (예: 용기, 감사)"
+                    style="border:none;outline:none;font-size:19px;width:100%;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:transparent;"
+                    oninput="doSearch(this.value)">
+            </div>
+            <button onclick="closeSearch()" style="background:none;border:none;font-size:18px;font-weight:bold;color:#888;cursor:pointer;min-width:44px;min-height:44px;">✕</button>
+        </div>
+        <!-- 검색 결과 -->
+        <div id="search-results"></div>
+    </div>
+</div>
+
+<!-- ★ 가족에게 보내기 모달 -->
+<div id="family-share-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.55);z-index:5000;align-items:flex-end;justify-content:center;" onclick="if(event.target===this)this.style.display='none'">
+    <div style="background:var(--bg-color);border-radius:24px 24px 0 0;padding:28px 24px 40px;width:100%;max-width:600px;box-sizing:border-box;max-height:90vh;overflow-y:auto;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+            <div style="font-size:1.1em;font-weight:700;color:var(--primary-color);">💌 가족에게 확언 보내기</div>
+            <button onclick="document.getElementById('family-share-modal').style.display='none'" style="background:#F0F0F0;border:none;border-radius:50%;width:32px;height:32px;font-size:1.1em;cursor:pointer;color:#555;display:flex;align-items:center;justify-content:center;flex-shrink:0;">✕</button>
+        </div>
+        <div style="font-size:0.82em;color:var(--text-muted);text-align:center;margin-bottom:20px;">보내는 분과 받는 분을 선택하거나 직접 입력해주세요</div>
+
+        <!-- 보내는 분 -->
+        <div style="font-size:0.9em;font-weight:700;color:var(--primary-color);margin-bottom:8px;">✍️ 나는 누구인가요?</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+            <button onclick="setFamilySender('엄마')" class="fam-chip" id="chip-s-엄마">엄마</button>
+            <button onclick="setFamilySender('아빠')" class="fam-chip" id="chip-s-아빠">아빠</button>
+            <button onclick="setFamilySender('딸')" class="fam-chip" id="chip-s-딸">딸</button>
+            <button onclick="setFamilySender('아들')" class="fam-chip" id="chip-s-아들">아들</button>
+            <button onclick="setFamilySender('할머니')" class="fam-chip" id="chip-s-할머니">할머니</button>
+            <button onclick="setFamilySender('할아버지')" class="fam-chip" id="chip-s-할아버지">할아버지</button>
+            <button onclick="setFamilySender('손녀')" class="fam-chip" id="chip-s-손녀">손녀</button>
+            <button onclick="setFamilySender('손자')" class="fam-chip" id="chip-s-손자">손자</button>
+            <button onclick="setFamilySender('남편')" class="fam-chip" id="chip-s-남편">남편</button>
+            <button onclick="setFamilySender('아내')" class="fam-chip" id="chip-s-아내">아내</button>
+        </div>
+        <input id="fs-sender" type="text" placeholder="직접 입력 (예: 큰딸)" maxlength="20"
+            oninput="updateFamilyPreview()"
+            style="width:100%;box-sizing:border-box;font-size:0.95em;padding:10px 14px;border:1.5px solid var(--border-color);border-radius:10px;background:var(--card-bg);color:var(--text-color);outline:none;margin-bottom:18px;">
+
+        <!-- 받는 분 -->
+        <div style="font-size:0.9em;font-weight:700;color:var(--primary-color);margin-bottom:8px;">💚 받는 분은요?</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+            <button onclick="setFamilyReceiver('우리 딸')" class="fam-chip" id="chip-r-우리 딸">우리 딸</button>
+            <button onclick="setFamilyReceiver('아들')" class="fam-chip" id="chip-r-아들">아들</button>
+            <button onclick="setFamilyReceiver('엄마')" class="fam-chip" id="chip-r-엄마">엄마</button>
+            <button onclick="setFamilyReceiver('아빠')" class="fam-chip" id="chip-r-아빠">아빠</button>
+            <button onclick="setFamilyReceiver('부모님')" class="fam-chip" id="chip-r-부모님">부모님</button>
+            <button onclick="setFamilyReceiver('할머니')" class="fam-chip" id="chip-r-할머니">할머니</button>
+            <button onclick="setFamilyReceiver('할아버지')" class="fam-chip" id="chip-r-할아버지">할아버지</button>
+            <button onclick="setFamilyReceiver('손녀')" class="fam-chip" id="chip-r-손녀">손녀</button>
+            <button onclick="setFamilyReceiver('손자')" class="fam-chip" id="chip-r-손자">손자</button>
+            <button onclick="setFamilyReceiver('남편')" class="fam-chip" id="chip-r-남편">남편</button>
+            <button onclick="setFamilyReceiver('아내')" class="fam-chip" id="chip-r-아내">아내</button>
+        </div>
+        <input id="fs-receiver" type="text" placeholder="직접 입력 (예: 우리 아들)" maxlength="20"
+            oninput="updateFamilyPreview()"
+            style="width:100%;box-sizing:border-box;font-size:0.95em;padding:10px 14px;border:1.5px solid var(--border-color);border-radius:10px;background:var(--card-bg);color:var(--text-color);outline:none;margin-bottom:16px;">
+
+        <!-- 미리보기 (직접 편집 가능) -->
+        <div style="font-size:0.88em;font-weight:700;color:var(--primary-color);margin-bottom:6px;">📝 문구 미리보기 (직접 수정 가능해요)</div>
+        <textarea id="family-preview" rows="8"
+            style="width:100%;box-sizing:border-box;background:var(--card-bg);border-radius:12px;padding:14px;font-size:0.82em;color:var(--text-color);line-height:1.8;margin-bottom:16px;border:1px solid var(--border-color);outline:none;resize:vertical;font-family:inherit;"></textarea>
+
+        <!-- 버튼 -->
+        <button onclick="sendFamilyMessage()" style="width:100%;min-height:54px;background:var(--primary-color);color:#fff;border:none;border-radius:14px;font-size:1em;font-weight:700;cursor:pointer;margin-bottom:10px;">💌 보내기</button>
+        <button onclick="document.getElementById('family-share-modal').style.display='none'" style="width:100%;min-height:44px;background:none;border:1px solid var(--border-color);border-radius:14px;font-size:0.9em;color:var(--text-muted);cursor:pointer;">닫기</button>
+    </div>
+</div>
+
+<!-- ★ 앱 공유 모달 -->
+<div id="share-app-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.55);z-index:4000;align-items:flex-end;justify-content:center;">
+    <div style="background:var(--bg-color);border-radius:24px 24px 0 0;padding:32px 24px 48px;width:100%;max-width:600px;box-sizing:border-box;">
+        <div style="font-size:1.1em;font-weight:700;color:var(--primary-color);margin-bottom:6px;text-align:center;">앱처럼 편하게 쓰기</div>
+        <div style="font-size:0.85em;color:var(--text-muted);text-align:center;margin-bottom:24px;line-height:1.6;">폰에 꺼내두기하면 앱처럼 바로 열 수 있어요</div>
+
+        <!-- 폰에 꺼내두기 (PWA) -->
+        <div id="pwa-install-section" style="display:none;background:var(--card-bg);border-radius:14px;padding:18px;margin-bottom:12px;border:2px solid var(--primary-color);">
+            <div style="font-size:0.95em;font-weight:700;color:var(--primary-color);margin-bottom:4px;">📱 폰에 꺼내두기</div>
+            <div style="font-size:0.82em;color:var(--text-muted);margin-bottom:12px;">앱처럼 설치하면 언제든 바로 열 수 있어요!</div>
+            <button id="pwa-install-btn" onclick="installPWA()" style="width:100%;min-height:54px;background:var(--primary-color);color:#fff;border:none;border-radius:10px;font-size:1em;font-weight:700;cursor:pointer;">홈화면에 앱으로 추가하기 📲</button>
+        </div>
+
+        <!-- 아이폰 안내 -->
+        <div id="ios-install-section" style="display:none;background:var(--card-bg);border-radius:14px;padding:18px;margin-bottom:12px;border:1px solid var(--border-color);">
+            <div style="font-size:0.95em;font-weight:700;color:var(--primary-color);margin-bottom:10px;">🍎 아이폰 홈화면 추가 방법</div>
+            <div style="font-size:0.88em;color:var(--text-color);line-height:2.2;">
+                1️⃣ 하단 <b>공유 버튼 □↑</b> 탭<br>
+                2️⃣ <b>"홈 화면에 추가"</b> 선택<br>
+                3️⃣ 오른쪽 상단 <b>"추가"</b> 탭
+            </div>
+        </div>
+
+        <!-- 안드로이드 수동 안내 (prompt 없을 때) -->
+        <div id="android-manual-section" style="display:none;background:var(--card-bg);border-radius:14px;padding:18px;margin-bottom:12px;border:1px solid var(--border-color);">
+            <div style="font-size:0.95em;font-weight:700;color:var(--primary-color);margin-bottom:10px;">📱 안드로이드 홈화면 추가 방법</div>
+            <div style="font-size:0.88em;color:var(--text-color);line-height:2.2;">
+                1️⃣ 크롬 브라우저 우측 상단 <b>⋮ 더보기</b> 탭<br>
+                2️⃣ <b>"홈 화면에 추가"</b> 선택<br>
+                3️⃣ <b>"추가"</b> 탭 → 완료!
+            </div>
+        </div>
+
+        <!-- 카톡으로 보내기 -->
+        <div style="background:var(--card-bg);border-radius:14px;padding:18px;margin-bottom:12px;border:1px solid var(--border-color);">
+            <div style="font-size:0.95em;font-weight:700;color:var(--primary-color);margin-bottom:4px;">💬 함께하는 공간</div>
+            <div style="font-size:0.82em;color:var(--text-muted);margin-bottom:12px;">인생2막라디오 커뮤니티에 참여해보세요</div>
+            <div style="display:flex;gap:10px;">
+                <button onclick="checkLevelAndOpenGroupChat()" style="flex:1;min-height:48px;background:#FEE500;color:#3C1E1E;border:none;border-radius:10px;font-size:0.82em;font-weight:700;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:4px;">💛 그룹 채팅방</button>
+                <a href="https://open.kakao.com/o/sKUKl3pi" target="_blank" style="flex:1;min-height:48px;background:#FEE500;color:#3C1E1E;border:none;border-radius:10px;font-size:0.82em;font-weight:700;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:4px;">💌 1:1 대화</a>
+            </div>
+        </div>
+
+        <div style="background:var(--card-bg);border-radius:14px;padding:18px;margin-bottom:12px;border:1px solid var(--border-color);">
+            <div style="font-size:0.95em;font-weight:700;color:var(--primary-color);margin-bottom:4px;">지인에게 인생확언 선물하기 🎁</div>
+            <div style="font-size:0.82em;color:var(--text-muted);margin-bottom:12px;">파일을 카카오톡·문자로 전송해요</div>
+            <div style="display:flex;gap:10px;">
+                <button onclick="shareAppLink()" style="flex:1;min-height:48px;background:#F0F7F4;color:var(--primary-color);border:1px solid #C8DDD2;border-radius:10px;font-size:0.88em;font-weight:700;cursor:pointer;">카톡으로 보내기</button>
+                <button onclick="shareAppLink()" style="flex:1;min-height:48px;background:#F0F7F4;color:var(--primary-color);border:1px solid #C8DDD2;border-radius:10px;font-size:0.88em;font-weight:700;cursor:pointer;">앱 소개 전달</button>
+            </div>
+        </div>
+
+        <button onclick="document.getElementById('share-app-modal').style.display='none'" style="width:100%;min-height:50px;background:none;border:1px solid var(--border-color);border-radius:12px;font-size:0.9em;font-weight:600;color:var(--text-muted);cursor:pointer;">닫기</button>
+    </div>
+</div>
+
+<!-- ★ 등급 안내 모달 -->
+<div id="level-guide-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:5000;overflow-y:auto;">
+    <div style="background:var(--bg-color);border-radius:20px 20px 0 0;padding:28px 20px 48px;margin-top:60px;min-height:calc(100vh - 60px);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+            <button onclick="document.getElementById('level-guide-modal').style.display='none'" style="background:none;border:none;font-size:1.3em;cursor:pointer;color:var(--primary-color);">←</button>
+            <div style="font-size:1.1em;font-weight:700;color:var(--primary-color);flex:1;">등급 안내</div>
+            <button onclick="document.getElementById('level-guide-modal').style.display='none'" style="background:none;border:none;font-size:1.4em;cursor:pointer;color:#aaa;line-height:1;">✕</button>
+        </div>
+
+        <!-- 첫 방문 30PT 안내 -->
+        <div style="background:#FFFBE6;border-radius:12px;padding:14px 16px;margin-bottom:16px;border-left:4px solid #C9A84C;">
+            <div style="font-size:0.85em;color:#7A5500;line-height:1.8;">
+                🎁 <b>처음 앱을 열면 30PT가 자동 적립돼요!</b><br>
+                첫 방문 축하 선물이에요. 덕분에 오늘 확언만 완료해도 바로 🌿 새싹이 될 수 있어요!
+            </div>
+        </div>
+
+        <!-- 현재 등급 카드 -->
+        <div id="lg-current-card" style="background:linear-gradient(135deg,#1B4332,#2D6A4F);border-radius:16px;padding:20px;margin-bottom:20px;text-align:center;">
+            <div id="lg-emoji" style="font-size:52px;margin-bottom:8px;">🌱</div>
+            <div id="lg-name" style="font-size:1.3em;font-weight:700;color:#C9A84C;margin-bottom:4px;">씨앗 등급</div>
+            <div id="lg-pts" style="font-size:0.88em;color:rgba(255,255,255,0.75);margin-bottom:12px;"></div>
+            <div style="background:rgba(255,255,255,0.15);border-radius:8px;height:8px;overflow:hidden;">
+                <div id="lg-bar" style="height:100%;background:#C9A84C;border-radius:8px;width:0%;transition:width 0.5s;"></div>
+            </div>
+            <div id="lg-next" style="font-size:0.75em;color:rgba(255,255,255,0.55);margin-top:8px;"></div>
+        </div>
+
+        <!-- 등급 목록 -->
+        <div style="font-size:0.92em;font-weight:700;color:var(--primary-color);margin-bottom:12px;">📊 전체 등급 구조</div>
+        <div id="lg-level-list" style="margin-bottom:20px;"></div>
+
+        <!-- 등급 하락 안내 -->
+        <div style="background:#FFF0EE;border-radius:14px;padding:18px;margin-bottom:16px;border-left:4px solid #C0392B;">
+            <div style="font-size:0.92em;font-weight:700;color:#C0392B;margin-bottom:10px;">⚠️ 등급이 하락할 수 있어요</div>
+            <div style="font-size:0.85em;color:#7A2020;line-height:2.0;">
+                확언을 <b>15일 이상 하지 않으면</b> 등급이 한 단계 내려가요.<br>
+                📌 7일째 경고 → 📌 10일째 강력경고 → 📌 14일째 최후경고 → 📌 15일째 하락
+            </div>
+        </div>
+
+        <!-- 등급 회복 안내 -->
+        <div style="background:#F0F7F4;border-radius:14px;padding:18px;margin-bottom:16px;border-left:4px solid #1B4332;">
+            <div style="font-size:0.92em;font-weight:700;color:#1B4332;margin-bottom:10px;">💚 등급을 회복하는 방법</div>
+            <div style="font-size:0.85em;color:#1B4332;line-height:2.2;">
+                1️⃣ 유튜브 인생2막라디오 채널 방문<br>
+                2️⃣ Shorts 영상을 끝까지 시청<br>
+                3️⃣ 영상 끝에 나오는 <b>시크릿 코드 입력</b><br>
+                4️⃣ 등급 즉시 회복! 🎉
+            </div>
+            <div style="display:flex;gap:10px;margin-top:14px;">
+                <a href="https://www.youtube.com/@SecondActRadio/shorts" target="_blank"
+                   style="flex:1;min-height:46px;background:#FF0000;color:#fff;border:none;border-radius:10px;font-size:0.85em;font-weight:700;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;">
+                   📺 쇼츠 보러가기
+                </a>
+                <button onclick="document.getElementById('level-guide-modal').style.display='none'; switchView('home'); setTimeout(()=>{ const el=document.getElementById('secret-code-input'); if(el){ el.scrollIntoView({behavior:'smooth',block:'center'}); el.focus(); }},400);"
+                   style="flex:1;min-height:46px;background:#1B4332;color:#fff;border:none;border-radius:10px;font-size:0.85em;font-weight:700;cursor:pointer;">
+                   🔑 코드 입력하러 가기
+                </button>
+            </div>
+        </div>
+
+        <!-- 포인트와 등급 관계 -->
+        <div style="background:#FFFBE6;border-radius:14px;padding:18px;border-left:4px solid #C9A84C;">
+            <div style="font-size:0.92em;font-weight:700;color:#7A5500;margin-bottom:8px;">💡 포인트와 등급의 관계</div>
+            <div style="font-size:0.83em;color:#7A5500;line-height:1.8;">
+                포인트가 등급 기준점 이상이 되면 자동으로 레벨업 해요.<br>
+                포인트는 3일 이상 결석하면 하루 1점씩 줄어요.<br>
+                포인트가 줄어서 등급 기준점 아래로 내려가면 등급도 함께 내려가요.<br><br>
+                <b>매일 확언 완료만 해도 포인트는 유지돼요! 😊</b>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ★ 포인트 안내 모달 -->
+<div id="point-guide-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:5000;overflow-y:auto;">
+    <div style="background:var(--bg-color);border-radius:20px 20px 0 0;padding:28px 20px 48px;margin-top:60px;min-height:calc(100vh - 60px);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+            <button onclick="document.getElementById('point-guide-modal').style.display='none'" style="background:none;border:none;font-size:1.3em;cursor:pointer;color:var(--primary-color);">←</button>
+            <div style="font-size:1.1em;font-weight:700;color:var(--primary-color);flex:1;">하루 실천 포인트 안내</div>
+            <button onclick="document.getElementById('point-guide-modal').style.display='none'" style="background:none;border:none;font-size:1.4em;cursor:pointer;color:#aaa;line-height:1;">✕</button>
+        </div>
+
+        <!-- 현재 포인트 -->
+        <div style="background:linear-gradient(135deg,#1B4332,#2D6A4F);border-radius:16px;padding:20px;margin-bottom:20px;text-align:center;">
+            <div style="font-size:0.85em;color:rgba(255,255,255,0.7);margin-bottom:4px;">현재 포인트</div>
+            <div id="pg-pts" style="font-size:2.2em;font-weight:700;color:#C9A84C;">0 PT</div>
+        </div>
+
+        <!-- 매일 적립 -->
+        <div style="font-size:0.92em;font-weight:700;color:var(--primary-color);margin-bottom:10px;">✅ 하루 실천 포인트 (매일 적립)</div>
+        <div id="pg-items"></div>
+
+        <!-- 보너스 적립 -->
+        <div style="font-size:0.92em;font-weight:700;color:var(--primary-color);margin-bottom:10px;">🎁 특별 보너스</div>
+        <div style="background:#FFF8E8;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid #F0D080;">
+            <div style="font-size:0.85em;font-weight:700;color:#7A5500;margin-bottom:10px;">⏰ 연속 달성 보너스</div>
+            <div style="font-size:0.83em;color:#7A5500;line-height:2.2;">
+                7일 연속 달성 <b style="float:right;color:#C9A84C;">+10 PT</b><br>
+                30일 연속 달성 <b style="float:right;color:#C9A84C;">+50 PT</b><br>
+                100일 달성 <b style="float:right;color:#C9A84C;">+200 PT</b><br>
+                300일 달성 <b style="float:right;color:#C9A84C;">+500 PT</b>
+            </div>
+        </div>
+        <div style="background:#FFF8E8;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid #F0D080;">
+            <div style="font-size:0.85em;font-weight:700;color:#7A5500;margin-bottom:10px;">📺 유튜브 시크릿 코드</div>
+            <div style="font-size:0.83em;color:#7A5500;line-height:2.2;">
+                코드 1개 입력 <b style="float:right;color:#C9A84C;">+10 PT</b><br>
+                코드 누적 5개 <b style="float:right;color:#C9A84C;">+30 PT</b><br>
+                코드 누적 10개 <b style="float:right;color:#C9A84C;">+80 PT</b><br>
+                코드 누적 20개 <b style="float:right;color:#C9A84C;">+200 PT</b>
+            </div>
+        </div>
+        <div style="background:#FFF8E8;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid #F0D080;">
+            <div style="font-size:0.85em;font-weight:700;color:#7A5500;margin-bottom:10px;">🎯 이번 달 미션 완료 (매월)</div>
+            <div style="font-size:0.83em;color:#7A5500;line-height:2.2;">
+                3가지 미션 모두 달성 시 <b style="float:right;color:#C9A84C;">+10 PT</b>
+            </div>
+        </div>
+        <div style="background:#FFF8E8;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid #F0D080;">
+            <div style="font-size:0.85em;font-weight:700;color:#7A5500;margin-bottom:10px;">🏅 배지 이벤트</div>
+            <div style="font-size:0.83em;color:#7A5500;line-height:2.2;">
+                기분 상승 30일 연속 배지 <b style="float:right;color:#C9A84C;">+10 PT</b><br>
+                첫 방문 기념 🎁 <b style="float:right;color:#C9A84C;">+30 PT</b>
+            </div>
+        </div>
+        <!-- 등급 직행 이벤트 강조 -->
+        <div style="background:linear-gradient(135deg,#1B4332,#2D6A4F);border-radius:14px;padding:16px;margin-bottom:16px;">
+            <div style="font-size:0.9em;font-weight:700;color:#C9A84C;margin-bottom:10px;">🏆 연속 달성 등급 직행 이벤트!</div>
+            <div style="font-size:0.82em;color:rgba(255,255,255,0.9);line-height:2.2;">
+                100일 연속 달성 <b style="float:right;color:#C9A84C;">🏔️ 인생2막러 직행</b><br>
+                200일 연속 달성 <b style="float:right;color:#C9A84C;">☁️ 라디오스타 직행</b><br>
+                300일 연속 달성 <b style="float:right;color:#C9A84C;">✨ 인생챔피언 직행</b>
+            </div>
+            <div style="font-size:0.75em;color:rgba(255,255,255,0.6);margin-top:8px;line-height:1.6;">
+                * 연속 달성이란 매일 빠짐없이 확언을 완료한 날 기준이에요.<br>
+                * 현재 포인트가 해당 등급 미만일 경우 자동으로 포인트가 지급돼요.
+            </div>
+            <button onclick="document.getElementById('point-guide-modal').style.display='none'; switchView('calendar'); setTimeout(()=>{const el=document.querySelector('.badges-box');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},300);" style="width:100%;margin-top:10px;min-height:40px;background:rgba(201,168,76,0.3);color:#C9A84C;border:1px solid #C9A84C;border-radius:10px;font-size:0.82em;font-weight:700;cursor:pointer;">🎖️ 내 달성 배지 보관함 보러가기 →</button>
+                </div>
+            <div style="margin-top:12px;padding:10px 12px;background:rgba(201,168,76,0.15);border-radius:10px;border-left:3px solid #C9A84C;">
+                <div style="font-size:0.82em;font-weight:700;color:#7A5500;margin-bottom:4px;">🚀 인생챔피언 더 빨리 달성하는 법!</div>
+                <div style="font-size:0.78em;color:#7A5500;line-height:1.8;">
+                    매일 꾸준히 하면 <b>100일</b>에 인생챔피언이 돼요.<br>
+                    여기에 <b>유튜브 Shorts 시크릿 코드</b>까지 모으면?<br>
+                    코드 10개만 모아도 <b>+120PT 추가</b>! 🎯<br>
+                    <b>주 4개 코드 + 풀적립</b> 시 <b style="color:#C9A84C;">최단 64일</b> 달성 가능! ✨<br>
+                    <b>100일 연속 달성</b>하면 인생2막러 등급 직행 🏔️<br>
+                    <b>200일 연속</b> → 라디오스타 ☁️ / <b>300일 연속</b> → 인생챔피언 ✨
+                </div>
+            </div>
+
+        <!-- 포인트 삭감 -->
+        <div style="background:#FFF0EE;border-radius:14px;padding:16px;margin-bottom:16px;border-left:4px solid #C0392B;">
+            <div style="font-size:0.92em;font-weight:700;color:#C0392B;margin-bottom:8px;">⚠️ 포인트가 줄어드는 경우</div>
+            <div style="font-size:0.83em;color:#7A2020;line-height:1.9;">
+                3일 이상 결석 시 <b>하루 1점씩 자동 삭감</b>돼요.<br>
+                💡 매일 확언만 완료해도 포인트는 절대 줄지 않아요!
+            </div>
+        </div>
+
+        <!-- 하루 최대 한도 -->
+        <div style="background:#F0F7F4;border-radius:14px;padding:16px;margin-bottom:16px;border-left:4px solid #1B4332;">
+            <div style="font-size:0.92em;font-weight:700;color:#1B4332;margin-bottom:6px;">📌 하루 최대 적립 한도</div>
+            <div style="font-size:0.83em;color:#1B4332;line-height:1.8;">
+                하루에 최대 <b>23PT</b>까지만 적립돼요.<br>
+                (연속 보너스·코드 등 특별 보너스는 제외)
+            </div>
+        </div>
+
+        <!-- 100일 플랜 -->
+        <div style="background:linear-gradient(135deg,#1B4332,#2D6A4F);border-radius:16px;padding:20px;margin-bottom:16px;">
+            <div style="font-size:1em;font-weight:700;color:#C9A84C;text-align:center;margin-bottom:4px;">🏆 100일 플랜</div>
+            <div style="font-size:0.82em;color:rgba(255,255,255,0.8);text-align:center;margin-bottom:16px;">매일 꾸준히 하면 100일 안에 최고 등급 ✨ 빛!</div>
+
+            <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <div style="font-size:0.82em;font-weight:700;color:#C9A84C;">1일차 — 🌿 새싹 달성!</div>
+                        <div style="font-size:0.75em;color:rgba(255,255,255,0.6);">첫 방문 30PT + 하루 최대 23PT</div>
+                    </div>
+                    <div style="font-size:0.88em;font-weight:700;color:#fff;">53 PT</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <div style="font-size:0.82em;font-weight:700;color:#C9A84C;">6일차 — 🍀 풀잎 달성!</div>
+                        <div style="font-size:0.75em;color:rgba(255,255,255,0.6);">꾸준히 실천하면 6일 만에!</div>
+                    </div>
+                    <div style="font-size:0.88em;font-weight:700;color:#fff;">168 PT</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <div style="font-size:0.82em;font-weight:700;color:#C9A84C;">14일차 — 🌳 확언러 달성!</div>
+                        <div style="font-size:0.75em;color:rgba(255,255,255,0.6);">PDF 1~3월 해금 🎁</div>
+                    </div>
+                    <div style="font-size:0.88em;font-weight:700;color:#fff;">362 PT</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <div style="font-size:0.82em;font-weight:700;color:#C9A84C;">29일차 — 🌲 실천가 달성!</div>
+                        <div style="font-size:0.75em;color:rgba(255,255,255,0.6);">30일 보너스 직전 · PDF 4~6월 해금 🎁</div>
+                    </div>
+                    <div style="font-size:0.88em;font-weight:700;color:#fff;">707 PT</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <div style="font-size:0.82em;font-weight:700;color:#C9A84C;">49일차 — 🏔️ 인생2막러 달성!</div>
+                        <div style="font-size:0.75em;color:rgba(255,255,255,0.6);">PDF 7~9월 해금 🎁</div>
+                    </div>
+                    <div style="font-size:0.88em;font-weight:700;color:#fff;">1,217 PT</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <div style="font-size:0.82em;font-weight:700;color:#C9A84C;">77일차 — ☁️ 라디오스타 달성!</div>
+                        <div style="font-size:0.75em;color:rgba(255,255,255,0.6);">PDF 10~12월 해금 🎁</div>
+                    </div>
+                    <div style="font-size:0.88em;font-weight:700;color:#fff;">1,861 PT</div>
+                </div>
+                <div style="background:rgba(201,168,76,0.25);border:1px solid #C9A84C;border-radius:10px;padding:14px;text-align:center;">
+                    <div style="font-size:0.92em;font-weight:700;color:#C9A84C;margin-bottom:4px;">✨ 100일차 — 인생챔피언 달성!</div>
+                    <div style="font-size:0.78em;color:rgba(255,255,255,0.75);margin-bottom:8px;">100일 보너스 +200PT 🎉 · 인생2막 챔피언 달성!</div>
+                    <div style="font-size:1.2em;font-weight:700;color:#fff;">2,390 PT</div>
+                </div>
+            </div>
+
+            <div style="margin-top:14px;padding:12px;background:rgba(255,255,255,0.08);border-radius:10px;text-align:center;">
+                <div style="font-size:0.8em;color:rgba(255,255,255,0.7);line-height:1.7;">
+                    매일 꾸준히 실천하면 <b style="color:#C9A84C;">100일</b>만에 인생챔피언!<br>
+                    오늘부터 시작하면 딱 <b style="color:#C9A84C;">100일</b> 후 최고 등급! 🎉
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ★ 다이어리 신청 폼 모달 -->
+<div id="diary-apply-form-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:6000;overflow-y:auto;">
+    <div style="background:var(--bg-color);border-radius:20px 20px 0 0;padding:28px 20px 48px;margin-top:80px;min-height:calc(100vh - 80px);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+            <button onclick="document.getElementById('diary-apply-form-modal').style.display='none'" style="background:none;border:none;font-size:1.3em;cursor:pointer;color:var(--primary-color);">←</button>
+            <div style="font-size:1.1em;font-weight:700;color:var(--primary-color);">🎁 365일 다이어리 신청</div>
+        </div>
+
+        <!-- 안내 -->
+        <div style="background:linear-gradient(135deg,#1B4332,#2D6A4F);border-radius:14px;padding:18px;margin-bottom:20px;text-align:center;">
+            <div style="font-size:2em;margin-bottom:8px;">✨</div>
+            <div style="font-size:0.95em;font-weight:700;color:#C9A84C;margin-bottom:6px;">축하해요! 빛 등급 달성!</div>
+            <div style="font-size:0.82em;color:rgba(255,255,255,0.8);line-height:1.7;">
+                365일 완전판 확언 다이어리를<br>실물로 제작해 보내드려요.<br>
+                아래 정보를 입력해주세요 😊
+            </div>
+        </div>
+
+        <!-- 입력 폼 -->
+        <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:20px;">
+            <div>
+                <div style="font-size:0.85em;font-weight:700;color:var(--primary-color);margin-bottom:6px;">성함 *</div>
+                <input id="diary-form-name" type="text" placeholder="실명을 입력해주세요"
+                    style="width:100%;box-sizing:border-box;padding:12px 14px;border:1.5px solid var(--border-color);border-radius:10px;font-size:0.95em;background:var(--card-bg);color:var(--text-color);outline:none;">
+            </div>
+            <div>
+                <div style="font-size:0.85em;font-weight:700;color:var(--primary-color);margin-bottom:6px;">연락처 *</div>
+                <input id="diary-form-phone" type="tel" placeholder="010-0000-0000"
+                    style="width:100%;box-sizing:border-box;padding:12px 14px;border:1.5px solid var(--border-color);border-radius:10px;font-size:0.95em;background:var(--card-bg);color:var(--text-color);outline:none;">
+            </div>
+            <div>
+                <div style="font-size:0.85em;font-weight:700;color:var(--primary-color);margin-bottom:6px;">배송 주소 *</div>
+                <textarea id="diary-form-address" placeholder="우편번호, 기본주소, 상세주소를 입력해주세요"
+                    style="width:100%;box-sizing:border-box;padding:12px 14px;border:1.5px solid var(--border-color);border-radius:10px;font-size:0.95em;background:var(--card-bg);color:var(--text-color);outline:none;resize:none;min-height:90px;line-height:1.6;"></textarea>
+            </div>
+        </div>
+
+        <!-- 개인정보 동의 -->
+        <div style="background:#F5F0E8;border-radius:12px;padding:16px;margin-bottom:20px;">
+            <div style="font-size:0.82em;color:#555;line-height:1.7;margin-bottom:12px;">
+                <b style="color:var(--primary-color);">[개인정보 수집 및 이용 동의]</b><br><br>
+                수집 항목: 성함, 연락처, 주소<br>
+                수집 목적: 365일 확언 다이어리 배송<br>
+                보유 기간: 배송 완료 후 즉시 파기<br><br>
+                위 개인정보 수집 및 이용에 동의하십니까?
+            </div>
+            <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+                <input type="checkbox" id="diary-form-agree" style="width:18px;height:18px;accent-color:#1B4332;cursor:pointer;">
+                <span style="font-size:0.88em;font-weight:700;color:var(--primary-color);">개인정보 수집 및 이용에 동의합니다 *</span>
+            </label>
+        </div>
+
+        <!-- 제출 버튼 -->
+        <button onclick="submitDiaryApply()" style="width:100%;min-height:54px;background:#1B4332;color:#fff;border:none;border-radius:14px;font-size:1em;font-weight:700;cursor:pointer;margin-bottom:10px;">신청하기 📬</button>
+        <button onclick="document.getElementById('diary-apply-form-modal').style.display='none'" style="width:100%;min-height:44px;background:none;border:1px solid var(--border-color);border-radius:14px;font-size:0.9em;color:var(--text-muted);cursor:pointer;">취소</button>
+    </div>
+</div>
+
+<!-- ★ 온보딩 튜토리얼 -->
+<div id="onboarding-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:9990;pointer-events:all;">
+    <div id="onboarding-dark" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);"></div>
+    <div id="onboarding-card" style="position:absolute;background:#FFFFFF;border-radius:20px;padding:24px 22px;max-width:320px;width:88%;box-shadow:0 20px 60px rgba(0,0,0,0.3);z-index:1;">
+        <!-- 손가락 애니메이션 -->
+        <div id="onboarding-finger" style="font-size:36px;text-align:center;margin-bottom:12px;animation:fingerBounce 1s ease-in-out infinite;">👆</div>
+        <div id="onboarding-step-badge" style="font-size:12px;font-weight:700;color:var(--accent-color);letter-spacing:1px;text-align:center;margin-bottom:8px;"></div>
+        <div id="onboarding-title" style="font-size:1.1em;font-weight:700;color:var(--primary-color);text-align:center;margin-bottom:10px;"></div>
+        <div id="onboarding-desc" style="font-size:0.88em;color:#555;text-align:center;line-height:1.7;margin-bottom:20px;"></div>
+        <!-- 이름/이메일 입력 영역 (4단계에서 표시) -->
+        <div id="ob-form-container" style="display:none;margin-bottom:14px;"></div>
+        <div style="display:flex;gap:10px;">
+            <button onclick="skipOnboarding()" style="flex:1;min-height:46px;background:none;border:1px solid #E8E5E0;border-radius:10px;font-size:0.9em;font-weight:600;color:#888;cursor:pointer;">건너뛰기</button>
+            <button id="onboarding-next" onclick="nextOnboarding()" style="flex:2;min-height:46px;background:var(--primary-color);color:#fff;border:none;border-radius:10px;font-size:0.9em;font-weight:700;cursor:pointer;">다음 →</button>
+        </div>
+        <!-- 진행 점 -->
+        <div style="display:flex;justify-content:center;gap:8px;margin-top:16px;">
+            <div class="ob-dot" id="ob-dot-0"></div>
+            <div class="ob-dot" id="ob-dot-1"></div>
+            <div class="ob-dot" id="ob-dot-2"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ★ 300일 다이어리 신청 모달 -->
+<div id="diary-apply-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:4500;overflow-y:auto;">
+    <div style="max-width:500px;margin:40px auto 40px;background:var(--bg-color);border-radius:20px;padding:28px 22px;box-sizing:border-box;">
+        <div style="text-align:center;margin-bottom:22px;">
+            <div style="font-size:48px;margin-bottom:8px;">📖</div>
+            <div style="font-size:1.2em;font-weight:700;color:var(--primary-color);margin-bottom:6px;">나만의 인생2막 확언 다이어리</div>
+            <div style="font-size:0.85em;color:var(--text-muted);line-height:1.6;">300일간의 필사와 일기가 담긴<br>세상에 단 하나뿐인 나만의 다이어리예요.</div>
+        </div>
+
+        <!-- 안내 -->
+        <div style="background:#FFF8E7;border:1px solid var(--accent-color);border-radius:12px;padding:16px;margin-bottom:20px;font-size:0.85em;color:#5C3D00;line-height:1.8;">
+            <div style="font-weight:700;margin-bottom:6px;">📌 신청 전 꼭 읽어주세요</div>
+            • 1년(365일) 안에 300일 이상 달성하신 분만 신청 가능해요<br>
+            • 신청 후 제작까지 4~6주가 소요돼요<br>
+            • 배송비 실비(약 3,000~5,000원)는 부담하셔야 해요<br>
+            • 제출된 데이터는 다이어리 제작 외에 사용하지 않아요
+        </div>
+
+        <!-- 신청 폼 -->
+        <div style="margin-bottom:14px;">
+            <div style="font-size:0.88em;font-weight:700;color:var(--primary-color);margin-bottom:6px;">이름 <span style="color:#D32F2F;">*</span></div>
+            <input id="apply-name" type="text" placeholder="받으실 분 성함"
+                style="width:100%;font-size:0.95em;padding:12px 14px;border:1.5px solid var(--border-color);border-radius:10px;background:var(--card-bg);color:var(--text-color);outline:none;box-sizing:border-box;">
+        </div>
+        <div style="margin-bottom:14px;">
+            <div style="font-size:0.88em;font-weight:700;color:var(--primary-color);margin-bottom:6px;">연락처 <span style="color:#D32F2F;">*</span></div>
+            <input id="apply-phone" type="tel" placeholder="010-0000-0000"
+                style="width:100%;font-size:0.95em;padding:12px 14px;border:1.5px solid var(--border-color);border-radius:10px;background:var(--card-bg);color:var(--text-color);outline:none;box-sizing:border-box;">
+        </div>
+        <div style="margin-bottom:14px;">
+            <div style="font-size:0.88em;font-weight:700;color:var(--primary-color);margin-bottom:6px;">배송 주소 <span style="color:#D32F2F;">*</span></div>
+            <input id="apply-address" type="text" placeholder="도로명 주소를 입력해주세요"
+                style="width:100%;font-size:0.95em;padding:12px 14px;border:1.5px solid var(--border-color);border-radius:10px;background:var(--card-bg);color:var(--text-color);outline:none;box-sizing:border-box;margin-bottom:6px;">
+            <input id="apply-address2" type="text" placeholder="상세 주소 (동/호수)"
+                style="width:100%;font-size:0.95em;padding:12px 14px;border:1.5px solid var(--border-color);border-radius:10px;background:var(--card-bg);color:var(--text-color);outline:none;box-sizing:border-box;">
+        </div>
+        <div style="margin-bottom:20px;">
+            <div style="font-size:0.88em;font-weight:700;color:var(--primary-color);margin-bottom:6px;">이메일 (제작 완료 알림용)</div>
+            <input id="apply-email" type="email" placeholder="example@gmail.com"
+                style="width:100%;font-size:0.95em;padding:12px 14px;border:1.5px solid var(--border-color);border-radius:10px;background:var(--card-bg);color:var(--text-color);outline:none;box-sizing:border-box;">
+        </div>
+        <div style="margin-bottom:20px;">
+            <div style="font-size:0.88em;font-weight:700;color:var(--primary-color);margin-bottom:6px;">다이어리에 담을 내용 선택</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+                <label style="display:flex;align-items:center;gap:10px;font-size:0.9em;color:var(--text-color);cursor:pointer;">
+                    <input type="checkbox" id="include-memo" checked style="width:18px;height:18px;cursor:pointer;">
+                    필사 기록 포함
+                </label>
+                <label style="display:flex;align-items:center;gap:10px;font-size:0.9em;color:var(--text-color);cursor:pointer;">
+                    <input type="checkbox" id="include-diary" checked style="width:18px;height:18px;cursor:pointer;">
+                    일기 내용 포함
+                </label>
+                <label style="display:flex;align-items:center;gap:10px;font-size:0.9em;color:var(--text-color);cursor:pointer;">
+                    <input type="checkbox" id="include-affirmation" checked style="width:18px;height:18px;cursor:pointer;">
+                    완료한 확언 목록 포함
+                </label>
+            </div>
+        </div>
+
+        <!-- 전송 버튼 -->
+        <button onclick="submitDiaryApply()" class="btn btn-main" style="font-size:1em;min-height:56px;margin-bottom:10px;">
+            📬 신청 데이터 전송하기
+        </button>
+        <button onclick="document.getElementById('diary-apply-modal').style.display='none'" style="width:100%;min-height:48px;background:none;border:1px solid var(--border-color);border-radius:12px;font-size:0.9em;font-weight:600;color:var(--text-muted);cursor:pointer;">닫기</button>
+    </div>
+</div>
+
+<!-- ★ 5단계: 토스트 -->
+<div id="toast"></div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script src="data.js"></script>
+<script src="state.js"></script>
+<script src="app.js"></script>
+<script src="pumsok_extra.js"></script>
+
+<script>
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('/pumsok/sw.js').catch(function(){});
+    });
+  }
+</script>
+
+<!-- ★ 심리테스트 결과 다운로드 게이팅 모달 -->
+<div id="psych-gating-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:100000; align-items:center; justify-content:center; backdrop-filter:blur(5px);">
+    <div style="background:#FFFFFF; border-radius:24px; padding:32px 24px; width:90%; max-width:380px; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+        <div style="font-size:52px; margin-bottom:12px;">🔒</div>
+        <div style="font-size:1.25em; font-weight:900; color:#1B4332; margin-bottom:10px;">결과를 저장하시겠어요?</div>
+        <div style="font-size:0.88em; color:#666; line-height:1.7; margin-bottom:24px;">
+            이름과 이메일을 등록하고 앱을 설치하면<br>
+            <b style="color:#1B4332;">나의 분석 결과지가 안전하게 저장</b>되며,<br>
+            30일 후 성장을 수치로 비교해드려요!
+        </div>
+        
+        <div style="text-align:left; margin-bottom:16px;">
+            <div style="font-size:0.82em; font-weight:700; color:#1B4332; margin-bottom:6px;">① 이름 또는 닉네임</div>
+            <input id="gt-nick" type="text" placeholder="예: 전주 60대 주부" 
+                style="width:100%; padding:13px; border:2px solid #E8E4DD; border-radius:12px; outline:none; font-size:1em; box-sizing:border-box;">
+        </div>
+        
+        <div style="text-align:left; margin-bottom:22px;">
+            <div style="font-size:0.82em; font-weight:700; color:#1B4332; margin-bottom:6px;">② 이메일 주소</div>
+            <input id="gt-email" type="email" placeholder="abc@gmail.com" 
+                style="width:100%; padding:13px; border:2px solid #E8E4DD; border-radius:12px; outline:none; font-size:1em; box-sizing:border-box;">
+        </div>
+
+        <button onclick="processPsychGating()" 
+            style="width:100%; min-height:60px; background:#1B4332; color:#fff; border:none; border-radius:16px; font-size:1.05em; font-weight:900; cursor:pointer; box-shadow:0 8px 20px rgba(27,67,50,0.3);">
+            ③ 지금 등록하고 결과 저장하기 📲
+        </button>
+        <button onclick="document.getElementById('psych-gating-modal').style.display='none'" 
+            style="width:100%; min-height:44px; background:none; border:none; color:#aaa; font-size:0.85em; margin-top:12px; cursor:pointer; text-decoration:underline;">
+            나중에 할게요 (저장 안 됨)
+        </button>
+    </div>
+</div>
+
+<!-- ★ 앱 실행 시 저장 확인 모달 -->
+<div id="psych-save-confirm-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:100000; align-items:center; justify-content:center;">
+    <div style="background:#FFFFFF; border-radius:24px; padding:32px 24px; width:88%; max-width:340px; text-align:center;">
+        <div style="font-size:48px; margin-bottom:10px;">✨</div>
+        <div style="font-size:1.2em; font-weight:800; color:#1B4332; margin-bottom:8px;">분석 결과가 도착했어요!</div>
+        <div style="font-size:0.9em; color:#666; line-height:1.7; margin-bottom:20px;">
+            아까 테스트하신 심리 결과를<br><b style="color:#1B4332;">지금 바로 저장하고 확인</b>할까요?
+        </div>
+        <button onclick="finalizePendingSave()" 
+            style="width:100%; min-height:54px; background:#1B4332; color:#fff; border:none; border-radius:14px; font-size:1em; font-weight:700; cursor:pointer;">
+            지금 저장하고 결과 보기
+        </button>
+    </div>
+</div>
 
 </body>
 </html>
