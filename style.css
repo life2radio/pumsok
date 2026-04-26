@@ -1,0 +1,533 @@
+/* ════════════════════════════════════════
+   인생2막라디오 — 루틴 앱 디자인 시스템
+   ════════════════════════════════════════ */
+
+/* ── 1. CSS 변수 (디자인 토큰) ── */
+:root {
+  /* 색상 */
+  --color-primary:       #1B4332;
+  --color-primary-dark:  #0D2B1F;
+  --color-primary-light: #2D6A4F;
+  --color-primary-soft:  #E8F5EE;
+  --color-accent:        #C9A84C;
+  --color-accent-soft:   #FDF6E3;
+
+  --color-bg:            #F7F5F0;
+  --color-surface:       #FFFFFF;
+  --color-border:        #E2DDD6;
+
+  --color-text-primary:  #1A1A1A;
+  --color-text-secondary:#555550;
+  --color-text-muted:    #999990;
+  --color-text-inverse:  #FFFFFF;
+
+  --color-success:       #1B4332;
+  --color-warning:       #C9A84C;
+  --color-danger:        #C0392B;
+
+  /* 폰트 사이즈 (3단계 위계) */
+  --fs-title:    18px;   /* 섹션 제목 */
+  --fs-body:     16px;   /* 본문, 버튼 */
+  --fs-caption:  14px;   /* 보조 설명 */
+  --fs-nav:      11px;   /* 네비게이션 라벨 */
+
+  /* 간격 */
+  --sp-xs:  4px;
+  --sp-sm:  8px;
+  --sp-md:  16px;
+  --sp-lg:  24px;
+  --sp-xl:  32px;
+
+  /* 둥근 모서리 */
+  --radius-sm:  8px;
+  --radius-md:  14px;
+  --radius-lg:  20px;
+  --radius-full: 999px;
+
+  /* 그림자 */
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
+
+  /* 헤더/네비 높이 */
+  --header-h: 56px;
+  --nav-h:    64px;
+
+  /* 폰트 */
+  --font-main: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+}
+
+/* 글씨 크기 모드 */
+body.fs-large {
+  --fs-title:   22px;
+  --fs-body:    20px;
+  --fs-caption: 18px;
+  --fs-nav:     13px;
+}
+body.fs-xlarge {
+  --fs-title:   26px;
+  --fs-body:    24px;
+  --fs-caption: 22px;
+  --fs-nav:     15px;
+}
+
+/* 다크모드 */
+body.dark {
+  --color-bg:             #111C16;
+  --color-surface:        #1A2E22;
+  --color-border:         #2A3D30;
+  --color-text-primary:   #F0EDE8;
+  --color-text-secondary: #B0ADA8;
+  --color-text-muted:     #707068;
+  --color-primary-soft:   #1A2E22;
+  --color-accent-soft:    #2A2010;
+}
+
+/* ── 2. 리셋 & 기본 ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  height: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-main);
+  font-size: var(--fs-body);
+  color: var(--color-text-primary);
+  background: var(--color-bg);
+  height: 100%;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font-family: var(--font-main);
+  font-size: var(--fs-body);
+  cursor: pointer;
+  border: none;
+  background: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+input, textarea {
+  font-family: var(--font-main);
+  font-size: var(--fs-body);
+  color: var(--color-text-primary);
+  background: var(--color-bg);
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ── 3. 앱 레이아웃 ── */
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  position: relative;
+  background: var(--color-bg);
+}
+
+/* ── 4. 헤더 ── */
+#app-header {
+  height: var(--header-h);
+  background: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--sp-md);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+}
+
+#header-title {
+  font-size: var(--fs-body);
+  font-weight: 700;
+  color: var(--color-text-inverse);
+  letter-spacing: -0.3px;
+}
+
+#header-left, #header-right {
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.85);
+  transition: background 0.15s;
+}
+.header-btn:active { background: rgba(255,255,255,0.15); }
+.header-btn svg { width: 20px; height: 20px; }
+
+/* ── 5. 메인 뷰 ── */
+#app-main {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.view-section {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: none;
+  padding-bottom: var(--nav-h);
+}
+
+.view-section.active { display: block; }
+
+/* ── 6. 하단 네비게이션 ── */
+#app-nav {
+  height: var(--nav-h);
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  align-items: stretch;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.nav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--color-text-muted);
+  transition: color 0.15s;
+  position: relative;
+  padding: 6px 0;
+}
+
+.nav-btn.active {
+  color: var(--color-primary);
+}
+
+.nav-btn.active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  background: var(--color-primary);
+  border-radius: 0 0 2px 2px;
+}
+
+.nav-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.nav-label {
+  font-size: var(--fs-nav);
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+/* 배지 */
+.nav-badge {
+  position: absolute;
+  top: 6px;
+  right: calc(50% - 18px);
+  width: 8px;
+  height: 8px;
+  background: var(--color-danger);
+  border-radius: 50%;
+  border: 2px solid var(--color-surface);
+  display: none;
+}
+.nav-badge.show { display: block; }
+
+/* ── 7. 공통 UI 컴포넌트 ── */
+
+/* 카드 */
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: var(--sp-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+}
+
+/* 섹션 타이틀 */
+.section-title {
+  font-size: var(--fs-title);
+  font-weight: 800;
+  color: var(--color-text-primary);
+  letter-spacing: -0.5px;
+  margin-bottom: var(--sp-md);
+}
+
+/* 본문 텍스트 */
+.body-text {
+  font-size: var(--fs-body);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+/* 보조 텍스트 */
+.caption-text {
+  font-size: var(--fs-caption);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+/* 버튼 — 기본 (초록) */
+.btn-primary {
+  width: 100%;
+  padding: 15px var(--sp-md);
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-body);
+  font-weight: 700;
+  text-align: center;
+  transition: background 0.15s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-sm);
+}
+.btn-primary:active {
+  background: var(--color-primary-dark);
+  transform: scale(0.98);
+}
+
+/* 버튼 — 보조 (테두리) */
+.btn-secondary {
+  width: 100%;
+  padding: 14px var(--sp-md);
+  background: transparent;
+  color: var(--color-primary);
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-body);
+  font-weight: 700;
+  text-align: center;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-sm);
+}
+.btn-secondary:active {
+  background: var(--color-primary-soft);
+  transform: scale(0.98);
+}
+
+/* 버튼 — 골드 */
+.btn-accent {
+  width: 100%;
+  padding: 15px var(--sp-md);
+  background: var(--color-accent);
+  color: var(--color-primary-dark);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-body);
+  font-weight: 800;
+  text-align: center;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-sm);
+}
+.btn-accent:active { opacity: 0.88; transform: scale(0.98); }
+
+/* 버튼 — 텍스트 */
+.btn-text {
+  font-size: var(--fs-caption);
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* 입력창 */
+.input-field {
+  width: 100%;
+  padding: 14px var(--sp-md);
+  background: var(--color-bg);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-body);
+  color: var(--color-text-primary);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.input-field:focus { border-color: var(--color-primary); }
+
+.input-label {
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.input-wrap { margin-bottom: var(--sp-md); }
+
+/* textarea */
+textarea.input-field {
+  resize: none;
+  line-height: 1.7;
+}
+
+/* 토스트 */
+#toast {
+  position: fixed;
+  bottom: calc(var(--nav-h) + 16px);
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(27,67,50,0.95);
+  color: #fff;
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s;
+  z-index: 9999;
+  max-width: calc(100vw - 48px);
+  text-align: center;
+}
+#toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* 뷰 패딩 */
+.view-inner {
+  padding: var(--sp-md);
+}
+
+/* 섹션 간격 */
+.section-gap { margin-bottom: var(--sp-md); }
+.section-gap-lg { margin-bottom: var(--sp-lg); }
+
+/* 구분선 */
+.divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: var(--sp-md) 0;
+}
+
+/* 초록 헤더 카드 */
+.green-card {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  border-radius: var(--radius-lg);
+  padding: var(--sp-lg) var(--sp-md);
+  color: var(--color-text-inverse);
+  margin-bottom: var(--sp-md);
+}
+
+.green-card .section-title { color: var(--color-text-inverse); }
+.green-card .body-text { color: rgba(255,255,255,0.85); }
+.green-card .caption-text { color: rgba(255,255,255,0.65); }
+
+/* 골드 강조 텍스트 */
+.text-accent { color: var(--color-accent); }
+.text-primary { color: var(--color-primary); }
+.text-muted { color: var(--color-text-muted); }
+
+/* 체크 원형 */
+.check-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  background: var(--color-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.check-circle.done {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.check-circle.done::after {
+  content: '';
+  width: 10px;
+  height: 6px;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(-45deg) translate(1px, -1px);
+}
+
+/* 스크롤바 숨김 */
+.view-section::-webkit-scrollbar { display: none; }
+.view-section { scrollbar-width: none; }
+
+/* 모달 오버레이 */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 1000;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+.modal-overlay.show { display: flex; }
+
+.modal-sheet {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90dvh;
+  overflow-y: auto;
+  padding: var(--sp-lg) var(--sp-md) calc(var(--sp-lg) + env(safe-area-inset-bottom));
+}
+
+.modal-handle {
+  width: 36px;
+  height: 4px;
+  background: var(--color-border);
+  border-radius: 2px;
+  margin: 0 auto var(--sp-lg);
+}
+
+/* 로딩 스피너 */
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: var(--sp-xl) auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* 빈 상태 */
+.empty-state {
+  text-align: center;
+  padding: var(--sp-xl) var(--sp-md);
+  color: var(--color-text-muted);
+  font-size: var(--fs-body);
+}
+
+/* 페이드인 애니메이션 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeIn 0.25s ease forwards; }

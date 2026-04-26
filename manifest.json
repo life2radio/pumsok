@@ -1,0 +1,14 @@
+{
+  "name": "인생2막라디오 루틴",
+  "short_name": "루틴앱",
+  "description": "매일 아침 나를 깨우는 루틴",
+  "start_url": "/routine/",
+  "display": "standalone",
+  "background_color": "#1B4332",
+  "theme_color": "#1B4332",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
