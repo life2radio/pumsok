@@ -394,7 +394,7 @@
     if(typeof orig==='function'){
       window.switchView=function(v){
         orig.apply(this,arguments);
-        if(v==='home') setTimeout(refreshCard,150);
+        if(v==='routine') setTimeout(refreshCard,150);
       };
     }
   }
@@ -406,3 +406,108 @@
   }
 
 })();
+
+/* ============================================================
+ * renderPumsokRoutine — app.js가 호출하는 루틴 메인 페이지
+ * ============================================================ */
+window.renderPumsokRoutine = function(container) {
+  if (!container) return;
+  var type = routineType();
+  var r = ROUTINES[type];
+  var done = isDone(type);
+
+  var stepsHtml = r.steps.map(function(s, i) {
+    var stepDone = localStorage.getItem('pumsok_step_' + today() + '_' + s.id) === '1';
+    return '<div onclick="pumsokOpenStep(\'' + type + '\',' + i + ')" style="' +
+      'display:flex;align-items:center;gap:14px;' +
+      'background:' + (stepDone ? r.light : '#fff') + ';' +
+      'border:1.5px solid ' + (stepDone ? r.color : '#e8e4dd') + ';' +
+      'border-radius:14px;padding:14px 16px;margin-bottom:10px;cursor:pointer;' +
+      '-webkit-tap-highlight-color:transparent;">' +
+      '<div style="font-size:1.6em;flex-shrink:0;">' + s.icon + '</div>' +
+      '<div style="flex:1;min-width:0;">' +
+        '<div style="font-size:.95em;font-weight:700;color:' + (stepDone ? r.color : '#1a1a1a') + ';">' + s.title + '</div>' +
+        '<div style="font-size:.78em;color:#888;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + s.desc.split('\n')[0] + '</div>' +
+      '</div>' +
+      '<div style="font-size:1.2em;flex-shrink:0;">' + (stepDone ? '✅' : '○') + '</div>' +
+    '</div>';
+  }).join('');
+
+  var doneCount = r.steps.filter(function(s) {
+    return localStorage.getItem('pumsok_step_' + today() + '_' + s.id) === '1';
+  }).length;
+  var pct = Math.round(doneCount / r.steps.length * 100);
+
+  container.innerHTML =
+    '<div style="padding:16px 16px 0;">' +
+      /* 헤더 카드 */
+      '<div style="background:linear-gradient(135deg,' + r.color + ',' + r.colorAlt + ');' +
+        'border-radius:18px;padding:20px;margin-bottom:16px;">' +
+        '<div style="font-size:.78em;color:rgba(255,255,255,.75);font-weight:700;margin-bottom:4px;">' +
+          r.emoji + ' ' + r.label + ' · ' + r.steps.length + '단계' +
+        '</div>' +
+        '<div style="font-size:1.15em;font-weight:800;color:#fff;margin-bottom:12px;">' +
+          (done ? '✅ 오늘 루틴 완료!' : '하나씩 차례로 해요') +
+        '</div>' +
+        /* 진행 바 */
+        '<div style="background:rgba(255,255,255,.25);border-radius:10px;height:8px;overflow:hidden;margin-bottom:6px;">' +
+          '<div style="height:100%;background:#fff;border-radius:10px;width:' + pct + '%;transition:width .4s;"></div>' +
+        '</div>' +
+        '<div style="font-size:.75em;color:rgba(255,255,255,.75);">' +
+          doneCount + ' / ' + r.steps.length + ' 완료 · ' + pct + '%' +
+        '</div>' +
+      '</div>' +
+
+      /* 단계 리스트 */
+      stepsHtml +
+
+      /* 다른 루틴 전환 버튼 */
+      '<div style="text-align:center;margin-top:8px;padding-bottom:16px;">' +
+        '<button onclick="pumsokSwitchRoutine()" style="' +
+          'background:transparent;border:1px solid #e0ddd8;border-radius:10px;' +
+          'padding:8px 20px;font-size:.8em;color:#888;cursor:pointer;">' +
+          (type === 'morning' ? '🌙 저녁 루틴으로 전환' : '🌅 아침 루틴으로 전환') +
+        '</button>' +
+      '</div>' +
+    '</div>';
+};
+
+/* 단계 직접 열기 */
+window.pumsokOpenStep = function(type, stepIdx) {
+  RS.type = type;
+  RS.step = stepIdx;
+  clearInterval(RS.iv);
+  breathOn = false;
+  document.getElementById('pumsok-modal').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+  render();
+};
+
+/* 루틴 전환 */
+window.pumsokSwitchRoutine = function() {
+  var area = document.getElementById('pumsok-routine-area');
+  if (!area) return;
+  var cur = routineType();
+  var next = cur === 'morning' ? 'evening' : 'morning';
+  /* 임시 전환용 플래그 */
+  window._pumsokForceType = next;
+  var origFn = routineType;
+  routineType = function() { return window._pumsokForceType || origFn(); };
+  window.renderPumsokRoutine(area);
+};
+
+/* 단계 완료 후 메인으로 복귀 시 체크 */
+var _origFinish = window.pumsokFinish;
+window.pumsokFinish = function() {
+  /* 현재 단계 완료 표시 */
+  var sd = ROUTINES[RS.type].steps[RS.step];
+  localStorage.setItem('pumsok_step_' + today() + '_' + sd.id, '1');
+
+  _origFinish && _origFinish();
+
+  /* 루틴 메인 갱신 */
+  setTimeout(function() {
+    var area = document.getElementById('pumsok-routine-area');
+    if (area) window.renderPumsokRoutine(area);
+  }, 200);
+};
