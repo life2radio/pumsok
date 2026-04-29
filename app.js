@@ -859,17 +859,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // pumsok_extra.js 동적 로드
-    const script = document.createElement('script');
-    script.src = 'pumsok_extra.js';
-    script.onload = function() {
-        if (typeof window.initPumsokExtra === 'function') window.initPumsokExtra();
-        // 첫 화면 렌더 (extra 로드 후)
+    // extra.js는 index.html에서 이미 로드됨
+    // renderPumsokRoutine이 정의되어 있으면 바로 시작
+    if (typeof window.renderPumsokRoutine === 'function') {
         switchView('routine');
-    };
-    script.onerror = function() {
-        console.warn('pumsok_extra.js 로드 실패 — 루틴 기능 없이 시작');
-        switchView('routine');
-    };
-    document.body.appendChild(script);
+    } else {
+        // 혹시 아직 안 로드됐으면 대기
+        const script = document.createElement('script');
+        script.src = 'extra.js';
+        script.onload = function() {
+            switchView('routine');
+        };
+        script.onerror = function() {
+            switchView('routine');
+        };
+        document.body.appendChild(script);
+    }
 });
