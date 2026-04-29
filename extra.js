@@ -21,8 +21,8 @@
       label: '아침 루틴', emoji: '🌅',
       color: C_GREEN, colorAlt: '#2D6A4F', light: '#F0F7F4',
       steps: [
-        { id:'breathing',    title:'숨 고르기',    icon:'🫁', type:'timer',    duration:60,
-          desc:'누운 채로 눈을 감고 깊게 호흡해요.\n코로 들이쉬고… 입으로 천천히 내쉬고…' },
+        { id:'breathing',    title:'숨 고르기',    icon:'🫁', type:'silence',
+          desc:'오늘 상태에 맞는 방법을 골라요.\n살랑한 마음을 모으는 것만으로 충분해요.' },
         { id:'vow',          title:'나의 다짐',    icon:'🎯', type:'text_vow',
           desc:'오늘의 다짐을 소리 내어 읽어요.\n눈을 감고 그 장면을 머릿속에 그려보세요.' },
         { id:'affirmation',  title:'오늘의 확언',  icon:'✨', type:'text_aff',
@@ -200,6 +200,7 @@
   /* ── 본문 타입별 ── */
   function bodyHtml(sd, C, CL){
     switch(sd.type){
+      case 'silence':    return silenceHtml(C);
       case 'timer':     return timerHtml(sd, C);
       case 'breath':    return breathHtml(C);
       case 'write':     return writeHtml(sd, C);
@@ -208,6 +209,60 @@
       case 'vow_check': return checkHtml(sd, C, CL);
       default: return '';
     }
+  }
+
+  function silenceHtml(C){
+    var sel = localStorage.getItem('pumsok_silence_method') || '';
+    var methods = [
+      { id:'breath',    label:'복식호흡',    desc:'4초 들이마시고 6초 내쉬기',  sec:60  },
+      { id:'gratitude', label:'감사 떠올리기', desc:'고마운 사람 마음속으로 떠올리기', sec:60  },
+      { id:'fiverule',  label:'5분 룰',      desc:'힘든 감정 충분히 느끼기',   sec:300 },
+      { id:'rest',      label:'그냥 쉬기',   desc:'창밖 보기, 아무것도 안 해도 OK', sec:60  }
+    ];
+    var cards = methods.map(function(m){
+      var isSelected = sel === m.id;
+      return '<button onclick="pumsokSelectSilence(\''+m.id+'\','+m.sec+')" style="'+
+        'width:100%;text-align:left;padding:14px 16px;margin-bottom:8px;cursor:pointer;'+
+        'background:'+(isSelected ? '#F0F7F4' : '#fff')+';'+
+        'border:'+(isSelected ? '2px solid '+C : '1.5px solid #e0ddd8')+';'+
+        'border-radius:14px;-webkit-tap-highlight-color:transparent;">'+
+        '<div style="font-size:var(--fs-body);font-weight:700;color:'+(isSelected ? C : '#1a1a1a')+';margin-bottom:3px;">'+m.label+'</div>'+
+        '<div style="font-size:var(--fs-caption);color:#888;">'+m.desc+'</div>'+
+      '</button>';
+    }).join('');
+
+    var selData = methods.filter(function(m){ return m.id === sel; })[0];
+    var timerBlock = '';
+    if(selData){
+      var guide = {
+        breath: '<div style="background:#F0F7F4;border-radius:12px;padding:14px;margin-bottom:14px;font-size:var(--fs-caption);color:#1B4332;line-height:1.9;text-align:center;">'+
+          '가슴과 배에 손을 올려요<br>코로 <b>4초</b> 들이마시기 — 배 먼저 나오게<br>입으로 <b>6초</b> 내쉬기 — 배 먼저 들어가게</div>'+
+          '<div id="pr-breath-anim" style="display:flex;align-items:center;justify-content:center;margin-bottom:16px;">'+
+            '<div id="pr-ba-outer" style="width:120px;height:120px;border-radius:50%;border:2px solid '+C+';display:flex;align-items:center;justify-content:center;transition:all .3s;">'+
+              '<div id="pr-ba-inner" style="width:60px;height:60px;border-radius:50%;background:'+C+';opacity:0.2;transition:all .3s;"></div>'+
+              '<span id="pr-ba-txt" style="position:absolute;font-size:var(--fs-caption);font-weight:700;color:'+C+';">준비</span>'+
+            '</div>'+
+          '</div>',
+        gratitude: '<div style="background:#F0F7F4;border-radius:12px;padding:14px;margin-bottom:14px;font-size:var(--fs-caption);color:#1B4332;line-height:1.9;">'+
+          '힘든 사람, 아픈 사람, 고마운 사람<br>이름을 마음속으로 떠올려요<br><b>"건강하길 바란다" "감사하다"</b></div>',
+        fiverule: '<div style="background:#F0F7F4;border-radius:12px;padding:14px;margin-bottom:14px;font-size:var(--fs-caption);color:#1B4332;line-height:1.9;">'+
+          '지금 느끼는 감정을 <b>충분히</b> 느껴요<br>억누르지 말고, 판단하지 말고<br>타이머 울리면 "바꿀 수 없다" 하고 다음으로</div>',
+        rest: '<div style="background:#F0F7F4;border-radius:12px;padding:14px;margin-bottom:14px;font-size:var(--fs-caption);color:#1B4332;line-height:1.9;">'+
+          '창밖을 바라보거나 눈을 감아요<br>새 소리, 햇빛, 바람<br>생각이 떠올라도 그냥 흘려보내요</div>'
+      };
+      timerBlock =
+        (guide[sel] || '') +
+        '<div id="pr-t" style="text-align:center;font-size:3em;font-weight:700;color:'+C+';letter-spacing:2px;margin-bottom:10px;">'+fmt(selData.sec)+'</div>'+
+        '<div style="background:#e8e4dd;border-radius:10px;height:8px;overflow:hidden;margin-bottom:16px;">'+
+          '<div id="pr-b" style="height:100%;background:'+C+';border-radius:10px;width:100%;transition:width 1s linear;"></div>'+
+        '</div>'+
+        '<div style="text-align:center;font-size:var(--fs-caption);color:#888;margin-bottom:14px;">📵 핸드폰을 내려놓고 시작하세요</div>'+
+        '<button id="pr-s" onclick="pumsokSilenceStart(\''+sel+'\','+selData.sec+')" style="'+
+          'width:100%;padding:15px;background:'+C+';color:#fff;border:none;border-radius:14px;'+
+          'font-size:var(--fs-body);font-weight:700;cursor:pointer;">▶ 시작하기</button>';
+    }
+
+    return '<div>' + cards + timerBlock + '</div>';
   }
 
   function timerHtml(sd, C){
@@ -300,6 +355,66 @@
   /* ============================================================
    * 7. 이벤트 핸들러
    * ============================================================ */
+  window.pumsokSelectSilence = function(methodId, sec) {
+    localStorage.setItem('pumsok_silence_method', methodId);
+    render();
+    setTimeout(function(){
+      var el = document.getElementById('pr-s');
+      if(el) el.scrollIntoView({behavior:'smooth', block:'center'});
+    }, 100);
+  };
+
+  window.pumsokSilenceStart = function(methodId, total) {
+    clearInterval(RS.iv);
+    var rem = total;
+    var btn  = document.getElementById('pr-s');
+    var disp = document.getElementById('pr-t');
+    var bar  = document.getElementById('pr-b');
+    if(btn) btn.style.display = 'none';
+
+    if(methodId === 'breath') {
+      var phases = [{n:'들이마시기',s:4},{n:'참기',s:2},{n:'내쉬기',s:6}];
+      var pi=0, ptick=0;
+      var outer = document.getElementById('pr-ba-outer');
+      var inner = document.getElementById('pr-ba-inner');
+      var txt   = document.getElementById('pr-ba-txt');
+      RS.iv = setInterval(function(){
+        var ph = phases[pi];
+        var left = ph.s - ptick;
+        if(txt) txt.textContent = ph.n + ' ' + left;
+        var p = ptick / ph.s;
+        if(pi === 0) {
+          var sz = 60 + p*50; var op = 0.15 + p*0.25;
+          if(inner){inner.style.width=sz+'px';inner.style.height=sz+'px';inner.style.opacity=op;}
+          if(outer){outer.style.width=(120+p*30)+'px';outer.style.height=(120+p*30)+'px';}
+        } else if(pi === 2) {
+          var sz2 = 110 - p*50; var op2 = 0.4 - p*0.25;
+          if(inner){inner.style.width=sz2+'px';inner.style.height=sz2+'px';inner.style.opacity=op2;}
+          if(outer){outer.style.width=(150-p*30)+'px';outer.style.height=(150-p*30)+'px';}
+        }
+        rem--;
+        if(disp) disp.textContent = fmt(Math.max(0,rem));
+        if(bar)  bar.style.width = (rem/total*100)+'%';
+        ptick++;
+        if(ptick >= ph.s){ ptick=0; pi=(pi+1)%phases.length; }
+        if(rem <= 0){ clearInterval(RS.iv); if(txt) txt.textContent='완료'; _silenceDone(); }
+      }, 1000);
+    } else {
+      RS.iv = setInterval(function(){
+        rem--;
+        if(disp) disp.textContent = fmt(rem);
+        if(bar)  bar.style.width = (rem/total*100)+'%';
+        if(rem <= 0){ clearInterval(RS.iv); _silenceDone(); }
+      }, 1000);
+    }
+  };
+
+  function _silenceDone(){
+    try{ navigator.vibrate && navigator.vibrate([200,100,200]); }catch(e){}
+    var disp = document.getElementById('pr-t');
+    if(disp) disp.textContent = '완료! ✅';
+  }
+
   window.pumsokStep=function(i){ clearInterval(RS.iv); breathOn=false; RS.step=i; render(); };
 
   window.pumsokClose=function(){
