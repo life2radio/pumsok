@@ -91,13 +91,13 @@
         'display:flex;align-items:center;justify-content:space-between;'+
         '-webkit-tap-highlight-color:transparent;">'+
         '<div style="flex:1;min-width:0;">'+
-          '<div style="font-size:.72em;color:rgba(255,255,255,.72);font-weight:700;letter-spacing:.5px;margin-bottom:4px;">'+
+          '<div style="font-size:var(--fs-caption);color:rgba(255,255,255,.72);font-weight:700;letter-spacing:.5px;margin-bottom:4px;">'+
             r.emoji+' '+r.label+' · '+r.steps.length+'단계'+
           '</div>'+
-          '<div style="font-size:1.05em;font-weight:800;color:#fff;margin-bottom:6px;">'+
+          '<div style="font-size:var(--fs-title);font-weight:700;color:#fff;margin-bottom:6px;">'+
             (done?'✅ 오늘 루틴 완료!':'지금 루틴 시작하기 ▶')+
           '</div>'+
-          '<div style="font-size:.7em;color:rgba(255,255,255,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+steps+'</div>'+
+          '<div style="font-size:var(--fs-caption);color:rgba(255,255,255,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+steps+'</div>'+
         '</div>'+
         '<div style="font-size:1.8em;margin-left:14px;flex-shrink:0;">'+(done?'🌟':'▶')+'</div>'+
       '</div>';
@@ -163,9 +163,9 @@
       /* 헤더 */
       '<div style="background:'+C+';padding:20px 20px 14px;position:sticky;top:0;z-index:2;">'+
         '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">'+
-          '<button onclick="pumsokClose()" style="background:rgba(255,255,255,.18);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:.85em;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;">✕ 닫기</button>'+
-          '<div style="font-size:.85em;font-weight:700;color:rgba(255,255,255,.85);">'+r.emoji+' '+r.label+'</div>'+
-          '<div style="font-size:.8em;color:rgba(255,255,255,.65);">'+(s+1)+' / '+r.steps.length+'</div>'+
+          '<button onclick="pumsokClose()" style="background:rgba(255,255,255,.18);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:var(--fs-caption);font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;">✕ 닫기</button>'+
+          '<div style="font-size:var(--fs-caption);font-weight:700;color:rgba(255,255,255,.85);">'+r.emoji+' '+r.label+'</div>'+
+          '<div style="font-size:var(--fs-caption);color:rgba(255,255,255,.65);">'+(s+1)+' / '+r.steps.length+'</div>'+
         '</div>'+
         '<div style="background:rgba(255,255,255,.2);border-radius:10px;height:6px;overflow:hidden;margin-bottom:8px;">'+
           '<div style="height:100%;background:#fff;border-radius:10px;width:'+pct+'%;transition:width .4s;"></div>'+
@@ -177,17 +177,17 @@
       '<div style="padding:24px 20px 120px;background:#FAFAF8;min-height:calc(100vh - 200px);">'+
         '<div style="text-align:center;margin-bottom:20px;">'+
           '<div style="font-size:2.8em;margin-bottom:10px;">'+sd.icon+'</div>'+
-          '<div style="font-size:1.25em;font-weight:900;color:'+C+';margin-bottom:6px;">'+sd.title+'</div>'+
-          '<div style="font-size:.88em;color:#777;line-height:1.75;">'+sd.desc.replace(/\n/g,'<br>')+'</div>'+
+          '<div style="font-size:var(--fs-title);font-weight:700;color:'+C+';margin-bottom:6px;">'+sd.title+'</div>'+
+          '<div style="font-size:var(--fs-caption);color:#777;line-height:1.75;">'+sd.desc.replace(/\n/g,'<br>')+'</div>'+
         '</div>'+
 
         bodyHtml(sd, C, CL)+
 
         '<div style="display:flex;gap:12px;margin-top:28px;">'+
           (s>0
-            ?'<button onclick="pumsokStep('+(s-1)+')" style="flex:1;min-height:54px;background:#fff;color:#555;border:1.5px solid #ddd;border-radius:14px;font-size:.9em;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;">◀ 이전</button>'
+            ?'<button onclick="pumsokStep('+(s-1)+')" style="flex:1;min-height:54px;background:#fff;color:#555;border:1.5px solid #ddd;border-radius:14px;font-size:var(--fs-body);font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;">◀ 이전</button>'
             :'<div style="flex:1;"></div>')+
-          '<button onclick="'+(last?'pumsokFinish()':'pumsokStep('+(s+1)+')')+'" style="flex:2;min-height:54px;background:'+C+';color:#fff;border:none;border-radius:14px;font-size:1em;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;">'+
+          '<button onclick="'+(last?'pumsokFinish()':'pumsokStep('+(s+1)+')')+'" style="flex:2;min-height:54px;background:'+C+';color:#fff;border:none;border-radius:14px;font-size:var(--fs-body);font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;">'+
             (last?'🎉 루틴 완료!':'다음 →')+
           '</button>'+
         '</div>'+
@@ -216,22 +216,22 @@
       '<div style="background:#e8e4dd;border-radius:10px;height:10px;overflow:hidden;margin-bottom:20px;">'+
         '<div id="pr-b" style="height:100%;background:'+C+';border-radius:10px;width:100%;transition:width 1s linear;"></div>'+
       '</div>'+
-      '<button id="pr-s" onclick="pumsokTimer('+sd.duration+')" style="background:'+C+';color:#fff;border:none;border-radius:14px;padding:14px 36px;font-size:1em;font-weight:700;cursor:pointer;">▶ 시작</button>'+
+      '<button id="pr-s" onclick="pumsokTimer('+sd.duration+')" style="background:'+C+';color:#fff;border:none;border-radius:14px;padding:14px 36px;font-size:var(--fs-body);font-weight:700;cursor:pointer;">▶ 시작</button>'+
     '</div>';
   }
 
   function breathHtml(C){
     return '<div style="background:#EEF4FF;border-radius:14px;padding:18px;margin-bottom:16px;text-align:center;">'+
-      '<div id="pr-bp" style="font-size:1.2em;font-weight:800;color:'+C_NAVY+';margin-bottom:8px;">준비되면 시작을 눌러주세요</div>'+
+      '<div id="pr-bp" style="font-size:var(--fs-title);font-weight:700;color:'+C_NAVY+';margin-bottom:8px;">준비되면 시작을 눌러주세요</div>'+
       '<div id="pr-bc" style="font-size:3em;font-weight:900;color:'+C_NAVY+';margin-bottom:8px;">-</div>'+
-      '<div style="font-size:.82em;color:#555;line-height:2;margin-bottom:14px;">'+
+      '<div style="font-size:var(--fs-caption);color:#555;line-height:2;margin-bottom:14px;">'+
         '🫁 4초 들이마시기 → ⏸ 7초 참기 → 💨 8초 내쉬기<br>'+
         '<span style="opacity:.8;">× 3회 반복 (약 57초)</span>'+
       '</div>'+
       '<div style="background:#dce7f8;border-radius:10px;height:8px;overflow:hidden;margin-bottom:16px;">'+
         '<div id="pr-bb" style="height:100%;background:'+C_NAVY+';border-radius:10px;width:0%;transition:width 1s linear;"></div>'+
       '</div>'+
-      '<button id="pr-bbt" onclick="pumsokBreath()" style="background:'+C_NAVY+';color:#fff;border:none;border-radius:14px;padding:14px 36px;font-size:1em;font-weight:700;cursor:pointer;">▶ 시작</button>'+
+      '<button id="pr-bbt" onclick="pumsokBreath()" style="background:'+C_NAVY+';color:#fff;border:none;border-radius:14px;padding:14px 36px;font-size:var(--fs-body);font-weight:700;cursor:pointer;">▶ 시작</button>'+
     '</div>';
   }
 
@@ -240,14 +240,14 @@
     var ph=esc(sd.placeholder||sd.desc.split('\n')[0]);
     var timerPart=sd.duration
       ?'<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">'+
-        '<button id="pr-wt" onclick="pumsokWriteTimer('+sd.duration+')" style="background:'+C+';color:#fff;border:none;border-radius:10px;padding:8px 18px;font-size:.85em;font-weight:700;cursor:pointer;">⏱ '+fmt(sd.duration)+'</button>'+
-        '<span id="pr-wd" style="font-size:1em;font-weight:700;color:'+C+';"></span>'+
+        '<button id="pr-wt" onclick="pumsokWriteTimer('+sd.duration+')" style="background:'+C+';color:#fff;border:none;border-radius:10px;padding:8px 18px;font-size:var(--fs-caption);font-weight:700;cursor:pointer;">⏱ '+fmt(sd.duration)+'</button>'+
+        '<span id="pr-wd" style="font-size:var(--fs-body);font-weight:700;color:'+C+';"></span>'+
       '</div>'
       :'';
     return timerPart+
-      '<textarea id="pr-w" placeholder="'+ph+'" style="width:100%;box-sizing:border-box;min-height:150px;padding:14px;border:1.5px solid #e0ddd8;border-radius:14px;font-size:1em;line-height:1.8;resize:none;outline:none;color:#2c2c2c;font-family:inherit;background:#fafaf8;">'+val+'</textarea>'+
+      '<textarea id="pr-w" placeholder="'+ph+'" style="width:100%;box-sizing:border-box;min-height:150px;padding:14px;border:1.5px solid #e0ddd8;border-radius:14px;font-size:var(--fs-body);line-height:1.8;resize:none;outline:none;color:#2c2c2c;font-family:inherit;background:#fafaf8;">'+val+'</textarea>'+
       '<div style="text-align:right;margin-top:8px;">'+
-        '<button onclick="pumsokSave(\''+sd.id+'\')" style="background:'+C+';color:#fff;border:none;border-radius:10px;padding:8px 20px;font-size:.85em;font-weight:700;cursor:pointer;">💾 저장</button>'+
+        '<button onclick="pumsokSave(\''+sd.id+'\')" style="background:'+C+';color:#fff;border:none;border-radius:10px;padding:8px 20px;font-size:var(--fs-caption);font-weight:700;cursor:pointer;">💾 저장</button>'+
       '</div>';
   }
 
@@ -257,11 +257,11 @@
             localStorage.getItem('daily_vow')||'';
     if(vow) return(
       '<div style="background:'+CL+';border-radius:14px;padding:20px;margin:10px 0;text-align:center;">'+
-        '<div style="font-size:1.05em;font-weight:700;color:'+C+';line-height:1.9;">"'+esc(vow)+'"</div>'+
+        '<div style="font-size:var(--fs-body);font-weight:700;color:'+C+';line-height:1.9;">"'+esc(vow)+'"</div>'+
       '</div>'+
-      '<div style="text-align:center;font-size:.85em;color:#888;margin-top:8px;">소리 내어 읽고, 눈 감고 30초간 그 장면을 떠올려보세요 🗣️</div>'
+      '<div style="text-align:center;font-size:var(--fs-caption);color:#888;margin-top:8px;">소리 내어 읽고, 눈 감고 30초간 그 장면을 떠올려보세요 🗣️</div>'
     );
-    return '<div style="text-align:center;padding:24px;color:#888;font-size:.9em;line-height:1.8;background:#f5f5f3;border-radius:12px;">다짐 탭에서 나만의 다짐을 먼저 설정해주세요 💚</div>';
+    return '<div style="text-align:center;padding:24px;color:#888;font-size:var(--fs-caption);line-height:1.8;background:#f5f5f3;border-radius:12px;">다짐 탭에서 나만의 다짐을 먼저 설정해주세요 💚</div>';
   }
 
   function affHtml(C, CL){
@@ -273,23 +273,23 @@
     }catch(e){}
     if(text) return(
       '<div style="background:'+CL+';border-radius:14px;padding:20px;margin:10px 0;text-align:center;">'+
-        '<div style="font-size:1.05em;font-weight:700;color:'+C+';line-height:1.9;">"'+esc(text)+'"</div>'+
+        '<div style="font-size:var(--fs-body);font-weight:700;color:'+C+';line-height:1.9;">"'+esc(text)+'"</div>'+
       '</div>'+
-      '<div style="text-align:center;font-size:.85em;color:#888;margin-top:8px;">소리 내어 읽고, 눈을 감고 마음에 새겨보세요 ✨</div>'
+      '<div style="text-align:center;font-size:var(--fs-caption);color:#888;margin-top:8px;">소리 내어 읽고, 눈을 감고 마음에 새겨보세요 ✨</div>'
     );
-    return '<div style="text-align:center;padding:24px;color:#888;font-size:.9em;line-height:1.8;background:#f5f5f3;border-radius:12px;">홈 탭에서 오늘의 확언을 먼저 확인해주세요 ✨</div>';
+    return '<div style="text-align:center;padding:24px;color:#888;font-size:var(--fs-caption);line-height:1.8;background:#f5f5f3;border-radius:12px;">홈 탭에서 오늘의 확언을 먼저 확인해주세요 ✨</div>';
   }
 
   function checkHtml(sd, C, CL){
     var val=getChk(sd.id);
     var vow=localStorage.getItem('userVow')||localStorage.getItem('myVow')||
             localStorage.getItem('vow_text')||localStorage.getItem('vowText')||'';
-    var vowPart=vow?'<div style="background:'+CL+';border-radius:12px;padding:14px;margin-bottom:18px;text-align:center;"><div style="font-size:.95em;font-weight:700;color:'+C+';line-height:1.8;">"'+esc(vow)+'"</div></div>':'';
+    var vowPart=vow?'<div style="background:'+CL+';border-radius:12px;padding:14px;margin-bottom:18px;text-align:center;"><div style="font-size:var(--fs-body);font-weight:700;color:'+C+';line-height:1.8;">"'+esc(vow)+'"</div></div>':'';
     var opts=[{v:'0',e:'✅',l:'완전히 지켰어요!'},{v:'1',e:'🤔',l:'절반 정도 지켰어요'},{v:'2',e:'💪',l:'내일은 꼭 지킬게요!'}];
     var btns=opts.map(function(o){
       var sel=val===o.v;
       return '<button onclick="pumsokCheck(\''+sd.id+'\',\''+o.v+'\')" style="'+
-        'min-height:56px;border-radius:14px;font-size:.95em;font-weight:700;cursor:pointer;'+
+        'min-height:56px;border-radius:14px;font-size:var(--fs-body);font-weight:700;cursor:pointer;'+
         'border:2px solid '+(sel?C:'#e0ddd8')+';background:'+(sel?CL:'#fff')+';color:'+(sel?C:'#555')+';'+
         'transition:all .2s;width:100%;margin-bottom:8px;-webkit-tap-highlight-color:transparent;">'+
         o.e+' '+o.l+'</button>';
@@ -317,11 +317,11 @@
     document.getElementById('pumsok-inner').innerHTML=
       '<div style="text-align:center;padding:80px 24px;">'+
         '<div style="font-size:80px;margin-bottom:20px;">'+r.emoji+'</div>'+
-        '<div style="font-size:1.5em;font-weight:900;color:'+r.color+';margin-bottom:12px;">'+r.label+' 완료! 🎉</div>'+
-        '<div style="font-size:.95em;color:#555;line-height:1.9;margin-bottom:32px;">'+
+        '<div style="font-size:var(--fs-title);font-weight:700;color:'+r.color+';margin-bottom:12px;">'+r.label+' 완료! 🎉</div>'+
+        '<div style="font-size:var(--fs-body);color:#555;line-height:1.9;margin-bottom:32px;">'+
           (RS.type==='morning'?'오늘 하루도 최고의 하루가 될 거예요!<br>+3 포인트 적립 🌿':'오늘 하루도 수고 많으셨어요!<br>편안한 밤 되세요 🌙<br>+3 포인트 적립')+
         '</div>'+
-        '<button onclick="pumsokClose()" style="background:'+r.color+';color:#fff;border:none;border-radius:16px;padding:16px 40px;font-size:1.05em;font-weight:700;cursor:pointer;">확인</button>'+
+        '<button onclick="pumsokClose()" style="background:'+r.color+';color:#fff;border:none;border-radius:16px;padding:16px 40px;font-size:var(--fs-body);font-weight:700;cursor:pointer;">확인</button>'+
       '</div>';
   };
 
@@ -426,10 +426,10 @@ window.renderPumsokRoutine = function(container) {
       '-webkit-tap-highlight-color:transparent;">' +
       '<div style="font-size:1.6em;flex-shrink:0;">' + s.icon + '</div>' +
       '<div style="flex:1;min-width:0;">' +
-        '<div style="font-size:.95em;font-weight:700;color:' + (stepDone ? r.color : '#1a1a1a') + ';">' + s.title + '</div>' +
-        '<div style="font-size:.78em;color:#888;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + s.desc.split('\n')[0] + '</div>' +
+        '<div style="font-size:var(--fs-body);font-weight:700;color:' + (stepDone ? r.color : '#1a1a1a') + ';">' + s.title + '</div>' +
+        '<div style="font-size:var(--fs-caption);color:#888;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + s.desc.split('\n')[0] + '</div>' +
       '</div>' +
-      '<div style="font-size:1.2em;flex-shrink:0;">' + (stepDone ? '✅' : '○') + '</div>' +
+      '<div style="font-size:var(--fs-title);flex-shrink:0;">' + (stepDone ? '✅' : '○') + '</div>' +
     '</div>';
   }).join('');
 
@@ -443,17 +443,17 @@ window.renderPumsokRoutine = function(container) {
       /* 헤더 카드 */
       '<div style="background:linear-gradient(135deg,' + r.color + ',' + r.colorAlt + ');' +
         'border-radius:18px;padding:20px;margin-bottom:16px;">' +
-        '<div style="font-size:.78em;color:rgba(255,255,255,.75);font-weight:700;margin-bottom:4px;">' +
+        '<div style="font-size:var(--fs-caption);color:rgba(255,255,255,.75);font-weight:700;margin-bottom:4px;">' +
           r.emoji + ' ' + r.label + ' · ' + r.steps.length + '단계' +
         '</div>' +
-        '<div style="font-size:1.15em;font-weight:800;color:#fff;margin-bottom:12px;">' +
+        '<div style="font-size:var(--fs-title);font-weight:700;color:#fff;margin-bottom:12px;">' +
           (done ? '✅ 오늘 루틴 완료!' : '하나씩 차례로 해요') +
         '</div>' +
         /* 진행 바 */
         '<div style="background:rgba(255,255,255,.25);border-radius:10px;height:8px;overflow:hidden;margin-bottom:6px;">' +
           '<div style="height:100%;background:#fff;border-radius:10px;width:' + pct + '%;transition:width .4s;"></div>' +
         '</div>' +
-        '<div style="font-size:.75em;color:rgba(255,255,255,.75);">' +
+        '<div style="font-size:var(--fs-caption);color:rgba(255,255,255,.75);">' +
           doneCount + ' / ' + r.steps.length + ' 완료 · ' + pct + '%' +
         '</div>' +
       '</div>' +
@@ -465,7 +465,7 @@ window.renderPumsokRoutine = function(container) {
       '<div style="text-align:center;margin-top:8px;padding-bottom:16px;">' +
         '<button onclick="pumsokSwitchRoutine()" style="' +
           'background:transparent;border:1px solid #e0ddd8;border-radius:10px;' +
-          'padding:8px 20px;font-size:.8em;color:#888;cursor:pointer;">' +
+          'padding:8px 20px;font-size:var(--fs-caption);color:#888;cursor:pointer;">' +
           (type === 'morning' ? '🌙 저녁 루틴으로 전환' : '🌅 아침 루틴으로 전환') +
         '</button>' +
       '</div>' +
