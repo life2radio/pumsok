@@ -119,68 +119,18 @@ function _renderRoutine() {
     if (!el) return;
 
     const dc = getDayCount();
-    const data = (typeof affirmationsData !== 'undefined' && affirmationsData.length)
-        ? affirmationsData[(dc - 1) % affirmationsData.length]
-        : { theme:'긍정', text:'나는 오늘도 최선을 다한다.', action:'한 가지 작은 도전을 해보세요.' };
-
-    const today = getTodayStr();
-    const moodBefore = safeGetItem('mood_before_' + today, null);
-    const completed  = safeGetJSON('completed_dates', []).includes(today);
     const nick = safeGetItem('my_nickname', '');
-    const blurred = (moodBefore === null || moodBefore === '');
-
-    const EMOJIS = ['😔','😐','🙂','😊','😄'];
     const greet = nick ? nick + '님, 오늘도 화이팅!' : '오늘도 화이팅!';
 
-    el.innerHTML = '<div class="view-inner">' +
+    el.innerHTML =
+        '<div class="view-inner">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">' +
+        '<span style="font-size:var(--fs-body);font-weight:700;color:var(--color-primary);">' + greet + '</span>' +
+        '<span style="background:var(--color-primary);color:#fff;border-radius:20px;padding:4px 12px;font-size:var(--fs-caption);font-weight:700;">Day ' + dc + '</span>' +
+        '</div>' +
+        '<div id="pumsok-routine-area"></div>' +
+        '</div>';
 
-    // 인사 + Day 뱃지
-    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">' +
-    '<span style="font-size:0.9em;font-weight:700;color:var(--color-primary);">' + greet + '</span>' +
-    '<span style="background:var(--color-primary);color:#fff;border-radius:20px;padding:4px 12px;font-size:0.78em;font-weight:700;">Day ' + dc + '</span>' +
-    '</div>' +
-
-    // 오늘의 확언 카드
-    '<div class="green-card section-gap">' +
-    '<div style="font-size:0.72em;color:rgba(255,255,255,0.7);margin-bottom:4px;">오늘의 확언 · "' + data.theme + '"</div>' +
-    '<div id="aff-main-text" style="font-size:1.05em;font-weight:700;color:#fff;line-height:1.8;' +
-        (blurred ? 'filter:blur(5px);user-select:none;' : '') + '">' + data.text + '</div>' +
-    (blurred ? '<div style="text-align:center;font-size:0.8em;color:rgba(255,255,255,0.8);margin-top:8px;">👇 기분을 선택하면 확언이 열려요</div>' : '') +
-    '</div>' +
-
-    // 기분 체크 (오늘 확언 전)
-    '<div class="card section-gap">' +
-    '<div style="font-size:0.78em;font-weight:700;color:var(--color-text-secondary);margin-bottom:10px;">오늘 기분은 어떤가요?</div>' +
-    '<div style="display:flex;gap:6px;justify-content:center;">' +
-    EMOJIS.map(function(em, i) {
-        const sel = (moodBefore !== null && moodBefore !== '' && parseInt(moodBefore) === i);
-        return '<button onclick="selectMood(' + i + ')" style="font-size:1.7em;padding:6px 10px;border:none;' +
-            'background:' + (sel ? '#1B4332' : 'transparent') + ';border-radius:10px;cursor:pointer;' +
-            'transition:transform 0.15s;transform:' + (sel ? 'scale(1.15)' : 'scale(1)') + ';">' + em + '</button>';
-    }).join('') +
-    '</div></div>' +
-
-    // 루틴 영역 (pumsok_extra.js 가 채운다)
-    '<div id="pumsok-routine-area" class="section-gap"></div>' +
-
-    // 완료 버튼
-    '<button onclick="completeToday()" class="' + (completed ? 'btn-secondary' : 'btn-primary') + ' section-gap"' +
-        (completed ? ' disabled style="opacity:0.7;"' : '') + '>' +
-    (completed ? '✅ 오늘 완료됨' : '✓ 오늘 확언 완료 체크') +
-    '</button>' +
-
-    // 행동지침
-    (!blurred ? '<div class="card section-gap">' +
-    '<div style="font-size:0.72em;font-weight:700;color:var(--color-accent);margin-bottom:6px;">☐ 오늘 해볼까요?</div>' +
-    '<div class="body-text">' + data.action + '</div>' +
-    '</div>' : '') +
-
-    // TTS 버튼 (블러 해제 후)
-    (!blurred ? '<button onclick="playAffirmTTS()" class="btn-secondary section-gap">🔊 소리로 듣기</button>' : '') +
-
-    '</div>';
-
-    // 루틴 렌더 위임
     if (typeof window.renderPumsokRoutine === 'function') {
         window.renderPumsokRoutine(document.getElementById('pumsok-routine-area'));
     }
