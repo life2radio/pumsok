@@ -1,5 +1,5 @@
 /* 인생2막라디오 루틴앱 — 서비스워커 */
-var CACHE = 'pumsok-v1';
+var CACHE = 'pumsok-v2';
 var ASSETS = ['/pumsok/', '/index.html', '/style.css', '/data.js', '/app.js', '/extra.js'];
 
 self.addEventListener('install', function(e) {
