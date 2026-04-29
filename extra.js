@@ -520,12 +520,8 @@
     setTimeout(init,300);
   }
 
-})();
-
-/* ============================================================
- * renderPumsokRoutine — app.js가 호출하는 루틴 메인 페이지
- * ============================================================ */
-window.renderPumsokRoutine = function(container) {
+  /* ── renderPumsokRoutine: IIFE 안에서 정의해야 내부 함수 접근 가능 ── */
+  window.renderPumsokRoutine = function(container) {
   if (!container) return;
   var type = routineType();
   var r = ROUTINES[type];
@@ -626,3 +622,5 @@ window.pumsokFinish = function() {
     if (area) window.renderPumsokRoutine(area);
   }, 200);
 };
+
+})();
