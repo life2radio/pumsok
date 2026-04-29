@@ -106,7 +106,7 @@
 
   function injectCard(){
     if(document.getElementById('pumsok-card')) return;
-    var h=document.getElementById('view-home');
+    var h=document.getElementById('view-routine');
     if(!h) return;
     h.insertBefore(buildCard(), h.firstElementChild);
   }
