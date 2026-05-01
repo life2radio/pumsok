@@ -413,7 +413,7 @@ function buildStepBody(sd,C,CL){
 
 /* 침묵 — C안: 질문 먼저, 답에 따라 방법 안내 */
 function buildSilence(C){
-  var sel=safeGet('ps_silence_method','');
+  var sel=safeGet('ps_silence_method_'+todayStr(),'');
 
   var METHODS={
     breath:{
@@ -467,7 +467,7 @@ function buildSilence(C){
 
   /* 방법 선택 후 — 가이드 + 타이머 */
   var m=METHODS[sel];
-  if(!m) { safeSet('ps_silence_method',''); return buildSilence(C); }
+  if(!m) { safeSet('ps_silence_method_'+todayStr(),''); return buildSilence(C); }
 
   return '<div>'+
     m.guide+
@@ -569,11 +569,12 @@ function buildBreath(C){
 ──────────────────────────────────────── */
 window.psClearSilence=function(){
   clearInterval(RS.iv);
-  safeSet('ps_silence_method','');
+  safeSet('ps_silence_method_'+todayStr(),'');
   renderStep();
 };
 
 window.psSelectSilence=function(id,sec){
+  safeSet('ps_silence_method_'+todayStr(),id);
   safeSet('ps_silence_method',id);
   renderStep();
   setTimeout(function(){
