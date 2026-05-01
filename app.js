@@ -60,7 +60,7 @@ window.switchView = function(name){
   var ht=$('header-title'); if(ht) ht.textContent=VIEW_TITLES[name]||'품속';
   _curView=name;
 
-  if(name==='routine')    renderRoutine();
+  if(name==='routine')    { renderRoutine(); setTimeout(initRoutineScroll, 100); }
   if(name==='affirmation') renderAffirmation();
   if(name==='vow')        renderVow();
   if(name==='memo')       renderMemo();
@@ -205,6 +205,7 @@ function renderRoutine(){
     '<div class="view-inner">'+
 
     /* 상단 인사 */
+    '<div id="routine-top" style="transition:all .3s;overflow:hidden;">'+
     '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">'+
       '<div>'+
         '<div style="font-size:var(--fs-caption);color:var(--color-text-muted);">'+greet+'</div>'+
@@ -217,8 +218,9 @@ function renderRoutine(){
         '<div style="font-size:var(--fs-caption);color:var(--color-text-muted);">'+doneCount+'/'+r.steps.length+' 완료</div>'+
       '</div>'+
     '</div>'+
+    '</div>'+
 
-    /* 진행률 바 */
+    /* 진행률 바 (항상 표시) */
     '<div style="background:#e8e4dd;border-radius:10px;height:6px;overflow:hidden;margin-bottom:20px;">'+
       '<div style="height:100%;background:'+r.color+';border-radius:10px;width:'+pct+'%;transition:width .5s;"></div>'+
     '</div>'+
@@ -242,6 +244,25 @@ window.toggleRoutineType=function(){
   routineType=function(){ return _forceType||origFn(); };
   renderRoutine();
 };
+
+/* 루틴 탭 스크롤 → 상단 인사 영역 축소 */
+function initRoutineScroll(){
+  var section=$('view-routine');
+  if(!section) return;
+  section.addEventListener('scroll', function(){
+    var top=$('routine-top');
+    if(!top) return;
+    if(section.scrollTop > 40){
+      top.style.maxHeight='0px';
+      top.style.opacity='0';
+      top.style.marginBottom='0';
+    } else {
+      top.style.maxHeight='120px';
+      top.style.opacity='1';
+      top.style.marginBottom='';
+    }
+  });
+}
 
 /* ────────────────────────────────────────
    4. 루틴 모달
