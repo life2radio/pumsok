@@ -125,51 +125,110 @@ function renderRoutine(){
   var type=routineType(), r=ROUTINES[type];
   var dc=getDayCount();
   var nick=safeGet('my_nickname','');
-  var greet=nick?nick+'님, 오늘도 화이팅!':'오늘도 화이팅!';
+  var greet=nick?nick+'님':'안녕하세요';
 
   var doneCount=r.steps.filter(function(s){ return isStepDone(s.id); }).length;
   var pct=Math.round(doneCount/r.steps.length*100);
   var allDone=doneCount===r.steps.length;
 
+  /* 다음 할 단계 인덱스 */
+  var nextIdx=-1;
+  for(var ni=0;ni<r.steps.length;ni++){
+    if(!isStepDone(r.steps[ni].id)){ nextIdx=ni; break; }
+  }
+
+  /* 단계 리스트 — 타임라인 스타일 */
   var stepsHtml=r.steps.map(function(s,i){
     var done=isStepDone(s.id);
-    return '<div onclick="openRoutineStep(\''+type+'\','+i+')" style="'+
-      'display:flex;align-items:center;gap:14px;'+
-      'background:'+(done?r.light:'#fff')+';'+
-      'border:1.5px solid '+(done?r.color:'#e0ddd8')+';'+
-      'border-radius:14px;padding:14px 16px;margin-bottom:10px;cursor:pointer;'+
-      '-webkit-tap-highlight-color:transparent;">'+
-      '<div style="font-size:1.6em;flex-shrink:0;">'+s.icon+'</div>'+
-      '<div style="flex:1;min-width:0;">'+
-        '<div style="font-size:var(--fs-body);font-weight:700;color:'+(done?r.color:'#1a1a1a')+';">'+s.title+'</div>'+
-        '<div style="font-size:var(--fs-caption);color:#888;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+s.desc.split('\n')[0]+'</div>'+
+    var isNext=i===nextIdx;
+    var isLast=i===r.steps.length-1;
+
+    /* 번호 원 */
+    var numBg=done?r.color:(isNext?r.color:'#e0ddd8');
+    var numColor=done||isNext?'#fff':'#aaa';
+    var numContent=done?'✓':(i+1);
+
+    /* 카드 스타일 */
+    var cardBg=done?r.light:(isNext?'#fff':'#f9f9f7');
+    var cardBorder=done?r.color:(isNext?r.color:'#e8e4dd');
+    var cardBorderW=isNext?'2px':'1.5px';
+    var cardOpacity=(!done&&!isNext&&nextIdx!==-1)?'0.6':'1';
+
+    /* 연결선 (마지막 제외) */
+    var lineHtml=!isLast?
+      '<div style="position:absolute;left:19px;top:100%;width:2px;height:14px;'+
+        'background:'+(done?r.color:'#e0ddd8')+';"></div>'
+      :'';
+
+    return '<div style="position:relative;margin-bottom:14px;">'+
+      lineHtml+
+      '<div onclick="openRoutineStep(\''+type+'\','+i+')" style="'+
+        'display:flex;align-items:center;gap:14px;'+
+        'background:'+cardBg+';'+
+        'border:'+cardBorderW+' solid '+cardBorder+';'+
+        'border-radius:16px;padding:14px 16px;cursor:pointer;'+
+        'opacity:'+cardOpacity+';'+
+        'transition:all .2s;'+
+        '-webkit-tap-highlight-color:transparent;'+
+        (isNext?'box-shadow:0 4px 16px rgba(0,0,0,0.10);':'')+
+      '">'+
+
+        /* 번호 원 */
+        '<div style="width:36px;height:36px;border-radius:50%;'+
+          'background:'+numBg+';color:'+numColor+';'+
+          'display:flex;align-items:center;justify-content:center;'+
+          'font-size:'+(done?'1.1em':'0.9em')+';font-weight:800;flex-shrink:0;">'+
+          numContent+
+        '</div>'+
+
+        /* 내용 */
+        '<div style="flex:1;min-width:0;">'+
+          '<div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">'+
+            '<span style="font-size:1.1em;">'+s.icon+'</span>'+
+            '<span style="font-size:var(--fs-body);font-weight:700;color:'+(done?r.color:(isNext?'#1a1a1a':'#aaa'))+';">'+s.title+'</span>'+
+            (isNext?'<span style="font-size:10px;background:'+r.color+';color:#fff;border-radius:4px;padding:2px 6px;font-weight:700;">지금</span>':'')+
+          '</div>'+
+          '<div style="font-size:var(--fs-caption);color:'+(done?r.color:'#aaa')+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+
+            s.desc.split('\n')[0]+
+          '</div>'+
+        '</div>'+
+
+        /* 완료 표시 */
+        '<div style="font-size:1.2em;flex-shrink:0;color:'+(done?r.color:'#ddd')+';">'+
+          (done?'✅':'›')+
+        '</div>'+
       '</div>'+
-      '<div style="font-size:1.3em;flex-shrink:0;">'+(done?'✅':'○')+'</div>'+
     '</div>';
   }).join('');
 
   el.innerHTML=
     '<div class="view-inner">'+
+
+    /* 상단 인사 */
     '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">'+
-      '<span style="font-size:var(--fs-body);font-weight:700;color:var(--color-primary);">'+greet+'</span>'+
-      '<span style="background:var(--color-primary);color:#fff;border-radius:20px;padding:4px 12px;font-size:var(--fs-caption);font-weight:700;">Day '+dc+'</span>'+
-    '</div>'+
-
-    '<div style="background:linear-gradient(135deg,'+r.color+','+r.colorAlt+');border-radius:18px;padding:20px;margin-bottom:16px;">'+
-      '<div style="font-size:var(--fs-caption);color:rgba(255,255,255,0.75);font-weight:700;margin-bottom:4px;">'+r.emoji+' '+r.label+' · '+r.steps.length+'단계</div>'+
-      '<div style="font-size:var(--fs-title);font-weight:800;color:#fff;margin-bottom:12px;">'+(allDone?'✅ 오늘 루틴 완료!':'하나씩 차례로 해요')+'</div>'+
-      '<div style="background:rgba(255,255,255,0.25);border-radius:10px;height:8px;overflow:hidden;margin-bottom:6px;">'+
-        '<div style="height:100%;background:#fff;border-radius:10px;width:'+pct+'%;transition:width .4s;"></div>'+
+      '<div>'+
+        '<div style="font-size:var(--fs-caption);color:var(--color-text-muted);">'+greet+'</div>'+
+        '<div style="font-size:var(--fs-title);font-weight:800;color:var(--color-primary);">'+
+          (allDone?'오늘 루틴 완료! 🎉':(doneCount===0?r.emoji+' '+r.label+' 시작해요':'계속 이어가요 💪'))+
+        '</div>'+
       '</div>'+
-      '<div style="font-size:var(--fs-caption);color:rgba(255,255,255,0.75);">'+doneCount+' / '+r.steps.length+' 완료 · '+pct+'%</div>'+
+      '<div style="text-align:right;">'+
+        '<div style="background:var(--color-primary);color:#fff;border-radius:20px;padding:4px 12px;font-size:var(--fs-caption);font-weight:700;margin-bottom:4px;">Day '+dc+'</div>'+
+        '<div style="font-size:var(--fs-caption);color:var(--color-text-muted);">'+doneCount+'/'+r.steps.length+' 완료</div>'+
+      '</div>'+
     '</div>'+
 
+    /* 진행률 바 */
+    '<div style="background:#e8e4dd;border-radius:10px;height:6px;overflow:hidden;margin-bottom:20px;">'+
+      '<div style="height:100%;background:'+r.color+';border-radius:10px;width:'+pct+'%;transition:width .5s;"></div>'+
+    '</div>'+
+
+    /* 단계 리스트 */
     stepsHtml+
 
+    /* 전환 버튼 */
     '<div style="text-align:center;margin-top:8px;padding-bottom:8px;">'+
-      '<button onclick="toggleRoutineType()" style="'+
-        'background:transparent;border:1px solid #e0ddd8;border-radius:10px;'+
-        'padding:8px 20px;font-size:var(--fs-caption);color:#888;cursor:pointer;">'+
+      '<button onclick="toggleRoutineType()" style="background:transparent;border:1px solid #e0ddd8;border-radius:10px;padding:8px 20px;font-size:var(--fs-caption);color:#aaa;cursor:pointer;">'+
         (type==='morning'?'🌙 저녁 루틴 보기':'🌅 아침 루틴 보기')+
       '</button>'+
     '</div>'+
