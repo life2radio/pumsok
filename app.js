@@ -50,21 +50,30 @@ var VIEW_TITLES = {
   memo:'메모', test:'테스트', settings:'설정'
 };
 
+var _viewHistory = [];
+
 window.switchView = function(name){
   if(!name) return;
+
+  /* 히스토리 스택 관리 */
+  if(_viewHistory.length===0 || _viewHistory[_viewHistory.length-1]!==name){
+    _viewHistory.push(name);
+    history.pushState({view:name}, '', '');
+  }
+
   document.querySelectorAll('.view-section').forEach(function(s){ s.classList.remove('active'); });
   document.querySelectorAll('.nav-btn').forEach(function(b){ b.classList.remove('active'); });
-  var el=$(  'view-'+name); if(el) el.classList.add('active');
+  var el=$('view-'+name); if(el) el.classList.add('active');
   var nb=document.querySelector('.nav-btn[data-view="'+name+'"]');
   if(nb) nb.classList.add('active');
   var ht=$('header-title'); if(ht) ht.textContent=VIEW_TITLES[name]||'품속';
   _curView=name;
 
-  if(name==='routine')    { renderRoutine(); setTimeout(initRoutineScroll, 100); }
-  if(name==='affirmation') renderAffirmation();
-  if(name==='vow')        renderVow();
-  if(name==='memo')       renderMemo();
-  if(name==='settings')   renderSettings();
+  if(name==='routine')     { renderRoutine(); setTimeout(initRoutineScroll, 100); }
+  if(name==='affirmation')  renderAffirmation();
+  if(name==='vow')          renderVow();
+  if(name==='memo')         renderMemo();
+  if(name==='settings')     renderSettings();
 };
 
 /* ────────────────────────────────────────
@@ -809,6 +818,27 @@ document.addEventListener('DOMContentLoaded',function(){
     btn.addEventListener('click',function(){
       switchView(this.getAttribute('data-view'));
     });
+  });
+
+  // 뒤로가기 처리
+  window.addEventListener('popstate', function(e){
+    /* 루틴 모달이 열려있으면 모달만 닫기 */
+    var modal=$('ps-modal');
+    if(modal && modal.style.display==='block'){
+      psClose();
+      history.pushState({view:_curView}, '', '');
+      return;
+    }
+    /* 히스토리 스택에서 이전 탭으로 */
+    _viewHistory.pop();
+    if(_viewHistory.length>0){
+      var prev=_viewHistory[_viewHistory.length-1];
+      _viewHistory.pop(); /* switchView 안에서 다시 push하므로 */
+      switchView(prev);
+    } else {
+      /* 스택 비었으면 루틴 탭으로 */
+      switchView('routine');
+    }
   });
 
   // 첫 화면
