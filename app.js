@@ -69,7 +69,12 @@ window.switchView = function(name){
   var ht=$('header-title'); if(ht) ht.textContent=VIEW_TITLES[name]||'품속';
   _curView=name;
 
-  if(name==='routine')     { renderRoutine(); setTimeout(initRoutineScroll, 100); }
+  if(name==='routine')     {
+    var s=$('view-routine');
+    if(s) s._scrollBound=false;
+    renderRoutine();
+    setTimeout(initRoutineScroll, 150);
+  }
   if(name==='affirmation')  renderAffirmation();
   if(name==='vow')          renderVow();
   if(name==='memo')         renderMemo();
@@ -257,18 +262,26 @@ window.toggleRoutineType=function(){
 /* 루틴 탭 스크롤 → 상단 인사 영역 축소 */
 function initRoutineScroll(){
   var section=$('view-routine');
-  if(!section) return;
+  if(!section || section._scrollBound) return;
+  section._scrollBound = true;
+
+  /* routine-top 초기 maxHeight 설정 */
+  var top=$('routine-top');
+  if(top) top.style.maxHeight='200px';
+
   section.addEventListener('scroll', function(){
     var top=$('routine-top');
     if(!top) return;
-    if(section.scrollTop > 40){
+    if(section.scrollTop > 50){
       top.style.maxHeight='0px';
       top.style.opacity='0';
       top.style.marginBottom='0';
+      top.style.padding='0';
     } else {
-      top.style.maxHeight='120px';
+      top.style.maxHeight='200px';
       top.style.opacity='1';
       top.style.marginBottom='';
+      top.style.padding='';
     }
   });
 }
