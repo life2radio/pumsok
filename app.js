@@ -575,7 +575,6 @@ window.psClearSilence=function(){
 
 window.psSelectSilence=function(id,sec){
   safeSet('ps_silence_method_'+todayStr(),id);
-  safeSet('ps_silence_method',id);
   renderStep();
   setTimeout(function(){
     var s=$('ps-s'); if(s) s.scrollIntoView({behavior:'smooth',block:'center'});
