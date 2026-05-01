@@ -411,56 +411,74 @@ function buildStepBody(sd,C,CL){
   }
 }
 
-/* 침묵 */
+/* 침묵 — C안: 질문 먼저, 답에 따라 방법 안내 */
 function buildSilence(C){
   var sel=safeGet('ps_silence_method','');
-  var methods=[
-    {id:'breath',    label:'복식호흡',     desc:'4초 들이마시고 6초 내쉬기 · 1분',  sec:60},
-    {id:'gratitude', label:'감사 떠올리기', desc:'고마운 사람 마음속으로 · 1분',     sec:60},
-    {id:'fiverule',  label:'5분 룰',       desc:'힘든 감정 충분히 느끼기 · 5분',    sec:300},
-    {id:'rest',      label:'그냥 쉬기',    desc:'창밖 보기, 아무것도 안 해도 OK · 1분', sec:60}
-  ];
-  var cards=methods.map(function(m){
-    var isSel=sel===m.id;
-    return '<button onclick="psSelectSilence(\''+m.id+'\','+m.sec+')" style="'+
-      'width:100%;text-align:left;padding:14px 16px;margin-bottom:8px;cursor:pointer;'+
-      'background:'+(isSel?C_GLIGHT:'#fff')+';'+
-      'border:'+(isSel?'2px solid '+C:'1.5px solid #e0ddd8')+';'+
-      'border-radius:14px;-webkit-tap-highlight-color:transparent;">'+
-      '<div style="font-size:var(--fs-body);font-weight:700;color:'+(isSel?C:'#1a1a1a')+';margin-bottom:3px;">'+m.label+'</div>'+
-      '<div style="font-size:var(--fs-caption);color:#888;">'+m.desc+'</div>'+
-    '</button>';
-  }).join('');
 
-  var selData=methods.filter(function(m){return m.id===sel;})[0];
-  var timerBlock='';
-  if(selData){
-    var guides={
-      breath:'<div style="background:'+C_GLIGHT+';border-radius:12px;padding:14px;margin-bottom:14px;font-size:var(--fs-caption);color:'+C+';line-height:2;text-align:center;">'+
+  var METHODS={
+    breath:{
+      q:'😊 괜찮아요', label:'복식호흡', sec:60,
+      guide:'<div style="background:'+C_GLIGHT+';border-radius:12px;padding:16px;margin-bottom:16px;text-align:center;font-size:var(--fs-caption);color:'+C+';line-height:2;">'+
         '가슴과 배에 손을 올려요<br>코로 <b>4초</b> 들이마시기<br>입으로 <b>6초</b> 내쉬기</div>'+
         '<div style="display:flex;justify-content:center;margin-bottom:16px;">'+
-          '<div id="ps-ba-wrap" style="position:relative;width:130px;height:130px;display:flex;align-items:center;justify-content:center;">'+
+          '<div style="position:relative;width:130px;height:130px;display:flex;align-items:center;justify-content:center;">'+
             '<div id="ps-ba-outer" style="position:absolute;width:120px;height:120px;border-radius:50%;border:2px solid '+C+';transition:all .5s;"></div>'+
             '<div id="ps-ba-inner" style="position:absolute;width:60px;height:60px;border-radius:50%;background:'+C+';opacity:0.2;transition:all .5s;"></div>'+
             '<span id="ps-ba-txt" style="position:relative;font-size:var(--fs-caption);font-weight:700;color:'+C+';">준비</span>'+
           '</div>'+
-        '</div>',
-      gratitude:'<div style="background:'+C_GLIGHT+';border-radius:12px;padding:14px;margin-bottom:14px;font-size:var(--fs-caption);color:'+C+';line-height:2;">'+
-        '힘든 사람, 아픈 사람, 고마운 사람<br>이름을 마음속으로 떠올려요<br><b>"건강하길 바란다" "감사하다"</b></div>',
-      fiverule:'<div style="background:'+C_GLIGHT+';border-radius:12px;padding:14px;margin-bottom:14px;font-size:var(--fs-caption);color:'+C+';line-height:2;">'+
-        '지금 느끼는 감정을 <b>충분히</b> 느껴요<br>억누르지 말고, 판단하지 말고<br>타이머 울리면 "바꿀 수 없다" 하고 넘어가요</div>',
-      rest:'<div style="background:'+C_GLIGHT+';border-radius:12px;padding:14px;margin-bottom:14px;font-size:var(--fs-caption);color:'+C+';line-height:2;">'+
-        '창밖을 바라보거나 눈을 감아요<br>새 소리, 햇빛, 바람<br>생각이 떠올라도 그냥 흘려보내요</div>'
-    };
-    timerBlock=(guides[sel]||'')+
-      '<div id="ps-t" style="text-align:center;font-size:3em;font-weight:700;color:'+C+';letter-spacing:2px;margin-bottom:10px;">'+fmt(selData.sec)+'</div>'+
-      '<div style="background:#e8e4dd;border-radius:10px;height:8px;overflow:hidden;margin-bottom:12px;">'+
-        '<div id="ps-b" style="height:100%;background:'+C+';border-radius:10px;width:100%;transition:width 1s linear;"></div>'+
-      '</div>'+
-      '<div style="text-align:center;font-size:var(--fs-caption);color:#888;margin-bottom:14px;">📵 핸드폰을 내려놓고 시작하세요</div>'+
-      '<button id="ps-s" onclick="psSilenceStart(\''+sel+'\','+selData.sec+')" style="width:100%;padding:15px;background:'+C+';color:#fff;border:none;border-radius:14px;font-size:var(--fs-body);font-weight:700;cursor:pointer;">▶ 시작하기</button>';
+        '</div>'
+    },
+    gratitude:{
+      q:'💛 감사한 마음이에요', label:'감사 떠올리기', sec:60,
+      guide:'<div style="background:'+C_GLIGHT+';border-radius:12px;padding:16px;margin-bottom:16px;font-size:var(--fs-caption);color:'+C+';line-height:2;text-align:center;">'+
+        '힘든 사람, 아픈 사람, 고마운 사람<br>이름을 마음속으로 떠올려요<br><b>"건강하길 바란다" "감사하다"</b></div>'
+    },
+    fiverule:{
+      q:'😔 힘든 일이 있어요', label:'5분 룰', sec:300,
+      guide:'<div style="background:'+C_GLIGHT+';border-radius:12px;padding:16px;margin-bottom:16px;font-size:var(--fs-caption);color:'+C+';line-height:2;text-align:center;">'+
+        '타이머가 울릴 때까지<br>지금 느끼는 감정을 <b>충분히</b> 느껴요<br>억누르지 말고, 판단하지 말고<br>타이머 울리면 <b>"바꿀 수 없다"</b></div>'
+    },
+    rest:{
+      q:'😴 피곤해요', label:'그냥 쉬기', sec:60,
+      guide:'<div style="background:'+C_GLIGHT+';border-radius:12px;padding:16px;margin-bottom:16px;font-size:var(--fs-caption);color:'+C+';line-height:2;text-align:center;">'+
+        '창밖을 바라보거나 눈을 감아요<br>새 소리, 햇빛, 바람<br>생각이 떠올라도 그냥 흘려보내요<br>아무것도 안 해도 돼요</div>'
+    }
+  };
+
+  /* 방법 선택 전 — 질문 화면 */
+  if(!sel){
+    var btns=Object.keys(METHODS).map(function(id){
+      var m=METHODS[id];
+      return '<button onclick="psSelectSilence(\''+id+'\','+m.sec+')" style="'+
+        'width:100%;padding:16px;margin-bottom:10px;cursor:pointer;'+
+        'background:#fff;border:1.5px solid #e0ddd8;border-radius:16px;'+
+        'font-size:var(--fs-body);font-weight:700;color:#1a1a1a;text-align:left;'+
+        '-webkit-tap-highlight-color:transparent;">'+
+        m.q+
+      '</button>';
+    }).join('');
+
+    return '<div style="text-align:center;margin-bottom:20px;">'+
+      '<div style="font-size:var(--fs-title);font-weight:800;color:'+C+';margin-bottom:6px;">오늘 몸 상태가 어때요?</div>'+
+      '<div style="font-size:var(--fs-caption);color:#888;">솔직하게 골라요 — 정답 없어요</div>'+
+    '</div>'+
+    btns;
   }
-  return '<div>'+cards+timerBlock+'</div>';
+
+  /* 방법 선택 후 — 가이드 + 타이머 */
+  var m=METHODS[sel];
+  if(!m) { safeSet('ps_silence_method',''); return buildSilence(C); }
+
+  return '<div>'+
+    m.guide+
+    '<div id="ps-t" style="text-align:center;font-size:3.2em;font-weight:700;color:'+C+';letter-spacing:2px;margin-bottom:10px;">'+fmt(m.sec)+'</div>'+
+    '<div style="background:#e8e4dd;border-radius:10px;height:8px;overflow:hidden;margin-bottom:12px;">'+
+      '<div id="ps-b" style="height:100%;background:'+C+';border-radius:10px;width:100%;transition:width 1s linear;"></div>'+
+    '</div>'+
+    '<div style="text-align:center;font-size:var(--fs-caption);color:#888;margin-bottom:16px;">📵 핸드폰을 내려놓고 시작하세요</div>'+
+    '<button id="ps-s" onclick="psSilenceStart(\''+sel+'\','+m.sec+')" style="width:100%;padding:15px;background:'+C+';color:#fff;border:none;border-radius:14px;font-size:var(--fs-body);font-weight:700;cursor:pointer;">▶ 시작하기</button>'+
+    '<button onclick="psClearSilence()" style="width:100%;padding:10px;margin-top:10px;background:transparent;border:none;font-size:var(--fs-caption);color:#aaa;cursor:pointer;">다른 방법으로 →</button>'+
+  '</div>';
 }
 
 /* 타이머 */
@@ -549,6 +567,12 @@ function buildBreath(C){
 /* ────────────────────────────────────────
    6. 단계 핸들러
 ──────────────────────────────────────── */
+window.psClearSilence=function(){
+  clearInterval(RS.iv);
+  safeSet('ps_silence_method','');
+  renderStep();
+};
+
 window.psSelectSilence=function(id,sec){
   safeSet('ps_silence_method',id);
   renderStep();
