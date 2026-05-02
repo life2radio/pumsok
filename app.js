@@ -603,11 +603,15 @@ function buildSilence(C){
           :'<button onclick="psClearSilence()" style="background:transparent;border:none;font-size:var(--fs-caption);color:#aaa;cursor:pointer;padding:4px 0;">◀ 방법 변경</button>'
         )+
         '<div style="display:flex;gap:6px;margin:0 auto;">'+dots+'</div>'+
-        '<div style="width:60px;"></div>'+
+        /* TTS 토글 버튼 */
+        '<button id="ps-tts-btn" onclick="psTtsToggle()" style="'+
+          'background:rgba(0,0,0,0.06);border:none;border-radius:20px;'+
+          'padding:5px 10px;font-size:0.78em;font-weight:700;color:#888;cursor:pointer;'+
+          'white-space:nowrap;-webkit-tap-highlight-color:transparent;">🔊 읽기</button>'+
       '</div>'+
 
       /* 메인 카드 */
-      '<div style="background:'+bgCol+';border-radius:20px;padding:24px 20px;margin-bottom:16px;">'+
+      '<div id="ps-slide-card" style="background:'+bgCol+';border-radius:20px;padding:24px 20px;margin-bottom:16px;">'+
         '<div style="text-align:center;margin-bottom:16px;">'+
           '<div style="font-size:2.4em;margin-bottom:10px;">'+sd.icon+'</div>'+
           '<div style="font-size:var(--fs-title);font-weight:800;color:'+acCol+';">'+sd.title+'</div>'+
@@ -617,7 +621,7 @@ function buildSilence(C){
         '</div>'+
       '</div>'+
 
-      /* 더 알아보기 (detail 있을 때만) */
+      /* 더 알아보기 */
       (sd.detail
         ? '<div id="ps-detail-wrap" style="margin-bottom:16px;">'+
             '<button onclick="psSilenceDetail()" style="width:100%;padding:12px;background:transparent;border:1.5px solid '+acCol+';border-radius:12px;font-size:var(--fs-caption);font-weight:700;color:'+acCol+';cursor:pointer;" id="ps-detail-btn">🔍 더 알아보기 ▼</button>'+
@@ -824,9 +828,103 @@ window.psSilenceDetail=function(){
   btn.textContent=isOpen?'🔍 더 알아보기 ▼':'🔍 접기 ▲';
 };
 
+/* ────────────────────────────────────────
+   TTS (텍스트 읽기)
+──────────────────────────────────────── */
+var _ttsOn = safeGet('ps_tts_on','1')==='1'; /* 기본 켜짐 */
+var _ttsPlaying = false;
+
+function _ttsSpeak(text){
+  if(!_ttsOn) return;
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  var clean = text.replace(/<[^>]+>/g,'').replace(/\n/g,' ').trim();
+  var utt = new SpeechSynthesisUtterance(clean);
+  utt.lang = 'ko-KR';
+  utt.rate = 0.88;
+  utt.pitch = 1.0;
+  utt.volume = 1.0;
+  utt.onstart = function(){ _ttsPlaying=true; _updateTtsBtn(); };
+  utt.onend = function(){ _ttsPlaying=false; _updateTtsBtn(); };
+  utt.onerror = function(){ _ttsPlaying=false; _updateTtsBtn(); };
+  window.speechSynthesis.speak(utt);
+}
+
+function _ttsStop(){
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  _ttsPlaying=false;
+  _updateTtsBtn();
+}
+
+function _updateTtsBtn(){
+  var btn=document.getElementById('ps-tts-btn');
+  if(!btn) return;
+  if(!_ttsOn){
+    btn.textContent='🔇 소리 꺼짐';
+    btn.style.color='#ccc';
+  } else if(_ttsPlaying){
+    btn.textContent='⏹ 중지';
+    btn.style.color='#1B4332';
+  } else {
+    btn.textContent='🔊 읽기';
+    btn.style.color='#888';
+  }
+}
+
+window.psTtsToggle = function(){
+  if(_ttsPlaying){
+    _ttsStop();
+    return;
+  }
+  if(!_ttsOn){
+    _ttsOn=true;
+    safeSet('ps_tts_on','1');
+    _updateTtsBtn();
+    /* 현재 슬라이드 내용 읽기 */
+    _ttsReadCurrent();
+    return;
+  }
+  /* 켜진 상태에서 버튼 누르면 → 소리 끄기 */
+  _ttsOn=false;
+  safeSet('ps_tts_on','0');
+  _ttsStop();
+};
+
+function _ttsReadCurrent(){
+  var card=document.getElementById('ps-slide-card');
+  if(card){
+    var title=card.querySelector('div div:nth-child(2)');
+    var body=card.querySelectorAll('div');
+    var text='';
+    card.querySelectorAll('div').forEach(function(d){
+      if(d.children.length===0 && d.textContent.trim()){
+        text+=d.textContent.trim()+'. ';
+      }
+    });
+    _ttsSpeak(text||card.textContent);
+  }
+}
+
+window.psSilenceDetail=function(){
+  var content=document.getElementById('ps-detail-content');
+  var btn=document.getElementById('ps-detail-btn');
+  if(!content||!btn) return;
+  var isOpen=content.style.display!=='none';
+  content.style.display=isOpen?'none':'block';
+  btn.textContent=isOpen?'🔍 더 알아보기 ▼':'🔍 접기 ▲';
+  if(!isOpen && _ttsOn){
+    _ttsSpeak(content.textContent);
+  }
+};
+
 window.psSilenceSlide=function(id,nextSlide){
+  _ttsStop();
   safeSet('ps_silence_slide_'+todayStr(),String(nextSlide));
   renderStep();
+  /* 슬라이드 바뀌면 자동으로 읽기 */
+  if(_ttsOn){
+    setTimeout(function(){ _ttsReadCurrent(); }, 400);
+  }
 };
 
 window.psClearSilence=function(){
