@@ -82,6 +82,58 @@ window.switchView = function(name){
   if(name==='settings')     renderSettings();
 };
 
+/* 헤더 BGM 토글 */
+window.psHeaderBgm = function(){
+  var on = safeGet('ps_bgm_on','0')!=='1';
+  safeSet('ps_bgm_on', on?'1':'0');
+  var btn = document.getElementById('hd-bgm-btn');
+  if(btn) btn.textContent = on ? '🎵 소리 켜짐' : '🎵 소리 끄기';
+
+  if(on){
+    /* 빗소리 Web Audio 생성 */
+    _startBgm();
+  } else {
+    _stopBgm();
+  }
+};
+
+var _bgmCtx=null, _bgmNodes=[];
+function _startBgm(){
+  _stopBgm();
+  try{
+    _bgmCtx=new(window.AudioContext||window.webkitAudioContext)();
+    /* 화이트노이즈 + 필터로 빗소리 생성 */
+    var bufSize=_bgmCtx.sampleRate*2;
+    var buf=_bgmCtx.createBuffer(1,bufSize,_bgmCtx.sampleRate);
+    var data=buf.getChannelData(0);
+    for(var i=0;i<bufSize;i++) data[i]=(Math.random()*2-1)*0.4;
+
+    var src=_bgmCtx.createBufferSource();
+    src.buffer=buf; src.loop=true;
+
+    /* 로우패스 필터 → 부드러운 빗소리 */
+    var filter=_bgmCtx.createBiquadFilter();
+    filter.type='lowpass'; filter.frequency.value=800;
+
+    /* 게인 */
+    var gain=_bgmCtx.createGain();
+    gain.gain.value=0.18;
+
+    src.connect(filter); filter.connect(gain); gain.connect(_bgmCtx.destination);
+    src.start();
+    _bgmNodes=[src,filter,gain];
+    showToast('🌧 빗소리 켜짐');
+  }catch(e){ showToast('소리를 재생할 수 없어요'); }
+}
+
+function _stopBgm(){
+  try{
+    _bgmNodes.forEach(function(n){ try{n.stop&&n.stop();}catch(e){} });
+    _bgmNodes=[];
+    if(_bgmCtx){ _bgmCtx.close(); _bgmCtx=null; }
+  }catch(e){}
+}
+
 /* ────────────────────────────────────────
    헤더 렌더
 ──────────────────────────────────────── */
@@ -116,9 +168,14 @@ function renderHeader(name){
           '<div style="font-size:0.78em;color:rgba(255,255,255,0.65);margin-bottom:3px;">'+dateStr+' · '+timeStr+'</div>'+
           '<div style="font-size:1.05em;font-weight:800;color:#fff;line-height:1.4;">'+emoji+' '+greeting+'</div>'+
         '</div>'+
-        '<div style="display:flex;align-items:center;gap:10px;padding-top:4px;">'+
-          '<div style="background:rgba(255,255,255,0.18);border-radius:20px;padding:5px 12px;font-size:0.78em;font-weight:700;color:#fff;">Day '+dc+'</div>'+
-          '<button onclick="switchView(\'settings\')" style="background:rgba(255,255,255,0.15);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:1em;">⚙️</button>'+
+        '<div style="display:flex;align-items:center;gap:8px;padding-top:4px;">'+
+          /* BGM 버튼 */
+          '<button id="hd-bgm-btn" onclick="psHeaderBgm()" style="'+
+            'background:rgba(255,255,255,0.18);border:none;border-radius:20px;'+
+            'padding:6px 12px;font-size:0.78em;font-weight:700;color:#fff;cursor:pointer;'+
+            'white-space:nowrap;-webkit-tap-highlight-color:transparent;">'+
+            (safeGet('ps_bgm_on','0')==='1'?'🎵 소리 켜짐':'🎵 소리 끄기')+
+          '</button>'+
         '</div>'+
       '</div>'+
       /* 얇은 진행 바 */
@@ -409,6 +466,7 @@ window.psFinish=function(){
 
 function renderStep(){
   clearInterval(RS.iv);
+  _ttsStop();
   var t=RS.type, s=RS.step, r=ROUTINES[t], sd=r.steps[s];
   var last=s===r.steps.length-1;
   var pct=Math.round(s/r.steps.length*100);
@@ -423,7 +481,8 @@ function renderStep(){
       '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">'+
         '<button onclick="psClose()" style="background:rgba(255,255,255,.18);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:var(--fs-caption);font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;">✕ 닫기</button>'+
         '<div style="font-size:var(--fs-caption);font-weight:700;color:rgba(255,255,255,.85);">'+r.emoji+' '+r.label+'</div>'+
-        '<div style="font-size:var(--fs-caption);color:rgba(255,255,255,.65);">'+(s+1)+' / '+r.steps.length+'</div>'+
+        /* TTS 버튼 */
+        '<button id="ps-tts-btn" onclick="psTtsToggle()" style="background:rgba(255,255,255,.18);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:var(--fs-caption);font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;">🔊</button>'+
       '</div>'+
       '<div style="background:rgba(255,255,255,.2);border-radius:10px;height:6px;overflow:hidden;margin-bottom:8px;">'+
         '<div style="height:100%;background:#fff;border-radius:10px;width:'+pct+'%;transition:width .4s;"></div>'+
@@ -451,6 +510,13 @@ function renderStep(){
     '</div>';
 
   var m=getModal(); if(m) m.scrollTop=0;
+
+  /* 자동 TTS — 화면 설명 읽기 */
+  if(_ttsOn){
+    setTimeout(function(){
+      _ttsSpeak(sd.title + '. ' + sd.desc);
+    }, 400);
+  }
 }
 
 /* ────────────────────────────────────────
@@ -831,23 +897,24 @@ window.psSilenceDetail=function(){
 /* ────────────────────────────────────────
    TTS (텍스트 읽기)
 ──────────────────────────────────────── */
-var _ttsOn = safeGet('ps_tts_on','1')==='1'; /* 기본 켜짐 */
+var _ttsOn = safeGet('ps_tts_on','1')==='1';
 var _ttsPlaying = false;
 
 function _ttsSpeak(text){
-  if(!_ttsOn) return;
   if(!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
-  var clean = text.replace(/<[^>]+>/g,'').replace(/\n/g,' ').trim();
+  var clean = text.replace(/<[^>]+>/g,'').replace(/\n/g,'. ').replace(/\.{2,}/g,'.').trim();
+  if(!clean) return;
   var utt = new SpeechSynthesisUtterance(clean);
   utt.lang = 'ko-KR';
-  utt.rate = 0.88;
-  utt.pitch = 1.0;
+  utt.rate = 0.85;
+  utt.pitch = 1.05;
   utt.volume = 1.0;
-  utt.onstart = function(){ _ttsPlaying=true; _updateTtsBtn(); };
-  utt.onend = function(){ _ttsPlaying=false; _updateTtsBtn(); };
-  utt.onerror = function(){ _ttsPlaying=false; _updateTtsBtn(); };
-  window.speechSynthesis.speak(utt);
+  utt.onstart  = function(){ _ttsPlaying=true;  _updateTtsBtn(); };
+  utt.onend    = function(){ _ttsPlaying=false; _updateTtsBtn(); };
+  utt.onerror  = function(){ _ttsPlaying=false; _updateTtsBtn(); };
+  /* iOS Safari 버그 우회 */
+  setTimeout(function(){ window.speechSynthesis.speak(utt); }, 100);
 }
 
 function _ttsStop(){
@@ -860,49 +927,46 @@ function _updateTtsBtn(){
   var btn=document.getElementById('ps-tts-btn');
   if(!btn) return;
   if(!_ttsOn){
-    btn.textContent='🔇 소리 꺼짐';
-    btn.style.color='#ccc';
+    btn.textContent='🔇';
+    btn.style.opacity='0.5';
   } else if(_ttsPlaying){
-    btn.textContent='⏹ 중지';
-    btn.style.color='#1B4332';
+    btn.textContent='⏹';
+    btn.style.opacity='1';
   } else {
-    btn.textContent='🔊 읽기';
-    btn.style.color='#888';
+    btn.textContent='🔊';
+    btn.style.opacity='1';
   }
 }
 
 window.psTtsToggle = function(){
-  if(_ttsPlaying){
-    _ttsStop();
-    return;
-  }
   if(!_ttsOn){
+    /* 소리 켜기 */
     _ttsOn=true;
     safeSet('ps_tts_on','1');
     _updateTtsBtn();
-    /* 현재 슬라이드 내용 읽기 */
-    _ttsReadCurrent();
-    return;
+    showToast('🔊 음성 안내 켜짐');
+  } else if(_ttsPlaying){
+    /* 읽는 중 → 중지 */
+    _ttsStop();
+  } else {
+    /* 켜져 있고 안 읽는 중 → 끄기 */
+    _ttsOn=false;
+    safeSet('ps_tts_on','0');
+    _ttsStop();
+    showToast('🔇 음성 안내 꺼짐');
   }
-  /* 켜진 상태에서 버튼 누르면 → 소리 끄기 */
-  _ttsOn=false;
-  safeSet('ps_tts_on','0');
-  _ttsStop();
 };
 
-function _ttsReadCurrent(){
-  var card=document.getElementById('ps-slide-card');
-  if(card){
-    var title=card.querySelector('div div:nth-child(2)');
-    var body=card.querySelectorAll('div');
-    var text='';
-    card.querySelectorAll('div').forEach(function(d){
-      if(d.children.length===0 && d.textContent.trim()){
-        text+=d.textContent.trim()+'. ';
-      }
-    });
-    _ttsSpeak(text||card.textContent);
-  }
+/* 타이머 화면에서 안내 텍스트 읽기 */
+function _ttsReadTimerGuide(method){
+  if(!_ttsOn) return;
+  var guides={
+    breath:'복식 호흡을 시작합니다. 코로 들이마시고, 참고, 입으로 내쉬어요.',
+    gratitude:'눈을 감고 고마운 사람을 떠올려요. 건강하길 바란다. 감사하다.',
+    fiverule:'타이머가 울릴 때까지 지금 느끼는 감정을 충분히 느껴요. 억누르지 말고 판단하지 마세요.',
+    rest:'핸드폰을 내려놓아요. 창밖을 바라보거나 눈을 감아요. 아무것도 안 해도 돼요.'
+  };
+  _ttsSpeak(guides[method]||'');
 }
 
 window.psSilenceDetail=function(){
@@ -913,7 +977,7 @@ window.psSilenceDetail=function(){
   content.style.display=isOpen?'none':'block';
   btn.textContent=isOpen?'🔍 더 알아보기 ▼':'🔍 접기 ▲';
   if(!isOpen && _ttsOn){
-    _ttsSpeak(content.textContent);
+    setTimeout(function(){ _ttsSpeak(content.textContent); }, 200);
   }
 };
 
@@ -921,9 +985,12 @@ window.psSilenceSlide=function(id,nextSlide){
   _ttsStop();
   safeSet('ps_silence_slide_'+todayStr(),String(nextSlide));
   renderStep();
-  /* 슬라이드 바뀌면 자동으로 읽기 */
+  /* 슬라이드 바뀌면 자동 읽기 */
   if(_ttsOn){
-    setTimeout(function(){ _ttsReadCurrent(); }, 400);
+    setTimeout(function(){
+      var card=document.getElementById('ps-slide-card');
+      if(card) _ttsSpeak(card.textContent);
+    }, 500);
   }
 };
 
@@ -948,6 +1015,9 @@ window.psSilenceStart=function(method,total){
   var rem=total;
   var btn=$('ps-s'), disp=$('ps-t'), bar=$('ps-b');
   if(btn) btn.style.display='none';
+
+  /* 타이머 시작 음성 안내 */
+  _ttsReadTimerGuide(method);
 
   /* 감사 떠올리기 — 단계별 텍스트 */
   if(method==='gratitude'){
@@ -1075,6 +1145,9 @@ window.psSilenceStart=function(method,total){
       if(phase) phase.textContent=ph.n;
       if(guide) guide.innerHTML=ph.guide.replace(/\n/g,'<br>');
       phaseCount=0;
+
+      /* TTS 단계 안내 */
+      if(_ttsOn) _ttsSpeak(ph.n);
 
       if(idx===0){
         /* 들이마시기 4초: 먼저 작은 상태 → transition 4s로 크게 */
