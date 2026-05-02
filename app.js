@@ -535,8 +535,7 @@ function buildSilence(C){
       dots+='<div style="width:'+(di===slide?'24px':'8px')+';height:8px;border-radius:4px;background:'+(di===slide?acCol:'#ddd')+';transition:all .3s;"></div>';
     }
 
-    return /* 이전 버튼 */
-      '<div style="display:flex;align-items:center;margin-bottom:16px;">'+
+    return '<div style="display:flex;align-items:center;margin-bottom:16px;">'+
         (slide>0
           ?'<button onclick="psSilenceSlide(\''+sel+'\','+(slide-1)+')" style="background:transparent;border:none;font-size:var(--fs-caption);color:#aaa;cursor:pointer;padding:4px 0;">◀ 이전</button>'
           :'<button onclick="psClearSilence()" style="background:transparent;border:none;font-size:var(--fs-caption);color:#aaa;cursor:pointer;padding:4px 0;">◀ 방법 변경</button>'
