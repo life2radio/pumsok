@@ -1126,26 +1126,117 @@ window.psStopAlarm=function(){
   _stepTimerDone();
 };
 
+/* 완료 칭찬 멘트 10개 */
+var DONE_MSGS = [
+  { msg:'정말 잘했어요!', sub:'이 1분이 오늘 하루 전체를 바꿔요. 뇌가 이미 달라지기 시작했어요.' },
+  { msg:'대단해요 🌿',    sub:'매일 이렇게 하는 사람은 생각보다 많지 않아요. 당신은 특별한 사람이에요.' },
+  { msg:'완벽해요!',      sub:'이불 속에서 시작한 이 순간, 인생이 조금씩 바뀌고 있어요.' },
+  { msg:'해냈어요! 💪',  sub:'어제보다 오늘이 더 나은 하루예요. 계속해요.' },
+  { msg:'훌륭해요 ✨',   sub:'세타파 상태에서 첫 단계를 마쳤어요. 뇌가 최고로 잘 준비된 상태예요.' },
+  { msg:'정말 잘하셨어요!', sub:'오늘도 자신을 위한 시간을 만들었어요. 그게 제일 중요해요.' },
+  { msg:'멋져요! 🌟',    sub:'작은 습관이 쌓이면 인생이 달라져요. 오늘도 한 걸음 앞으로 나아갔어요.' },
+  { msg:'이게 바로 루틴이에요 🙌', sub:'느리지만 확실하게. 오늘도 품속 루틴 완료!' },
+  { msg:'자랑스러워요 💚', sub:'스스로를 돌보는 이 시간, 절대 낭비가 아니에요.' },
+  { msg:'최고예요! 🎉',  sub:'기상 직후 이것만 해도 하루가 완전히 달라져요. 느껴지셨나요?' }
+];
+
 function _stepTimerDone(){
-  var disp=$('ps-t'); if(disp) disp.textContent='완료! ✅';
   try{ navigator.vibrate && navigator.vibrate([200,100,200]); }catch(e){}
-  /* Web Audio API로 완료음 */
+
+  /* 완료음 */
   try{
     var ctx=new(window.AudioContext||window.webkitAudioContext)();
-    var notes=[523,659,784]; /* 도-미-솔 */
-    notes.forEach(function(freq,i){
-      var osc=ctx.createOscillator();
-      var gain=ctx.createGain();
+    [523,659,784].forEach(function(freq,i){
+      var osc=ctx.createOscillator(), gain=ctx.createGain();
       osc.connect(gain); gain.connect(ctx.destination);
-      osc.frequency.value=freq;
-      osc.type='sine';
+      osc.frequency.value=freq; osc.type='sine';
       gain.gain.setValueAtTime(0.3,ctx.currentTime+i*0.18);
       gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+i*0.18+0.4);
       osc.start(ctx.currentTime+i*0.18);
       osc.stop(ctx.currentTime+i*0.18+0.4);
     });
   }catch(e){}
+
+  /* 랜덤 칭찬 멘트 */
+  var dm=DONE_MSGS[Math.floor(Math.random()*DONE_MSGS.length)];
+  var r=ROUTINES[RS.type]||ROUTINES.morning;
+
+  /* 완료 오버레이 */
+  var wrap=$('ps-inner');
+  if(!wrap) return;
+
+  /* 기존 타이머 영역에 오버레이 삽입 */
+  var overlay=document.createElement('div');
+  overlay.id='ps-done-overlay';
+  overlay.style.cssText=
+    'position:fixed;top:0;left:0;width:100%;height:100%;'+
+    'z-index:10000;display:flex;align-items:center;justify-content:center;'+
+    'background:rgba(0,0,0,0.75);animation:ps-ov-in .35s ease;';
+
+  /* 애니메이션 스타일 */
+  if(!document.getElementById('ps-done-style')){
+    var st=document.createElement('style');
+    st.id='ps-done-style';
+    st.textContent=
+      '@keyframes ps-ov-in{from{opacity:0}to{opacity:1}}'+
+      '@keyframes ps-card-in{from{opacity:0;transform:translateY(24px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}'+
+      '@keyframes ps-star{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.2) rotate(10deg)}}';
+    document.head.appendChild(st);
+  }
+
+  overlay.innerHTML=
+    '<div style="'+
+      'background:#fff;border-radius:24px;padding:36px 28px;max-width:340px;width:88%;'+
+      'text-align:center;animation:ps-card-in .4s cubic-bezier(0.34,1.56,0.64,1);'+
+      'box-shadow:0 20px 60px rgba(0,0,0,0.3);">'+
+
+      /* 이모지 */
+      '<div style="font-size:3.2em;margin-bottom:12px;animation:ps-star 1.5s ease-in-out infinite;">🌿</div>'+
+
+      /* 칭찬 메인 */
+      '<div style="font-size:1.5em;font-weight:900;color:'+r.color+';margin-bottom:10px;">'+dm.msg+'</div>'+
+
+      /* 서브 메시지 */
+      '<div style="font-size:0.92em;color:#666;line-height:1.8;margin-bottom:24px;padding:0 4px;">'+dm.sub+'</div>'+
+
+      /* 구분선 */
+      '<div style="height:1px;background:#f0ede8;margin-bottom:20px;"></div>'+
+
+      /* 버튼 */
+      '<button onclick="psDoneNext()" style="'+
+        'width:100%;padding:15px;background:'+r.color+';color:#fff;border:none;'+
+        'border-radius:16px;font-size:1em;font-weight:700;cursor:pointer;'+
+        'box-shadow:0 4px 14px rgba(27,67,50,0.3);">'+
+        '다음 단계로 →'+
+      '</button>'+
+      '<button onclick="psDoneClose()" style="'+
+        'width:100%;padding:10px;margin-top:8px;background:transparent;border:none;'+
+        'font-size:0.82em;color:#aaa;cursor:pointer;">'+
+        '루틴 목록으로'+
+      '</button>'+
+    '</div>';
+
+  document.body.appendChild(overlay);
 }
+
+window.psDoneNext=function(){
+  var ov=document.getElementById('ps-done-overlay');
+  if(ov) ov.remove();
+  /* 다음 단계로 자동 이동 */
+  var next=RS.step+1;
+  var r=ROUTINES[RS.type];
+  if(r && next < r.steps.length){
+    psStep(next);
+  } else {
+    psFinish();
+  }
+};
+
+window.psDoneClose=function(){
+  var ov=document.getElementById('ps-done-overlay');
+  if(ov) ov.remove();
+  psClose();
+};
 
 window.psSaveWrite=function(id){
   var a=$('ps-w'); if(!a) return;
