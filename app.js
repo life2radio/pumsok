@@ -55,7 +55,6 @@ var _viewHistory = [];
 window.switchView = function(name){
   if(!name) return;
 
-  /* 히스토리 스택 관리 */
   if(_viewHistory.length===0 || _viewHistory[_viewHistory.length-1]!==name){
     _viewHistory.push(name);
     history.pushState({view:name}, '', '');
@@ -66,8 +65,10 @@ window.switchView = function(name){
   var el=$('view-'+name); if(el) el.classList.add('active');
   var nb=document.querySelector('.nav-btn[data-view="'+name+'"]');
   if(nb) nb.classList.add('active');
-  var ht=$('header-title'); if(ht) ht.textContent=VIEW_TITLES[name]||'품속';
   _curView=name;
+
+  /* 탭별 헤더 렌더 */
+  renderHeader(name);
 
   if(name==='routine')     {
     var s=$('view-routine');
@@ -80,6 +81,63 @@ window.switchView = function(name){
   if(name==='memo')         renderMemo();
   if(name==='settings')     renderSettings();
 };
+
+/* ────────────────────────────────────────
+   헤더 렌더
+──────────────────────────────────────── */
+function renderHeader(name){
+  var header=$('app-header');
+  if(!header) return;
+
+  var h=new Date().getHours();
+  var isMorning=(h>=5&&h<16);
+  var nick=safeGet('my_nickname','');
+  var dc=getDayCount();
+
+  if(name==='routine'){
+    /* 루틴 탭: 시간대별 그라데이션 헤더 */
+    var bg=isMorning
+      ? 'linear-gradient(135deg,#1B4332 0%,#2D6A4F 100%)'
+      : 'linear-gradient(135deg,#1B3358 0%,#2D4A6F 100%)';
+    var emoji=isMorning?'🌅':'🌙';
+    var greeting=isMorning
+      ? (nick?nick+'님, 좋은 아침이에요':'좋은 아침이에요')
+      : (nick?nick+'님, 오늘 하루 수고했어요':'오늘 하루 수고했어요');
+
+    var now=new Date();
+    var days=['일','월','화','수','목','금','토'];
+    var dateStr=(now.getMonth()+1)+'월 '+now.getDate()+'일 '+days[now.getDay()]+'요일';
+    var timeStr=(h<10?'0':'')+h+':'+(now.getMinutes()<10?'0':'')+now.getMinutes();
+
+    header.style.cssText='background:'+bg+';padding:0;height:auto;flex-shrink:0;';
+    header.innerHTML=
+      '<div style="padding:16px 18px 14px;display:flex;align-items:flex-start;justify-content:space-between;">'+
+        '<div>'+
+          '<div style="font-size:0.78em;color:rgba(255,255,255,0.65);margin-bottom:3px;">'+dateStr+' · '+timeStr+'</div>'+
+          '<div style="font-size:1.05em;font-weight:800;color:#fff;line-height:1.4;">'+emoji+' '+greeting+'</div>'+
+        '</div>'+
+        '<div style="display:flex;align-items:center;gap:10px;padding-top:4px;">'+
+          '<div style="background:rgba(255,255,255,0.18);border-radius:20px;padding:5px 12px;font-size:0.78em;font-weight:700;color:#fff;">Day '+dc+'</div>'+
+          '<button onclick="switchView(\'settings\')" style="background:rgba(255,255,255,0.15);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:1em;">⚙️</button>'+
+        '</div>'+
+      '</div>'+
+      /* 얇은 진행 바 */
+      (function(){
+        var r=isMorning?{steps:ROUTINES.morning.steps,type:'morning'}:{steps:ROUTINES.evening.steps,type:'evening'};
+        var done=r.steps.filter(function(s){return safeGet('ps_step_'+todayStr()+'_'+s.id)==='1';}).length;
+        var pct=Math.round(done/r.steps.length*100);
+        return '<div style="height:3px;background:rgba(255,255,255,0.15);"><div style="height:100%;background:rgba(255,255,255,0.6);width:'+pct+'%;transition:width .5s;"></div></div>';
+      })();
+
+  } else {
+    /* 다른 탭: 심플 헤더 */
+    header.style.cssText='background:'+C_GREEN+';height:56px;display:flex;align-items:center;justify-content:center;padding:0 18px;flex-shrink:0;position:relative;';
+    header.innerHTML=
+      '<button onclick="switchView(\'routine\')" style="position:absolute;left:14px;background:rgba(255,255,255,0.15);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:1em;">◀</button>'+
+      '<div style="font-size:1em;font-weight:700;color:#fff;">'+VIEW_TITLES[name]+'</div>'+
+      '<button onclick="switchView(\'settings\')" style="position:absolute;right:14px;background:rgba(255,255,255,0.15);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:1em;">⚙️</button>';
+  }
+}
 
 /* ────────────────────────────────────────
    2. 루틴 데이터
