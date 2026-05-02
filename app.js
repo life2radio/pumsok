@@ -519,52 +519,93 @@ function buildSilence(C){
   var isTimerStep=(slide>=totalSlides);
 
   if(!isTimerStep){
-    /* 슬라이드 화면 */
     var sd=m.slides[slide];
-    var dots=m.slides.map(function(_,i){
-      return '<div style="width:'+(i===slide?'20px':'8px')+';height:8px;border-radius:4px;background:'+(i===slide?C:'#ddd')+';transition:all .3s;"></div>';
-    }).join('')+'<div style="width:8px;height:8px;border-radius:4px;background:#ddd;"></div>';
+    var bgColors={breath:C_GLIGHT,gratitude:'#FDF6E3',fiverule:'#EEF2FA',rest:'#EDF5EF'};
+    var accentColors={breath:C_GREEN,gratitude:'#C9A84C',fiverule:'#4A6FA5',rest:'#5A8A6A'};
+    var bgCol=bgColors[sel]||C_GLIGHT;
+    var acCol=accentColors[sel]||C_GREEN;
 
-    return '<div style="text-align:center;margin-bottom:20px;">'+
-        '<div style="font-size:2em;margin-bottom:10px;">'+sd.icon+'</div>'+
-        '<div style="font-size:var(--fs-title);font-weight:800;color:'+C+';margin-bottom:16px;">'+sd.title+'</div>'+
+    /* 점 인디케이터 (왜/어떻게/타이머) */
+    var totalDots=totalSlides+1;
+    var dots='';
+    for(var di=0;di<totalDots;di++){
+      dots+='<div style="width:'+(di===slide?'24px':'8px')+';height:8px;border-radius:4px;background:'+(di===slide?acCol:'#ddd')+';transition:all .3s;"></div>';
+    }
+
+    return /* 이전 버튼 */
+      '<div style="display:flex;align-items:center;margin-bottom:16px;">'+
+        (slide>0
+          ?'<button onclick="psSilenceSlide(\''+sel+'\','+(slide-1)+')" style="background:transparent;border:none;font-size:var(--fs-caption);color:#aaa;cursor:pointer;padding:4px 0;">◀ 이전</button>'
+          :'<button onclick="psClearSilence()" style="background:transparent;border:none;font-size:var(--fs-caption);color:#aaa;cursor:pointer;padding:4px 0;">◀ 방법 변경</button>'
+        )+
+        '<div style="display:flex;gap:6px;margin:0 auto;">'+dots+'</div>'+
+        '<div style="width:60px;"></div>'+
       '</div>'+
-      '<div style="background:'+C_GLIGHT+';border-radius:16px;padding:20px;margin-bottom:24px;">'+
-        '<div style="font-size:var(--fs-body);color:#2c2c2c;line-height:2;">'+
+
+      /* 메인 카드 */
+      '<div style="background:'+bgCol+';border-radius:20px;padding:24px 20px;margin-bottom:20px;min-height:220px;display:flex;flex-direction:column;justify-content:center;">'+
+        '<div style="text-align:center;margin-bottom:16px;">'+
+          '<div style="font-size:2.4em;margin-bottom:10px;">'+sd.icon+'</div>'+
+          '<div style="font-size:var(--fs-title);font-weight:800;color:'+acCol+';">'+sd.title+'</div>'+
+        '</div>'+
+        '<div style="font-size:var(--fs-body);color:#333;line-height:2.0;text-align:left;">'+
           sd.content.replace(/\n/g,'<br>')+
         '</div>'+
       '</div>'+
-      '<div style="display:flex;justify-content:center;gap:6px;margin-bottom:24px;">'+dots+'</div>'+
+
+      /* 다음 버튼 */
       '<button onclick="psSilenceSlide(\''+sel+'\','+(slide+1)+')" style="'+
-        'width:100%;padding:15px;background:'+C+';color:#fff;border:none;'+
-        'border-radius:14px;font-size:var(--fs-body);font-weight:700;cursor:pointer;">'+
-        (slide===totalSlides-1?'시작하러 가기 →':'다음 →')+
-      '</button>'+
-      '<button onclick="psClearSilence()" style="width:100%;padding:10px;margin-top:8px;background:transparent;border:none;font-size:var(--fs-caption);color:#aaa;cursor:pointer;">다른 방법으로 →</button>';
+        'width:100%;padding:16px;background:'+acCol+';color:#fff;border:none;'+
+        'border-radius:16px;font-size:var(--fs-body);font-weight:700;cursor:pointer;'+
+        'box-shadow:0 4px 14px rgba(0,0,0,0.12);">'+
+        (slide===totalSlides-1?'✓ 준비됐어요, 시작하기 →':'다음 →')+
+      '</button>';
   }
 
   /* 타이머 화면 */
+  var bgColors2={breath:C_GLIGHT,gratitude:'#FDF6E3',fiverule:'#EEF2FA',rest:'#EDF5EF'};
+  var accentColors2={breath:C_GREEN,gratitude:'#C9A84C',fiverule:'#4A6FA5',rest:'#5A8A6A'};
+  var acCol2=accentColors2[sel]||C_GREEN;
+  var bgCol2=bgColors2[sel]||C_GLIGHT;
+
   var guideMap={
-    breath:'<div style="display:flex;justify-content:center;margin-bottom:16px;">'+
-      '<div style="position:relative;width:130px;height:130px;display:flex;align-items:center;justify-content:center;">'+
-        '<div id="ps-ba-outer" style="position:absolute;width:120px;height:120px;border-radius:50%;border:2px solid '+C+';transition:all .5s;"></div>'+
-        '<div id="ps-ba-inner" style="position:absolute;width:60px;height:60px;border-radius:50%;background:'+C+';opacity:0.2;transition:all .5s;"></div>'+
-        '<span id="ps-ba-txt" style="position:relative;font-size:var(--fs-caption);font-weight:700;color:'+C+';">준비</span>'+
+    breath:'<div style="display:flex;justify-content:center;margin-bottom:20px;">'+
+      '<div style="position:relative;width:140px;height:140px;display:flex;align-items:center;justify-content:center;">'+
+        '<div id="ps-ba-outer" style="position:absolute;width:130px;height:130px;border-radius:50%;border:2.5px solid '+acCol2+';transition:all .5s;"></div>'+
+        '<div id="ps-ba-inner" style="position:absolute;width:65px;height:65px;border-radius:50%;background:'+acCol2+';opacity:0.2;transition:all .5s;"></div>'+
+        '<span id="ps-ba-txt" style="position:relative;font-size:var(--fs-caption);font-weight:700;color:'+acCol2+';">준비</span>'+
       '</div>'+
     '</div>',
-    gratitude:'<div style="background:'+C_GLIGHT+';border-radius:12px;padding:14px;margin-bottom:16px;font-size:var(--fs-body);color:'+C+';line-height:2;text-align:center;">💛 마음속으로 이름을 불러요</div>',
-    fiverule:'<div style="background:#EEF2FA;border-radius:12px;padding:14px;margin-bottom:16px;font-size:var(--fs-body);color:#4A6FA5;line-height:2;text-align:center;">🌊 지금 느끼는 감정을 충분히 느껴요</div>',
-    rest:'<div style="background:#EDF5EF;border-radius:12px;padding:14px;margin-bottom:16px;font-size:var(--fs-body);color:#5A8A6A;line-height:2;text-align:center;">🍃 그냥 쉬어요. 아무것도 안 해도 돼요</div>'
+    gratitude:'<div style="text-align:center;font-size:3em;margin-bottom:16px;">💛</div>',
+    fiverule:'<div style="text-align:center;font-size:3em;margin-bottom:16px;">🌊</div>',
+    rest:'<div style="text-align:center;font-size:3em;margin-bottom:16px;">🍃</div>'
   };
 
+  var totalDots2=totalSlides+1;
+  var dots2='';
+  for(var di2=0;di2<totalDots2;di2++){
+    dots2+='<div style="width:'+(di2===totalSlides?'24px':'8px')+';height:8px;border-radius:4px;background:'+(di2===totalSlides?acCol2:'#ddd')+';transition:all .3s;"></div>';
+  }
+
   return '<div>'+
-    (guideMap[m.guide]||'')+
-    '<div id="ps-t" style="text-align:center;font-size:3.2em;font-weight:700;color:'+C+';letter-spacing:2px;margin-bottom:10px;">'+fmt(m.sec)+'</div>'+
-    '<div style="background:#e8e4dd;border-radius:10px;height:8px;overflow:hidden;margin-bottom:12px;">'+
-      '<div id="ps-b" style="height:100%;background:'+C+';border-radius:10px;width:100%;transition:width 1s linear;"></div>'+
+    /* 이전 버튼 */
+    '<div style="display:flex;align-items:center;margin-bottom:16px;">'+
+      '<button onclick="psSilenceSlide(\''+sel+'\','+(totalSlides-1)+')" style="background:transparent;border:none;font-size:var(--fs-caption);color:#aaa;cursor:pointer;padding:4px 0;">◀ 이전</button>'+
+      '<div style="display:flex;gap:6px;margin:0 auto;">'+dots2+'</div>'+
+      '<div style="width:40px;"></div>'+
     '</div>'+
-    '<div style="text-align:center;font-size:var(--fs-caption);color:#888;margin-bottom:16px;">📵 핸드폰을 내려놓고 시작하세요</div>'+
-    '<button id="ps-s" onclick="psSilenceStart(\''+sel+'\','+m.sec+')" style="width:100%;padding:15px;background:'+C+';color:#fff;border:none;border-radius:14px;font-size:var(--fs-body);font-weight:700;cursor:pointer;">▶ 시작하기</button>'+
+
+    /* 배경 카드 */
+    '<div style="background:'+bgCol2+';border-radius:20px;padding:20px;margin-bottom:16px;text-align:center;">'+
+      (guideMap[m.guide]||'')+
+      '<div style="font-size:var(--fs-caption);color:#666;">📵 핸드폰을 내려놓고 시작하세요</div>'+
+    '</div>'+
+
+    '<div id="ps-t" style="text-align:center;font-size:3.5em;font-weight:700;color:'+acCol2+';letter-spacing:2px;margin-bottom:10px;">'+fmt(m.sec)+'</div>'+
+    '<div style="background:#e8e4dd;border-radius:10px;height:8px;overflow:hidden;margin-bottom:20px;">'+
+      '<div id="ps-b" style="height:100%;background:'+acCol2+';border-radius:10px;width:100%;transition:width 1s linear;"></div>'+
+    '</div>'+
+    '<button id="ps-s" onclick="psSilenceStart(\''+sel+'\','+m.sec+')" style="width:100%;padding:16px;background:'+acCol2+';color:#fff;border:none;border-radius:16px;font-size:var(--fs-body);font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.12);">▶ 시작하기</button>'+
     '<button onclick="psClearSilence()" style="width:100%;padding:10px;margin-top:8px;background:transparent;border:none;font-size:var(--fs-caption);color:#aaa;cursor:pointer;">다른 방법으로 →</button>'+
   '</div>';
 }
@@ -741,7 +782,23 @@ window.psWriteTimer=function(total){
 
 function _stepTimerDone(){
   var disp=$('ps-t'); if(disp) disp.textContent='완료! ✅';
-  try{navigator.vibrate&&navigator.vibrate([200,100,200]);}catch(e){}
+  try{ navigator.vibrate && navigator.vibrate([200,100,200]); }catch(e){}
+  /* Web Audio API로 완료음 */
+  try{
+    var ctx=new(window.AudioContext||window.webkitAudioContext)();
+    var notes=[523,659,784]; /* 도-미-솔 */
+    notes.forEach(function(freq,i){
+      var osc=ctx.createOscillator();
+      var gain=ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.frequency.value=freq;
+      osc.type='sine';
+      gain.gain.setValueAtTime(0.3,ctx.currentTime+i*0.18);
+      gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+i*0.18+0.4);
+      osc.start(ctx.currentTime+i*0.18);
+      osc.stop(ctx.currentTime+i*0.18+0.4);
+    });
+  }catch(e){}
 }
 
 window.psSaveWrite=function(id){
