@@ -727,11 +727,7 @@ function buildSilence(C){
           :'<button onclick="psClearSilence()" style="background:transparent;border:none;font-size:var(--fs-caption);color:#aaa;cursor:pointer;padding:4px 0;">◀ 방법 변경</button>'
         )+
         '<div style="display:flex;gap:6px;margin:0 auto;">'+dots+'</div>'+
-        /* TTS 토글 버튼 */
-        '<button id="ps-tts-btn" onclick="psTtsToggle()" style="'+
-          'background:rgba(0,0,0,0.06);border:none;border-radius:20px;'+
-          'padding:5px 10px;font-size:0.78em;font-weight:700;color:#888;cursor:pointer;'+
-          'white-space:nowrap;-webkit-tap-highlight-color:transparent;">🔊 읽기</button>'+
+        '<div style="width:60px;"></div>'+
       '</div>'+
 
       /* 메인 카드 */
@@ -1002,7 +998,6 @@ function _updateTtsBtn(){
 }
 
 window.psTtsToggle = function(){
-  /* 카카오톡 인앱 브라우저 감지 */
   if(/KAKAOTALK/i.test(navigator.userAgent)){
     showToast('크롬 브라우저에서 열면 음성을 들을 수 있어요 🔊');
     return;
@@ -1011,34 +1006,25 @@ window.psTtsToggle = function(){
     showToast('이 기기에서는 음성을 지원하지 않아요');
     return;
   }
-
   /* 읽는 중 → 중지 */
   if(_ttsPlaying){
     _ttsStop();
     return;
   }
-
-  /* 꺼져 있으면 켜기 */
-  if(!_ttsOn){
-    _ttsOn=true;
-    safeSet('ps_tts_on','1');
-    showToast('🔊 음성 안내 켜짐');
-    _updateTtsBtn();
-  }
-
-  /* 현재 화면 텍스트 읽기 */
+  /* 타이머 화면 안내 텍스트 읽기 */
   var text = _getTtsText();
   if(text){
-    /* cancel 후 바로 speak하면 일부 브라우저에서 충돌 → 짧은 대기 */
     window.speechSynthesis.cancel();
     _ttsPlaying=false;
     var utt = new SpeechSynthesisUtterance(text);
-    utt.lang='ko-KR'; utt.rate=0.85; utt.pitch=1.05; utt.volume=1.0;
+    utt.lang='ko-KR'; utt.rate=0.82; utt.pitch=1.0; utt.volume=1.0;
     utt.onstart=function(){ _ttsPlaying=true;  _updateTtsBtn(); };
     utt.onend  =function(){ _ttsPlaying=false; _updateTtsBtn(); };
     utt.onerror=function(){ _ttsPlaying=false; _updateTtsBtn(); };
     window.speechSynthesis.speak(utt);
     _updateTtsBtn();
+  } else {
+    showToast('읽을 내용이 없어요');
   }
 };
 
@@ -1110,7 +1096,14 @@ window.psSilenceStart=function(method,total){
   var btn=$('ps-s'), disp=$('ps-t'), bar=$('ps-b');
   if(btn) btn.style.display='none';
 
-  /* 음성 안내: 사용자가 🔊 버튼으로 */
+  /* 타이머 시작 시 자동 안내 (시작하기 탭 = 사용자 제스처) */
+  var guides={
+    breath:'천천히 시작해요. 코로 들이마시고, 참고, 입으로 내쉬어요.',
+    gratitude:'눈을 감아요. 고마운 사람 얼굴을 떠올려요. 건강하길 바란다.',
+    fiverule:'지금 느끼는 감정을 있는 그대로 느껴요. 억누르지 마세요.',
+    rest:'핸드폰을 내려놓아요. 창밖을 바라보거나 눈을 감아요.'
+  };
+  if(guides[method]) _breathSpeak(guides[method]);
 
   /* 감사 떠올리기 — 단계별 텍스트 */
   if(method==='gratitude'){
