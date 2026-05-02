@@ -445,24 +445,31 @@ function buildSilence(C){
     }
   };
 
-  /* 방법 선택 전 — 질문 화면 */
+  /* 방법 선택 전 — 2×2 카드 그리드 */
   if(!sel){
-    var btns=Object.keys(METHODS).map(function(id){
+    var cards2x2=Object.keys(METHODS).map(function(id){
       var m=METHODS[id];
+      var icons={breath:'🫁',gratitude:'💛',fiverule:'🌊',rest:'🍃'};
+      var colors={breath:C_GREEN,gratitude:'#C9A84C',fiverule:'#4A6FA5',rest:'#5A8A6A'};
+      var bgs={breath:'#F0F7F4',gratitude:'#FDF6E3',fiverule:'#EEF2FA',rest:'#EDF5EF'};
       return '<button onclick="psSelectSilence(\''+id+'\','+m.sec+')" style="'+
-        'width:100%;padding:16px;margin-bottom:10px;cursor:pointer;'+
-        'background:#fff;border:1.5px solid #e0ddd8;border-radius:16px;'+
-        'font-size:var(--fs-body);font-weight:700;color:#1a1a1a;text-align:left;'+
-        '-webkit-tap-highlight-color:transparent;">'+
-        m.q+
+        'display:flex;flex-direction:column;align-items:center;justify-content:center;'+
+        'background:'+bgs[id]+';border:1.5px solid transparent;border-radius:20px;'+
+        'padding:24px 12px;cursor:pointer;gap:10px;'+
+        '-webkit-tap-highlight-color:transparent;transition:all .2s;'+
+        'box-shadow:0 2px 8px rgba(0,0,0,0.06);">'+
+        '<div style="font-size:2.2em;">'+icons[id]+'</div>'+
+        '<div style="font-size:var(--fs-body);font-weight:700;color:'+colors[id]+';">'+m.q.replace(/^[^\s]+\s/,'')+'</div>'+
       '</button>';
     }).join('');
 
-    return '<div style="text-align:center;margin-bottom:20px;">'+
-      '<div style="font-size:var(--fs-title);font-weight:800;color:'+C+';margin-bottom:6px;">오늘 몸 상태가 어때요?</div>'+
-      '<div style="font-size:var(--fs-caption);color:#888;">솔직하게 골라요 — 정답 없어요</div>'+
-    '</div>'+
-    btns;
+    return '<div style="text-align:center;margin-bottom:24px;">'+
+        '<div style="font-size:var(--fs-title);font-weight:800;color:var(--color-primary);margin-bottom:6px;">오늘 마음이 어때요?</div>'+
+        '<div style="font-size:var(--fs-caption);color:#aaa;">솔직하게 골라요 — 정답 없어요</div>'+
+      '</div>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">'+
+      cards2x2+
+      '</div>';
   }
 
   /* 방법 선택 후 — 가이드 + 타이머 */
