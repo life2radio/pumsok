@@ -414,34 +414,72 @@ function buildStepBody(sd,C,CL){
 /* 침묵 — C안: 질문 먼저, 답에 따라 방법 안내 */
 function buildSilence(C){
   var sel=safeGet('ps_silence_method_'+todayStr(),'');
+  var slide=parseInt(safeGet('ps_silence_slide_'+todayStr(),'0'))||0;
 
   var METHODS={
     breath:{
       q:'😊 괜찮아요', label:'복식호흡', sec:60,
-      guide:'<div style="background:'+C_GLIGHT+';border-radius:12px;padding:16px;margin-bottom:16px;text-align:center;font-size:var(--fs-caption);color:'+C+';line-height:2;">'+
-        '가슴과 배에 손을 올려요<br>코로 <b>4초</b> 들이마시기<br>입으로 <b>6초</b> 내쉬기</div>'+
-        '<div style="display:flex;justify-content:center;margin-bottom:16px;">'+
-          '<div style="position:relative;width:130px;height:130px;display:flex;align-items:center;justify-content:center;">'+
-            '<div id="ps-ba-outer" style="position:absolute;width:120px;height:120px;border-radius:50%;border:2px solid '+C+';transition:all .5s;"></div>'+
-            '<div id="ps-ba-inner" style="position:absolute;width:60px;height:60px;border-radius:50%;background:'+C+';opacity:0.2;transition:all .5s;"></div>'+
-            '<span id="ps-ba-txt" style="position:relative;font-size:var(--fs-caption);font-weight:700;color:'+C+';">준비</span>'+
-          '</div>'+
-        '</div>'
+      slides:[
+        {
+          title:'왜 복식호흡을 할까요?',
+          icon:'🧠',
+          content:'기상 직후 뇌는 세타파 상태예요.\n이 시간에 깊은 호흡을 하면\n부교감신경이 활성화되고\n하루를 차분하게 시작할 수 있어요.\n\n텍사스 의대 연구에 따르면\n복식호흡 60초만으로도\n스트레스 호르몬이 낮아져요.'
+        },
+        {
+          title:'이렇게 해요',
+          icon:'🫁',
+          content:'1. 가슴과 배에 손을 올려요\n2. 코로 4초 천천히 들이마세요\n   배가 먼저 나오고, 가슴이 올라와요\n3. 입으로 6초 천천히 내쉬세요\n   배가 먼저 들어가고, 가슴이 내려와요\n\n몸의 움직임에만 집중하면 돼요\n생각은 자연스럽게 사라져요'
+        }
+      ],
+      guide:'breath'
     },
     gratitude:{
       q:'💛 감사한 마음이에요', label:'감사 떠올리기', sec:60,
-      guide:'<div style="background:'+C_GLIGHT+';border-radius:12px;padding:16px;margin-bottom:16px;font-size:var(--fs-caption);color:'+C+';line-height:2;text-align:center;">'+
-        '힘든 사람, 아픈 사람, 고마운 사람<br>이름을 마음속으로 떠올려요<br><b>"건강하길 바란다" "감사하다"</b></div>'
+      slides:[
+        {
+          title:'왜 감사를 떠올릴까요?',
+          icon:'🧬',
+          content:'하버드 마틴 셀리그먼 교수 연구에 따르면\n감사하는 마음을 떠올리는 것만으로\n도파민과 세로토닌이 분비돼요.\n\n잠자리에서 감사한 사람을 떠올리는 것은\n하루를 따뜻하게 시작하는\n가장 쉬운 방법이에요.'
+        },
+        {
+          title:'이렇게 해요',
+          icon:'💛',
+          content:'눈을 감고 떠올려요\n\n힘든 사람, 아픈 사람,\n고마운 사람 이름을\n마음속으로 하나씩 부릅니다\n\n"건강하길 바란다"\n"감사하다"\n\n소리 내지 않아도 돼요\n마음속으로만 해도 충분해요'
+        }
+      ],
+      guide:'gratitude'
     },
     fiverule:{
       q:'😔 힘든 일이 있어요', label:'5분 룰', sec:300,
-      guide:'<div style="background:'+C_GLIGHT+';border-radius:12px;padding:16px;margin-bottom:16px;font-size:var(--fs-caption);color:'+C+';line-height:2;text-align:center;">'+
-        '타이머가 울릴 때까지<br>지금 느끼는 감정을 <b>충분히</b> 느껴요<br>억누르지 말고, 판단하지 말고<br>타이머 울리면 <b>"바꿀 수 없다"</b></div>'
+      slides:[
+        {
+          title:'왜 5분 룰을 할까요?',
+          icon:'🌊',
+          content:'할 엘로드는 교통사고 후\n이 방법으로 트라우마를 극복했어요.\n\n억누른 감정은 사라지지 않아요.\n오히려 몸 어딘가에 쌓여요.\n\n5분 동안 충분히 느끼고 나면\n신기하게도 그 감정이 가벼워져요.\n뇌가 처리를 완료했기 때문이에요.'
+        },
+        {
+          title:'이렇게 해요',
+          icon:'😔',
+          content:'타이머를 시작하고\n\n지금 느끼는 감정을\n있는 그대로 느껴요\n억누르지 말고\n판단하지 말고\n\n타이머가 울리면\n"바꿀 수 없다"\n\n그리고 다음 단계로 넘어가요'
+        }
+      ],
+      guide:'fiverule'
     },
     rest:{
       q:'😴 피곤해요', label:'그냥 쉬기', sec:60,
-      guide:'<div style="background:'+C_GLIGHT+';border-radius:12px;padding:16px;margin-bottom:16px;font-size:var(--fs-caption);color:'+C+';line-height:2;text-align:center;">'+
-        '창밖을 바라보거나 눈을 감아요<br>새 소리, 햇빛, 바람<br>생각이 떠올라도 그냥 흘려보내요<br>아무것도 안 해도 돼요</div>'
+      slides:[
+        {
+          title:'왜 그냥 쉬어야 할까요?',
+          icon:'🍃',
+          content:'주의 회복 이론에 따르면\n자연을 바라보거나 멍하게 있는 것만으로\n뇌의 전전두피질이 회복돼요.\n\n아무것도 안 해도 성찰이 일어나요.\n오늘은 그냥 쉬어도 괜찮아요.\n피곤한 날에 무리하지 않는 것도\n루틴을 지키는 방법이에요.'
+        },
+        {
+          title:'이렇게 해요',
+          icon:'😴',
+          content:'핸드폰을 내려놓아요\n\n창밖을 바라보거나\n눈을 감아요\n\n새 소리, 햇빛, 바람\n무엇이든 느껴지는 것을\n그냥 느껴요\n\n생각이 떠올라도\n그냥 흘려보내요\n아무것도 안 해도 돼요'
+        }
+      ],
+      guide:'rest'
     }
   };
 
@@ -472,19 +510,62 @@ function buildSilence(C){
       '</div>';
   }
 
-  /* 방법 선택 후 — 가이드 + 타이머 */
+  /* 방법 선택 후 */
   var m=METHODS[sel];
-  if(!m) { safeSet('ps_silence_method_'+todayStr(),''); return buildSilence(C); }
+  if(!m){ safeSet('ps_silence_method_'+todayStr(),''); return buildSilence(C); }
+
+  /* 슬라이드 단계: 0=왜, 1=어떻게, 2=타이머 */
+  var totalSlides=m.slides.length;
+  var isTimerStep=(slide>=totalSlides);
+
+  if(!isTimerStep){
+    /* 슬라이드 화면 */
+    var sd=m.slides[slide];
+    var dots=m.slides.map(function(_,i){
+      return '<div style="width:'+(i===slide?'20px':'8px')+';height:8px;border-radius:4px;background:'+(i===slide?C:'#ddd')+';transition:all .3s;"></div>';
+    }).join('')+'<div style="width:8px;height:8px;border-radius:4px;background:#ddd;"></div>';
+
+    return '<div style="text-align:center;margin-bottom:20px;">'+
+        '<div style="font-size:2em;margin-bottom:10px;">'+sd.icon+'</div>'+
+        '<div style="font-size:var(--fs-title);font-weight:800;color:'+C+';margin-bottom:16px;">'+sd.title+'</div>'+
+      '</div>'+
+      '<div style="background:'+C_GLIGHT+';border-radius:16px;padding:20px;margin-bottom:24px;">'+
+        '<div style="font-size:var(--fs-body);color:#2c2c2c;line-height:2;">'+
+          sd.content.replace(/\n/g,'<br>')+
+        '</div>'+
+      '</div>'+
+      '<div style="display:flex;justify-content:center;gap:6px;margin-bottom:24px;">'+dots+'</div>'+
+      '<button onclick="psSilenceSlide(\''+sel+'\','+(slide+1)+')" style="'+
+        'width:100%;padding:15px;background:'+C+';color:#fff;border:none;'+
+        'border-radius:14px;font-size:var(--fs-body);font-weight:700;cursor:pointer;">'+
+        (slide===totalSlides-1?'시작하러 가기 →':'다음 →')+
+      '</button>'+
+      '<button onclick="psClearSilence()" style="width:100%;padding:10px;margin-top:8px;background:transparent;border:none;font-size:var(--fs-caption);color:#aaa;cursor:pointer;">다른 방법으로 →</button>';
+  }
+
+  /* 타이머 화면 */
+  var guideMap={
+    breath:'<div style="display:flex;justify-content:center;margin-bottom:16px;">'+
+      '<div style="position:relative;width:130px;height:130px;display:flex;align-items:center;justify-content:center;">'+
+        '<div id="ps-ba-outer" style="position:absolute;width:120px;height:120px;border-radius:50%;border:2px solid '+C+';transition:all .5s;"></div>'+
+        '<div id="ps-ba-inner" style="position:absolute;width:60px;height:60px;border-radius:50%;background:'+C+';opacity:0.2;transition:all .5s;"></div>'+
+        '<span id="ps-ba-txt" style="position:relative;font-size:var(--fs-caption);font-weight:700;color:'+C+';">준비</span>'+
+      '</div>'+
+    '</div>',
+    gratitude:'<div style="background:'+C_GLIGHT+';border-radius:12px;padding:14px;margin-bottom:16px;font-size:var(--fs-body);color:'+C+';line-height:2;text-align:center;">💛 마음속으로 이름을 불러요</div>',
+    fiverule:'<div style="background:#EEF2FA;border-radius:12px;padding:14px;margin-bottom:16px;font-size:var(--fs-body);color:#4A6FA5;line-height:2;text-align:center;">🌊 지금 느끼는 감정을 충분히 느껴요</div>',
+    rest:'<div style="background:#EDF5EF;border-radius:12px;padding:14px;margin-bottom:16px;font-size:var(--fs-body);color:#5A8A6A;line-height:2;text-align:center;">🍃 그냥 쉬어요. 아무것도 안 해도 돼요</div>'
+  };
 
   return '<div>'+
-    m.guide+
+    (guideMap[m.guide]||'')+
     '<div id="ps-t" style="text-align:center;font-size:3.2em;font-weight:700;color:'+C+';letter-spacing:2px;margin-bottom:10px;">'+fmt(m.sec)+'</div>'+
     '<div style="background:#e8e4dd;border-radius:10px;height:8px;overflow:hidden;margin-bottom:12px;">'+
       '<div id="ps-b" style="height:100%;background:'+C+';border-radius:10px;width:100%;transition:width 1s linear;"></div>'+
     '</div>'+
     '<div style="text-align:center;font-size:var(--fs-caption);color:#888;margin-bottom:16px;">📵 핸드폰을 내려놓고 시작하세요</div>'+
     '<button id="ps-s" onclick="psSilenceStart(\''+sel+'\','+m.sec+')" style="width:100%;padding:15px;background:'+C+';color:#fff;border:none;border-radius:14px;font-size:var(--fs-body);font-weight:700;cursor:pointer;">▶ 시작하기</button>'+
-    '<button onclick="psClearSilence()" style="width:100%;padding:10px;margin-top:10px;background:transparent;border:none;font-size:var(--fs-caption);color:#aaa;cursor:pointer;">다른 방법으로 →</button>'+
+    '<button onclick="psClearSilence()" style="width:100%;padding:10px;margin-top:8px;background:transparent;border:none;font-size:var(--fs-caption);color:#aaa;cursor:pointer;">다른 방법으로 →</button>'+
   '</div>';
 }
 
@@ -574,14 +655,21 @@ function buildBreath(C){
 /* ────────────────────────────────────────
    6. 단계 핸들러
 ──────────────────────────────────────── */
+window.psSilenceSlide=function(id,nextSlide){
+  safeSet('ps_silence_slide_'+todayStr(),String(nextSlide));
+  renderStep();
+};
+
 window.psClearSilence=function(){
   clearInterval(RS.iv);
   safeSet('ps_silence_method_'+todayStr(),'');
+  safeSet('ps_silence_slide_'+todayStr(),'0');
   renderStep();
 };
 
 window.psSelectSilence=function(id,sec){
   safeSet('ps_silence_method_'+todayStr(),id);
+  safeSet('ps_silence_slide_'+todayStr(),'0');
   renderStep();
   setTimeout(function(){
     var s=$('ps-s'); if(s) s.scrollIntoView({behavior:'smooth',block:'center'});
