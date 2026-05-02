@@ -585,16 +585,63 @@ function buildSilence(C){
   var bgCol2=bgColors2[sel]||C_GLIGHT;
 
   var guideMap={
-    breath:'<div style="display:flex;justify-content:center;margin-bottom:20px;">'+
-      '<div style="position:relative;width:140px;height:140px;display:flex;align-items:center;justify-content:center;">'+
-        '<div id="ps-ba-outer" style="position:absolute;width:130px;height:130px;border-radius:50%;border:2.5px solid '+acCol2+';transition:all .5s;"></div>'+
-        '<div id="ps-ba-inner" style="position:absolute;width:65px;height:65px;border-radius:50%;background:'+acCol2+';opacity:0.2;transition:all .5s;"></div>'+
-        '<span id="ps-ba-txt" style="position:relative;font-size:var(--fs-caption);font-weight:700;color:'+acCol2+';">준비</span>'+
-      '</div>'+
-    '</div>',
-    gratitude:'<div style="text-align:center;font-size:3em;margin-bottom:16px;">💛</div>',
-    fiverule:'<div style="text-align:center;font-size:3em;margin-bottom:16px;">🌊</div>',
-    rest:'<div style="text-align:center;font-size:3em;margin-bottom:16px;">🍃</div>'
+    breath:
+      /* 복식호흡: 원 애니메이션 + 단계 안내 */
+      '<style>'+
+      '@keyframes ps-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}'+
+      '</style>'+
+      '<div style="display:flex;flex-direction:column;align-items:center;margin-bottom:16px;">'+
+        '<div id="ps-ba-phase" style="font-size:var(--fs-body);font-weight:700;color:'+acCol2+';margin-bottom:16px;min-height:28px;">시작 버튼을 눌러주세요</div>'+
+        '<div style="position:relative;width:160px;height:160px;display:flex;align-items:center;justify-content:center;">'+
+          '<div id="ps-ba-outer" style="position:absolute;width:140px;height:140px;border-radius:50%;border:2.5px solid '+acCol2+';transition:all .6s ease-in-out;"></div>'+
+          '<div id="ps-ba-inner" style="position:absolute;width:70px;height:70px;border-radius:50%;background:'+acCol2+';opacity:0.15;transition:all .6s ease-in-out;"></div>'+
+          '<span id="ps-ba-txt" style="position:relative;font-size:var(--fs-title);font-weight:800;color:'+acCol2+';">준비</span>'+
+        '</div>'+
+        '<div id="ps-ba-guide" style="font-size:var(--fs-caption);color:#888;margin-top:14px;text-align:center;min-height:20px;"></div>'+
+      '</div>',
+
+    gratitude:
+      /* 감사: 심장 + 페이드 텍스트 */
+      '<style>'+
+      '@keyframes ps-heart{0%,100%{transform:scale(1)}30%{transform:scale(1.18)}60%{transform:scale(0.95)}}'+
+      '@keyframes ps-fade{0%{opacity:0;transform:translateY(8px)}20%{opacity:1;transform:translateY(0)}80%{opacity:1}100%{opacity:0}}'+
+      '</style>'+
+      '<div style="text-align:center;margin-bottom:16px;">'+
+        '<div id="ps-heart" style="font-size:4em;animation:ps-heart 2s ease-in-out infinite;display:inline-block;margin-bottom:14px;">💛</div>'+
+        '<div id="ps-gratitude-msg" style="font-size:var(--fs-body);color:#888;min-height:56px;line-height:1.8;"></div>'+
+      '</div>',
+
+    fiverule:
+      /* 5분 룰: 파도 SVG 애니메이션 */
+      '<style>'+
+      '@keyframes ps-wave1{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}'+
+      '@keyframes ps-wave2{0%{transform:translateX(0)}100%{transform:translateX(50%)}}'+
+      '@keyframes ps-breathe{0%,100%{opacity:0.6}50%{opacity:1}}'+
+      '</style>'+
+      '<div style="margin-bottom:16px;">'+
+        '<div style="overflow:hidden;border-radius:16px;height:100px;background:#EEF2FA;position:relative;margin-bottom:14px;">'+
+          '<svg style="position:absolute;bottom:0;left:0;width:200%;animation:ps-wave1 4s linear infinite;" viewBox="0 0 400 60" preserveAspectRatio="none" height="60">'+
+            '<path d="M0,30 C50,0 100,60 150,30 C200,0 250,60 300,30 C350,0 400,60 400,30 L400,60 L0,60 Z" fill="#4A6FA5" opacity="0.3"/>'+
+          '</svg>'+
+          '<svg style="position:absolute;bottom:0;left:0;width:200%;animation:ps-wave2 6s linear infinite;" viewBox="0 0 400 60" preserveAspectRatio="none" height="50">'+
+            '<path d="M0,20 C60,50 120,0 180,20 C240,50 300,0 360,20 C390,35 400,25 400,20 L400,60 L0,60 Z" fill="#4A6FA5" opacity="0.2"/>'+
+          '</svg>'+
+          '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:var(--fs-body);font-weight:700;color:#4A6FA5;animation:ps-breathe 3s ease-in-out infinite;text-align:center;white-space:nowrap;">감정을 있는 그대로 느껴요</div>'+
+        '</div>'+
+        '<div style="font-size:var(--fs-caption);color:#888;text-align:center;line-height:1.8;">억누르지 말고 · 판단하지 말고<br>그냥 느끼는 게 전부예요</div>'+
+      '</div>',
+
+    rest:
+      /* 그냥 쉬기: 나뭇잎 + 텍스트 */
+      '<style>'+
+      '@keyframes ps-leaf{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}'+
+      '@keyframes ps-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}'+
+      '</style>'+
+      '<div style="text-align:center;margin-bottom:16px;">'+
+        '<div style="font-size:4em;animation:ps-float 3s ease-in-out infinite;display:inline-block;margin-bottom:14px;">🍃</div>'+
+        '<div style="font-size:var(--fs-body);color:#5A8A6A;font-weight:700;margin-bottom:8px;">아무것도 안 해도 돼요</div>'+
+        '<div style="font-size:var(--fs-caption);color:#888;line-height:1.9;">창밖을 바라보거나 눈을 감아요<br>생각이 떠올라도 그냥 흘려보내요</div>'+
+      '</div>'
   };
 
   var totalDots2=totalSlides+1;
@@ -748,27 +795,68 @@ window.psSilenceStart=function(method,total){
   var btn=$('ps-s'), disp=$('ps-t'), bar=$('ps-b');
   if(btn) btn.style.display='none';
 
+  /* 감사 떠올리기 — 텍스트 순환 */
+  if(method==='gratitude'){
+    var msgs=['마음속으로 이름을 불러요…','건강하길 바란다…','감사하다…','고마워요…','보고 싶어요…'];
+    var mi=0;
+    var msgEl=$('ps-gratitude-msg');
+    if(msgEl){ msgEl.style.animation='ps-fade 3s ease infinite'; msgEl.textContent=msgs[0]; }
+    var msgIv=setInterval(function(){
+      mi=(mi+1)%msgs.length;
+      var el=$('ps-gratitude-msg');
+      if(el){
+        el.style.animation='none';
+        setTimeout(function(){
+          var el2=$('ps-gratitude-msg');
+          if(el2){ el2.textContent=msgs[mi]; el2.style.animation='ps-fade 3s ease infinite'; }
+        },50);
+      }
+    },3000);
+    RS.iv=setInterval(function(){
+      rem--;
+      if(disp) disp.textContent=fmt(rem);
+      if(bar)  bar.style.width=(rem/total*100)+'%';
+      if(rem<=0){ clearInterval(RS.iv); clearInterval(msgIv); _stepTimerDone(); }
+    },1000);
+    return;
+  }
+
   if(method==='breath'){
-    var phases=[{n:'들이마시기',s:4},{n:'참기',s:2},{n:'내쉬기',s:6}];
+    var phases=[
+      {n:'들이마시기',s:4,guide:'배가 먼저 올라오고\n가슴이 올라와요'},
+      {n:'참기',s:7,guide:'편안하게 멈춰요'},
+      {n:'내쉬기',s:8,guide:'배가 먼저 들어가고\n가슴이 내려와요'}
+    ];
     var pi=0,ptick=0;
     RS.iv=setInterval(function(){
       var ph=phases[pi], left=ph.s-ptick;
       var txt=$('ps-ba-txt'), outer=$('ps-ba-outer'), inner=$('ps-ba-inner');
-      if(txt) txt.textContent=ph.n+' '+left;
+      var phase=$('ps-ba-phase'), guide=$('ps-ba-guide');
+      if(txt) txt.textContent=left;
+      if(phase) phase.textContent=ph.n;
+      if(guide) guide.innerHTML=ph.guide.replace(/\n/g,'<br>');
       var p=ptick/ph.s;
       if(pi===0){
-        if(inner){inner.style.width=(60+p*50)+'px';inner.style.height=(60+p*50)+'px';inner.style.opacity=0.15+p*0.25;}
-        if(outer){outer.style.width=(120+p*30)+'px';outer.style.height=(120+p*30)+'px';}
-      } else if(pi===2){
-        if(inner){inner.style.width=(110-p*50)+'px';inner.style.height=(110-p*50)+'px';inner.style.opacity=0.4-p*0.25;}
-        if(outer){outer.style.width=(150-p*30)+'px';outer.style.height=(150-p*30)+'px';}
+        if(inner){inner.style.width=(70+p*60)+'px';inner.style.height=(70+p*60)+'px';inner.style.opacity=0.15+p*0.25;}
+        if(outer){outer.style.width=(140+p*40)+'px';outer.style.height=(140+p*40)+'px';}
+      } else if(pi===1){
+        if(inner) inner.style.opacity='0.4';
+      } else {
+        if(inner){inner.style.width=(130-p*60)+'px';inner.style.height=(130-p*60)+'px';inner.style.opacity=0.4-p*0.25;}
+        if(outer){outer.style.width=(180-p*40)+'px';outer.style.height=(180-p*40)+'px';}
       }
       rem--;
       if(disp) disp.textContent=fmt(Math.max(0,rem));
       if(bar)  bar.style.width=(rem/total*100)+'%';
       ptick++;
       if(ptick>=ph.s){ptick=0;pi=(pi+1)%phases.length;}
-      if(rem<=0){clearInterval(RS.iv);if(txt)txt.textContent='완료';_stepTimerDone();}
+      if(rem<=0){
+        clearInterval(RS.iv);
+        if(txt) txt.textContent='✓';
+        if(phase) phase.textContent='완료';
+        if(guide) guide.textContent='';
+        _stepTimerDone();
+      }
     },1000);
   } else {
     RS.iv=setInterval(function(){
