@@ -422,14 +422,15 @@ function buildSilence(C){
       q:'😊 괜찮아요', label:'복식호흡', sec:60,
       slides:[
         {
-          title:'왜 복식호흡을 할까요?',
+          title:'지금 이 순간이 특별한 이유',
           icon:'🧠',
-          content:'기상 직후 뇌는 세타파 상태예요.\n이 시간에 깊은 호흡을 하면\n부교감신경이 활성화되고\n하루를 차분하게 시작할 수 있어요.\n\n텍사스 의대 연구에 따르면\n복식호흡 60초만으로도\n스트레스 호르몬이 낮아져요.'
+          content:'눈을 뜬 직후, 뇌는 아직\n세타파(4~8Hz) 상태에 있어요.\n\n세타파는 잠재의식과 의식의\n경계가 가장 얇아지는 순간.\n뇌의 비판 필터가 꺼진 상태예요.\n\n이때 복식호흡을 하면\n미주신경이 자극되어\n코르티솔 스파이크(아침 스트레스 호르몬)를\n자연스럽게 낮춰줘요.\n\n불안하지 않고 차분하게\n하루를 시작할 수 있는 이유예요.',
+          detail:'🌊 복식호흡이 하는 4가지 일\n\n① 세타파 연장\n미주신경 자극 → 부교감신경 활성화\n수용적인 뇌 상태를 더 오래 유지해요\n\n② 코르티솔 억제\n기상 후 30분은 하루 중\n스트레스 호르몬이 최고치예요\n복식호흡이 이 스파이크를 억제해요\n\n③ 전전두엽 준비\n이후 집중 작업이 훨씬 빠르게 시작돼요\n\n④ 확언 효과 극대화\n세타파 상태에서 읽는 확언은\n평소보다 3~5배 깊이 각인돼요'
         },
         {
           title:'이렇게 해요',
           icon:'🫁',
-          content:'1. 가슴과 배에 손을 올려요\n2. 코로 4초 천천히 들이마세요\n   배가 먼저 나오고, 가슴이 올라와요\n3. 입으로 6초 천천히 내쉬세요\n   배가 먼저 들어가고, 가슴이 내려와요\n\n몸의 움직임에만 집중하면 돼요\n생각은 자연스럽게 사라져요'
+          content:'눈을 감고 누운 채로\n\n코로 4초 들이마세요\n배가 먼저 올라오고, 가슴이 올라와요\n\n7초 멈춰요\n(처음엔 4초도 괜찮아요)\n\n입으로 8초 내쉬어요\n완전히 비워요\n\n5~7회 반복하면\n몸이 달라지는 게 느껴져요\n\n💡 날숨을 흡기의 2배로 할수록\n효과가 더 강해져요'
         }
       ],
       guide:'breath'
@@ -438,14 +439,15 @@ function buildSilence(C){
       q:'💛 감사한 마음이에요', label:'감사 떠올리기', sec:60,
       slides:[
         {
-          title:'왜 감사를 떠올릴까요?',
+          title:'감사가 뇌에 하는 일',
           icon:'🧬',
-          content:'하버드 마틴 셀리그먼 교수 연구에 따르면\n감사하는 마음을 떠올리는 것만으로\n도파민과 세로토닌이 분비돼요.\n\n잠자리에서 감사한 사람을 떠올리는 것은\n하루를 따뜻하게 시작하는\n가장 쉬운 방법이에요.'
+          content:'세타파 상태에서 감사를 떠올리면\n해마와 편도체가 동시에 활성화돼요.\n\n감사는 뇌에서 도파민과 세로토닌을\n동시에 분비하는 거의 유일한 인지 행위예요.\n\n세타파의 비판 필터가 꺼진 상태에서\n긍정 감정이 각인되면\n일반 각성 상태의 3~5배 깊이로\n감정이 등록돼요.\n\n하루의 감정 기저치를\n아침에 세팅하는 행위예요.',
+          detail:'🌅 왜 아침에 감사를 해야 할까요?\n\n기상 직후는 코르티솔이 하루 최고치예요.\n이 시간에 감사한 기억을 떠올리면\n편도체가 긍정 감정으로 프라이밍되어\n코르티솔 스파이크를 억제해줘요.\n\n하버드 마틴 셀리그먼 교수 연구:\n감사 훈련을 꾸준히 한 그룹은\n6개월 후 우울감이 유의미하게 감소했어요.\n\n잠자리에서 이름 하나를 떠올리는 것,\n그것만으로 충분해요.'
         },
         {
           title:'이렇게 해요',
           icon:'💛',
-          content:'눈을 감고 떠올려요\n\n힘든 사람, 아픈 사람,\n고마운 사람 이름을\n마음속으로 하나씩 부릅니다\n\n"건강하길 바란다"\n"감사하다"\n\n소리 내지 않아도 돼요\n마음속으로만 해도 충분해요'
+          content:'눈을 감고 떠올려요\n\n힘든 사람, 아픈 사람,\n고마운 사람 이름을\n마음속으로 하나씩 불러요\n\n"건강하길 바란다"\n"감사하다"\n\n소리 내지 않아도 돼요\n마음속으로만 해도 충분해요\n\n💡 얼굴을 떠올릴수록\n효과가 더 깊어져요'
         }
       ],
       guide:'gratitude'
@@ -454,14 +456,15 @@ function buildSilence(C){
       q:'😔 힘든 일이 있어요', label:'5분 룰', sec:300,
       slides:[
         {
-          title:'왜 5분 룰을 할까요?',
+          title:'억누르면 사라지지 않아요',
           icon:'🌊',
-          content:'할 엘로드는 교통사고 후\n이 방법으로 트라우마를 극복했어요.\n\n억누른 감정은 사라지지 않아요.\n오히려 몸 어딘가에 쌓여요.\n\n5분 동안 충분히 느끼고 나면\n신기하게도 그 감정이 가벼워져요.\n뇌가 처리를 완료했기 때문이에요.'
+          content:'세타파 상태에서 감정을 억누르면\n편도체에 그대로 저장돼요.\n\n억누른 감정은 사라지지 않아요.\n오히려 뇌의 작업 기억을 점유하며\n하루 종일 에너지를 소모해요.\n\n5분 동안 충분히 느끼고 나면\n뇌가 처리를 완료해요.\n감정이 가벼워지는 이유예요.\n\n할 엘로드는 교통사고 트라우마를\n이 방법으로 극복했어요.',
+          detail:'🧠 뇌과학으로 보면\n\n감정을 충분히 느끼는 것은\n전전두엽과 편도체의 연결을\n강화하는 훈련이에요.\n\n이 연결이 강해질수록\n감정에 휩쓸리지 않고\n감정을 관찰할 수 있게 돼요.\n\n세타파 상태에서 이 작업을 하면\n각성 상태에서보다\n감정 처리가 훨씬 부드럽게 일어나요.\n\n5분이 지나면 반드시\n"바꿀 수 없다"고 말하고 넘어가요.\n이 한 문장이 뇌에 종결 신호를 줘요.'
         },
         {
           title:'이렇게 해요',
           icon:'😔',
-          content:'타이머를 시작하고\n\n지금 느끼는 감정을\n있는 그대로 느껴요\n억누르지 말고\n판단하지 말고\n\n타이머가 울리면\n"바꿀 수 없다"\n\n그리고 다음 단계로 넘어가요'
+          content:'타이머를 시작하고\n\n지금 느끼는 감정을\n있는 그대로 느껴요\n억누르지 말고\n판단하지 말고\n\n눈물이 나도 괜찮아요\n화가 나도 괜찮아요\n그냥 느끼는 게 전부예요\n\n타이머가 울리면\n"바꿀 수 없다"\n\n그리고 다음 단계로 넘어가요'
         }
       ],
       guide:'fiverule'
@@ -470,14 +473,15 @@ function buildSilence(C){
       q:'😴 피곤해요', label:'그냥 쉬기', sec:60,
       slides:[
         {
-          title:'왜 그냥 쉬어야 할까요?',
+          title:'아무것도 안 해도 되는 이유',
           icon:'🍃',
-          content:'주의 회복 이론에 따르면\n자연을 바라보거나 멍하게 있는 것만으로\n뇌의 전전두피질이 회복돼요.\n\n아무것도 안 해도 성찰이 일어나요.\n오늘은 그냥 쉬어도 괜찮아요.\n피곤한 날에 무리하지 않는 것도\n루틴을 지키는 방법이에요.'
+          content:'핸드폰을 보는 순간\n청반핵이 자극되어 노르에피네프린이 분비돼요.\n뇌가 강제로 베타파(각성·긴장)로\n끌어올려지는 거예요.\n\n세타파 상태의 뇌는\n비판 필터가 없어서\n이 자극에 평소보다 훨씬 취약해요.\n\n아무것도 안 할 때\n기본모드망(DMN)이 활성화돼요.\nDMN은 뇌의 자기정렬 시스템이에요.\n전날의 감정과 정보를\n자동으로 통합해줘요.',
+          detail:'🌿 그냥 쉬기가 하는 일\n\n"샤워 중에 갑자기 답이 떠오르는" 경험,\n그게 바로 DMN이 작동하는 순간이에요.\n\n세타파 + DMN 조합이 만들어질 때\n뇌는 스스로 정렬되고 통합돼요.\n\n피곤한 날 억지로 뭔가를 하는 것보다\n5분 조용히 쉬는 것이\n하루 전체 인지 능력에 더 좋아요.\n\n주의 회복 이론에 따르면\n자연 소리나 빈 공간을 바라보는 것만으로도\n전전두엽이 빠르게 회복돼요.'
         },
         {
           title:'이렇게 해요',
           icon:'😴',
-          content:'핸드폰을 내려놓아요\n\n창밖을 바라보거나\n눈을 감아요\n\n새 소리, 햇빛, 바람\n무엇이든 느껴지는 것을\n그냥 느껴요\n\n생각이 떠올라도\n그냥 흘려보내요\n아무것도 안 해도 돼요'
+          content:'핸드폰을 내려놓아요\n\n창밖을 바라보거나\n눈을 감아요\n\n새 소리, 햇빛, 바람\n무엇이든 느껴지는 것을\n그냥 느껴요\n\n생각이 떠올라도\n그냥 흘려보내요\n\n아무것도 안 해도 돼요\n그게 전부예요'
         }
       ],
       guide:'rest'
@@ -545,7 +549,7 @@ function buildSilence(C){
       '</div>'+
 
       /* 메인 카드 */
-      '<div style="background:'+bgCol+';border-radius:20px;padding:24px 20px;margin-bottom:20px;min-height:220px;display:flex;flex-direction:column;justify-content:center;">'+
+      '<div style="background:'+bgCol+';border-radius:20px;padding:24px 20px;margin-bottom:16px;">'+
         '<div style="text-align:center;margin-bottom:16px;">'+
           '<div style="font-size:2.4em;margin-bottom:10px;">'+sd.icon+'</div>'+
           '<div style="font-size:var(--fs-title);font-weight:800;color:'+acCol+';">'+sd.title+'</div>'+
@@ -554,6 +558,16 @@ function buildSilence(C){
           sd.content.replace(/\n/g,'<br>')+
         '</div>'+
       '</div>'+
+
+      /* 더 알아보기 (detail 있을 때만) */
+      (sd.detail
+        ? '<div id="ps-detail-wrap" style="margin-bottom:16px;">'+
+            '<button onclick="psSilenceDetail()" style="width:100%;padding:12px;background:transparent;border:1.5px solid '+acCol+';border-radius:12px;font-size:var(--fs-caption);font-weight:700;color:'+acCol+';cursor:pointer;" id="ps-detail-btn">🔍 더 알아보기 ▼</button>'+
+            '<div id="ps-detail-content" style="display:none;background:#fff;border:1.5px solid '+acCol+';border-top:none;border-radius:0 0 12px 12px;padding:16px;font-size:var(--fs-caption);color:#444;line-height:1.9;">'+
+              sd.detail.replace(/\n/g,'<br>')+
+            '</div>'+
+          '</div>'
+        : '')+
 
       /* 다음 버튼 */
       '<button onclick="psSilenceSlide(\''+sel+'\','+(slide+1)+')" style="'+
@@ -698,6 +712,15 @@ function buildBreath(C){
 /* ────────────────────────────────────────
    6. 단계 핸들러
 ──────────────────────────────────────── */
+window.psSilenceDetail=function(){
+  var content=document.getElementById('ps-detail-content');
+  var btn=document.getElementById('ps-detail-btn');
+  if(!content||!btn) return;
+  var isOpen=content.style.display!=='none';
+  content.style.display=isOpen?'none':'block';
+  btn.textContent=isOpen?'🔍 더 알아보기 ▼':'🔍 접기 ▲';
+};
+
 window.psSilenceSlide=function(id,nextSlide){
   safeSet('ps_silence_slide_'+todayStr(),String(nextSlide));
   renderStep();
