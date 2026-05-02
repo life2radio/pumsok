@@ -419,7 +419,7 @@ function buildSilence(C){
 
   var METHODS={
     breath:{
-      q:'😊 괜찮아요', label:'복식호흡', sec:60,
+      q:'😊 괜찮아요', label:'복식호흡', sec:120,
       slides:[
         {
           title:'지금 이 순간이 특별한 이유',
@@ -906,89 +906,76 @@ window.psSilenceStart=function(method,total){
 
   if(method==='breath'){
     var phases=[
-      {n:'들이마시기', s:4,  guide:'코로 천천히 들이마세요\n배가 먼저 올라와요'},
-      {n:'참기',       s:7,  guide:'편안하게 멈춰요'},
-      {n:'내쉬기',     s:8,  guide:'입으로 천천히 내쉬어요\n완전히 비워요'}
+      {n:'들이마시기', s:4,  guide:'코로 천천히…\n배가 먼저 올라와요'},
+      {n:'참기',       s:7,  guide:'편안하게\n멈춰요'},
+      {n:'내쉬기',     s:8,  guide:'입으로 천천히…\n완전히 비워요'}
     ];
     var pi=0, phaseCount=0, tickCount=0;
 
-    /* 각 phase 시작 시 CSS transition 시간을 phase 길이에 맞게 설정 */
-    function startPhase(idx){
+    function startBreathPhase(idx){
       var ph=phases[idx];
       var outer=$('ps-ba-outer'), inner=$('ps-ba-inner');
-      var phase=$('ps-ba-phase'), guide=$('ps-ba-guide'), txt=$('ps-ba-txt');
+      var phase=$('ps-ba-phase'), guide=$('ps-ba-guide');
       if(phase) phase.textContent=ph.n;
       if(guide) guide.innerHTML=ph.guide.replace(/\n/g,'<br>');
       phaseCount=0;
 
-      /* transition 시간을 phase 길이에 맞게 */
-      var t=ph.s+'s';
-      if(outer) outer.style.transition='all '+t+' ease-in-out';
-      if(inner) inner.style.transition='all '+t+' ease-in-out';
-
       if(idx===0){
-        /* 들이마시기: 작→큰 */
-        if(inner){inner.style.width='60px';inner.style.height='60px';inner.style.opacity='0.15';}
-        if(outer){outer.style.width='120px';outer.style.height='120px';}
+        /* 들이마시기 4초: 먼저 작은 상태 → transition 4s로 크게 */
+        if(outer){ outer.style.transition='none'; outer.style.width='110px'; outer.style.height='110px'; }
+        if(inner){ inner.style.transition='none'; inner.style.width='55px';  inner.style.height='55px';  inner.style.opacity='0.1'; }
         setTimeout(function(){
-          var i=$('ps-ba-inner'), o=$('ps-ba-outer');
-          if(i){i.style.width='130px';i.style.height='130px';i.style.opacity='0.4';}
-          if(o){o.style.width='180px';o.style.height='180px';}
-        }, 50);
+          var o=$('ps-ba-outer'), i=$('ps-ba-inner');
+          if(o){ o.style.transition='all 4s ease-in-out'; o.style.width='185px'; o.style.height='185px'; }
+          if(i){ i.style.transition='all 4s ease-in-out'; i.style.width='135px'; i.style.height='135px'; i.style.opacity='0.45'; }
+        },30);
       } else if(idx===1){
-        /* 참기: 크기 유지, 살짝 맥박 */
-        if(outer) outer.style.transition='all 1.5s ease-in-out';
-        if(inner) inner.style.transition='all 1.5s ease-in-out';
+        /* 참기 7초: 유지 (살짝 큰 상태) */
+        if(outer){ outer.style.transition='all 2s ease-in-out'; outer.style.width='192px'; outer.style.height='192px'; }
+        if(inner){ inner.style.transition='all 2s ease-in-out'; inner.style.opacity='0.5'; }
       } else {
-        /* 내쉬기: 큰→작 */
+        /* 내쉬기 8초: transition 8s로 작게 */
         setTimeout(function(){
-          var i=$('ps-ba-inner'), o=$('ps-ba-outer');
-          if(i){i.style.width='60px';i.style.height='60px';i.style.opacity='0.1';}
-          if(o){o.style.width='120px';o.style.height='120px';}
-        }, 50);
+          var o=$('ps-ba-outer'), i=$('ps-ba-inner');
+          if(o){ o.style.transition='all 8s ease-in-out'; o.style.width='110px'; o.style.height='110px'; }
+          if(i){ i.style.transition='all 8s ease-in-out'; i.style.width='55px';  i.style.height='55px';  i.style.opacity='0.1'; }
+        },30);
       }
     }
 
-    /* phase 시작 */
-    startPhase(0);
+    startBreathPhase(0);
 
     RS.iv=setInterval(function(){
       phaseCount++;
       tickCount++;
       var ph=phases[pi];
-
-      /* 카운트다운 텍스트 */
+      var left=ph.s - phaseCount + 1;
       var txt=$('ps-ba-txt');
-      if(txt) txt.textContent=(ph.s - phaseCount + 1);
+      if(txt) txt.textContent=(left>0?left:'');
 
-      /* 타이머 */
-      if(disp) disp.textContent=fmt(Math.max(0, total-tickCount));
+      if(disp) disp.textContent=fmt(Math.max(0,total-tickCount));
       if(bar)  bar.style.width=((total-tickCount)/total*100)+'%';
 
-      /* phase 전환 */
-      if(phaseCount >= ph.s){
-        pi=(pi+1)%phases.length;
-        startPhase(pi);
-      }
+      if(phaseCount>=ph.s){ pi=(pi+1)%phases.length; startBreathPhase(pi); }
 
-      /* 완료 */
-      if(tickCount >= total){
+      if(tickCount>=total){
         clearInterval(RS.iv);
         var p=$('ps-ba-phase'), g=$('ps-ba-guide'), t=$('ps-ba-txt');
         if(p) p.textContent='완료 ✅';
         if(g) g.textContent='';
         if(t) t.textContent='';
-        _stepTimerDone();
+        _breathAlarm();
       }
     },1000);
-  } else {
-    RS.iv=setInterval(function(){
-      rem--;
-      if(disp) disp.textContent=fmt(rem);
-      if(bar)  bar.style.width=(rem/total*100)+'%';
-      if(rem<=0){clearInterval(RS.iv);_stepTimerDone();}
-    },1000);
+    return;
   }
+  /* 기타 방법 — 단순 타이머 */
+  RS.iv=setInterval(function(){
+    rem--;
+    if(disp) disp.textContent=fmt(rem);
+    if(bar)  bar.style.width=(rem/total*100)+'%';
+    if(rem<=0){clearInterval(RS.iv);_stepTimerDone();}
+  },1000);
 };
 
 window.psTimerStart=function(total){
@@ -1014,6 +1001,71 @@ window.psWriteTimer=function(total){
     if(disp) disp.textContent=fmt(rem);
     if(rem<=0){clearInterval(RS.iv);if(disp)disp.textContent='✅ 완료';_stepTimerDone();}
   },1000);
+};
+
+/* 복식호흡 완료 알람 */
+var _alarmCtx=null, _alarmNodes=[];
+function _breathAlarm(){
+  try{ navigator.vibrate&&navigator.vibrate([400,200,400,200,400]); }catch(e){}
+  /* Web Audio 알람음 (반복) */
+  try{
+    _alarmCtx=new(window.AudioContext||window.webkitAudioContext)();
+    function playAlarmLoop(){
+      if(!_alarmCtx) return;
+      [523,659,784,659].forEach(function(freq,i){
+        var osc=_alarmCtx.createOscillator();
+        var gain=_alarmCtx.createGain();
+        osc.connect(gain); gain.connect(_alarmCtx.destination);
+        osc.frequency.value=freq; osc.type='sine';
+        var t=_alarmCtx.currentTime+i*0.22;
+        gain.gain.setValueAtTime(0,t);
+        gain.gain.linearRampToValueAtTime(0.4,t+0.05);
+        gain.gain.exponentialRampToValueAtTime(0.001,t+0.35);
+        osc.start(t); osc.stop(t+0.35);
+        _alarmNodes.push(osc);
+      });
+    }
+    playAlarmLoop();
+    RS._alarmLoop=setInterval(playAlarmLoop,1200);
+  }catch(e){}
+
+  /* 알람 끄기 버튼 표시 */
+  var inner=$('ps-inner');
+  if(!inner) return;
+  var btn=document.createElement('div');
+  btn.id='ps-alarm-btn';
+  btn.style.cssText='position:fixed;bottom:100px;left:50%;transform:translateX(-50%);'+
+    'z-index:99999;';
+  btn.innerHTML='<button onclick="psStopAlarm()" style="'+
+    'background:#1B4332;color:#fff;border:none;border-radius:20px;'+
+    'padding:16px 36px;font-size:1.1em;font-weight:800;cursor:pointer;'+
+    'box-shadow:0 6px 20px rgba(0,0,0,0.3);'+
+    'animation:ps-pulse 0.6s ease-in-out infinite;">'+
+    '🔔 알람 끄기'+
+  '</button>';
+  document.body.appendChild(btn);
+  /* 알람 끄기 버튼에 pulse 애니메이션 스타일 추가 */
+  if(!document.getElementById('ps-alarm-style')){
+    var s=document.createElement('style');
+    s.id='ps-alarm-style';
+    s.textContent='@keyframes ps-pulse{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.07)}}';
+    document.head.appendChild(s);
+  }
+}
+
+window.psStopAlarm=function(){
+  /* 알람 중지 */
+  try{
+    if(RS._alarmLoop){ clearInterval(RS._alarmLoop); RS._alarmLoop=null; }
+    _alarmNodes.forEach(function(n){ try{n.stop();}catch(e){} });
+    _alarmNodes=[];
+    if(_alarmCtx){ _alarmCtx.close(); _alarmCtx=null; }
+  }catch(e){}
+  try{ navigator.vibrate&&navigator.vibrate(0); }catch(e){}
+  /* 버튼 제거 */
+  var btn=document.getElementById('ps-alarm-btn');
+  if(btn) btn.remove();
+  _stepTimerDone();
 };
 
 function _stepTimerDone(){
