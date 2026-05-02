@@ -106,21 +106,53 @@ function _startBgm(){
 
     if(_bgmType==='rain'){
       f1.type='lowpass'; f1.frequency.value=900; gain.gain.value=0.18;
+      src.connect(f1); f1.connect(gain); gain.connect(ctx.destination);
+      src.start();
+      _bgmNodes=[src,f1,gain];
     } else if(_bgmType==='waves'){
       f1.type='bandpass'; f1.frequency.value=400; f1.Q.value=0.3; gain.gain.value=0.14;
+      src.connect(f1); f1.connect(gain); gain.connect(ctx.destination);
+      src.start();
+      _bgmNodes=[src,f1,gain];
     } else if(_bgmType==='forest'){
-      f1.type='highpass'; f1.frequency.value=600; gain.gain.value=0.10;
+      /* 배경: 바람 소리 */
+      f1.type='highpass'; f1.frequency.value=600; gain.gain.value=0.08;
+      src.connect(f1); f1.connect(gain); gain.connect(ctx.destination);
+      src.start();
+      /* 새소리: 랜덤 간격으로 짧은 음 */
+      function chirp(){
+        try{
+          if(!_bgmCtx) return;
+          var o=_bgmCtx.createOscillator(), g=_bgmCtx.createGain();
+          o.connect(g); g.connect(_bgmCtx.destination);
+          var baseFreq=2000+Math.random()*1500;
+          o.frequency.setValueAtTime(baseFreq,_bgmCtx.currentTime);
+          o.frequency.exponentialRampToValueAtTime(baseFreq*1.3,_bgmCtx.currentTime+0.08);
+          o.frequency.exponentialRampToValueAtTime(baseFreq*0.8,_bgmCtx.currentTime+0.18);
+          o.type='sine';
+          g.gain.setValueAtTime(0,_bgmCtx.currentTime);
+          g.gain.linearRampToValueAtTime(0.12,_bgmCtx.currentTime+0.04);
+          g.gain.exponentialRampToValueAtTime(0.001,_bgmCtx.currentTime+0.22);
+          o.start(_bgmCtx.currentTime); o.stop(_bgmCtx.currentTime+0.25);
+          /* 다음 새소리 랜덤 타이밍 */
+          var next=(2+Math.random()*4)*1000;
+          _bgmNodes._birdTimer=setTimeout(chirp, next);
+        }catch(e){}
+      }
+      setTimeout(chirp, 1500);
+      _bgmNodes=[src,f1,gain];
     } else {
-      f1.type='lowpass'; f1.frequency.value=2000; gain.gain.value=0.12;
+      gain.gain.value=0.12;
+      src.connect(f1); f1.connect(gain); gain.connect(ctx.destination);
+      src.start();
+      _bgmNodes=[src,f1,gain];
     }
-    src.connect(f1); f1.connect(gain); gain.connect(ctx.destination);
-    src.start();
-    _bgmNodes=[src,f1,gain];
   }catch(e){ showToast('소리를 재생할 수 없어요'); }
 }
 
 function _stopBgm(){
   try{
+    if(_bgmNodes._birdTimer){ clearTimeout(_bgmNodes._birdTimer); }
     _bgmNodes.forEach(function(n){ try{n.stop&&n.stop();}catch(e){} });
     _bgmNodes=[];
     if(_bgmCtx){ _bgmCtx.close(); _bgmCtx=null; }
@@ -554,10 +586,18 @@ function renderStep(){
     '</div>'+
 
     '<div style="padding:24px 20px 120px;background:#FAFAF8;min-height:calc(100vh - 200px);">'+
-      '<div style="text-align:center;margin-bottom:20px;">'+
-        '<div style="font-size:2.8em;margin-bottom:10px;">'+sd.icon+'</div>'+
-        '<div style="font-size:var(--fs-title);font-weight:700;color:'+C+';margin-bottom:6px;">'+sd.title+'</div>'+
-        '<div style="font-size:var(--fs-caption);color:#777;line-height:1.75;">'+sd.desc.replace(/\n/g,'<br>')+'</div>'+
+      '<div style="text-align:center;margin-bottom:20px;">'+(function(){
+        /* 침묵 단계에서 방법 선택됐으면 해당 방법 정보 표시 */
+        var ML={breath:{icon:'🫁',title:'복식호흡',desc:'4초 들이마시고, 7초 참고, 8초 내쉬어요'},
+                gratitude:{icon:'💛',title:'감사 떠올리기',desc:'마음속으로 고마운 사람을 떠올려요'},
+                fiverule:{icon:'🌊',title:'5분 룰',desc:'지금 감정을 충분히 느껴요'},
+                rest:{icon:'🍃',title:'그냥 쉬기',desc:'창밖을 바라보거나 눈을 감아요'}};
+        var sel=safeGet('ps_silence_method_'+todayStr(),'');
+        var info=(sd.type==='silence'&&sel&&ML[sel])?ML[sel]:{icon:sd.icon,title:sd.title,desc:sd.desc};
+        return '<div style="font-size:2.8em;margin-bottom:10px;">'+info.icon+'</div>'+
+          '<div style="font-size:var(--fs-title);font-weight:700;color:'+C+';margin-bottom:6px;">'+info.title+'</div>'+
+          '<div style="font-size:var(--fs-caption);color:#777;line-height:1.75;">'+info.desc.replace(/\n/g,'<br>')+'</div>';
+      }())+
       '</div>'+
 
       buildStepBody(sd,C,CL)+
@@ -1161,6 +1201,9 @@ window.psSilenceStart=function(method,total){
       if(s) s.textContent=cur.step;
       if(m) m.innerHTML=cur.msg.replace(/\n/g,'<br>');
       if(sb) sb.innerHTML=cur.sub?cur.sub.replace(/\n/g,'<br>'):'';
+      /* 단계 바뀔 때 자동 읽기 */
+      var readText=cur.step+'. '+cur.msg.replace(/\n/g,' ')+(cur.sub?'. '+cur.sub.replace(/\n/g,' '):'');
+      _breathSpeak(readText);
     }
     updateFStep(0);
     RS.iv=setInterval(function(){
