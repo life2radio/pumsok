@@ -586,10 +586,7 @@ function buildSilence(C){
 
   var guideMap={
     breath:
-      /* 복식호흡: 원 애니메이션 + 단계 안내 */
-      '<style>'+
-      '@keyframes ps-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}'+
-      '</style>'+
+      '<style>@keyframes ps-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}</style>'+
       '<div style="display:flex;flex-direction:column;align-items:center;margin-bottom:16px;">'+
         '<div id="ps-ba-phase" style="font-size:var(--fs-body);font-weight:700;color:'+acCol2+';margin-bottom:16px;min-height:28px;">시작 버튼을 눌러주세요</div>'+
         '<div style="position:relative;width:160px;height:160px;display:flex;align-items:center;justify-content:center;">'+
@@ -597,50 +594,51 @@ function buildSilence(C){
           '<div id="ps-ba-inner" style="position:absolute;width:70px;height:70px;border-radius:50%;background:'+acCol2+';opacity:0.15;transition:all .6s ease-in-out;"></div>'+
           '<span id="ps-ba-txt" style="position:relative;font-size:var(--fs-title);font-weight:800;color:'+acCol2+';">준비</span>'+
         '</div>'+
-        '<div id="ps-ba-guide" style="font-size:var(--fs-caption);color:#888;margin-top:14px;text-align:center;min-height:20px;"></div>'+
+        '<div id="ps-ba-guide" style="font-size:var(--fs-caption);color:#888;margin-top:14px;text-align:center;min-height:40px;line-height:1.8;"></div>'+
       '</div>',
 
     gratitude:
-      /* 감사: 심장 + 페이드 텍스트 */
       '<style>'+
-      '@keyframes ps-heart{0%,100%{transform:scale(1)}30%{transform:scale(1.18)}60%{transform:scale(0.95)}}'+
-      '@keyframes ps-fade{0%{opacity:0;transform:translateY(8px)}20%{opacity:1;transform:translateY(0)}80%{opacity:1}100%{opacity:0}}'+
+      '@keyframes ps-heart{0%,100%{transform:scale(1)}40%{transform:scale(1.2)}70%{transform:scale(0.95)}}'+
+      '@keyframes ps-gfade{0%{opacity:0;transform:translateY(6px)}15%{opacity:1;transform:translateY(0)}85%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-6px)}}'+
       '</style>'+
-      '<div style="text-align:center;margin-bottom:16px;">'+
-        '<div id="ps-heart" style="font-size:4em;animation:ps-heart 2s ease-in-out infinite;display:inline-block;margin-bottom:14px;">💛</div>'+
-        '<div id="ps-gratitude-msg" style="font-size:var(--fs-body);color:#888;min-height:56px;line-height:1.8;"></div>'+
+      '<div style="text-align:center;margin-bottom:8px;">'+
+        '<div style="font-size:3.5em;animation:ps-heart 2.5s ease-in-out infinite;display:inline-block;margin-bottom:12px;">💛</div>'+
+        '<div id="ps-g-step" style="font-size:var(--fs-caption);font-weight:700;color:#C9A84C;margin-bottom:8px;min-height:20px;"></div>'+
+        '<div id="ps-g-msg" style="font-size:var(--fs-body);color:#555;min-height:60px;line-height:1.9;font-weight:600;"></div>'+
+        '<div id="ps-g-sub" style="font-size:var(--fs-caption);color:#aaa;margin-top:6px;min-height:20px;line-height:1.7;"></div>'+
       '</div>',
 
     fiverule:
-      /* 5분 룰: 파도 SVG 애니메이션 */
       '<style>'+
       '@keyframes ps-wave1{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}'+
       '@keyframes ps-wave2{0%{transform:translateX(0)}100%{transform:translateX(50%)}}'+
-      '@keyframes ps-breathe{0%,100%{opacity:0.6}50%{opacity:1}}'+
+      '@keyframes ps-fbreathe{0%,100%{opacity:0.5}50%{opacity:1}}'+
       '</style>'+
-      '<div style="margin-bottom:16px;">'+
-        '<div style="overflow:hidden;border-radius:16px;height:100px;background:#EEF2FA;position:relative;margin-bottom:14px;">'+
-          '<svg style="position:absolute;bottom:0;left:0;width:200%;animation:ps-wave1 4s linear infinite;" viewBox="0 0 400 60" preserveAspectRatio="none" height="60">'+
-            '<path d="M0,30 C50,0 100,60 150,30 C200,0 250,60 300,30 C350,0 400,60 400,30 L400,60 L0,60 Z" fill="#4A6FA5" opacity="0.3"/>'+
+      '<div style="margin-bottom:8px;">'+
+        '<div style="overflow:hidden;border-radius:14px;height:70px;background:#EEF2FA;position:relative;margin-bottom:12px;">'+
+          '<svg style="position:absolute;bottom:0;left:0;width:200%;animation:ps-wave1 5s linear infinite;" viewBox="0 0 400 50" preserveAspectRatio="none" height="50">'+
+            '<path d="M0,25 C50,0 100,50 150,25 C200,0 250,50 300,25 C350,0 400,50 400,25 L400,50 L0,50 Z" fill="#4A6FA5" opacity="0.25"/>'+
           '</svg>'+
-          '<svg style="position:absolute;bottom:0;left:0;width:200%;animation:ps-wave2 6s linear infinite;" viewBox="0 0 400 60" preserveAspectRatio="none" height="50">'+
-            '<path d="M0,20 C60,50 120,0 180,20 C240,50 300,0 360,20 C390,35 400,25 400,20 L400,60 L0,60 Z" fill="#4A6FA5" opacity="0.2"/>'+
+          '<svg style="position:absolute;bottom:0;left:0;width:200%;animation:ps-wave2 7s linear infinite;" viewBox="0 0 400 50" preserveAspectRatio="none" height="40">'+
+            '<path d="M0,15 C60,40 120,0 180,15 C240,40 300,0 360,15 L400,15 L400,50 L0,50 Z" fill="#4A6FA5" opacity="0.15"/>'+
           '</svg>'+
-          '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:var(--fs-body);font-weight:700;color:#4A6FA5;animation:ps-breathe 3s ease-in-out infinite;text-align:center;white-space:nowrap;">감정을 있는 그대로 느껴요</div>'+
         '</div>'+
-        '<div style="font-size:var(--fs-caption);color:#888;text-align:center;line-height:1.8;">억누르지 말고 · 판단하지 말고<br>그냥 느끼는 게 전부예요</div>'+
+        '<div id="ps-f-step" style="font-size:var(--fs-caption);font-weight:700;color:#4A6FA5;margin-bottom:6px;min-height:20px;"></div>'+
+        '<div id="ps-f-msg" style="font-size:var(--fs-body);color:#333;min-height:60px;line-height:1.9;font-weight:600;"></div>'+
+        '<div id="ps-f-sub" style="font-size:var(--fs-caption);color:#888;margin-top:6px;min-height:20px;line-height:1.7;"></div>'+
       '</div>',
 
     rest:
-      /* 그냥 쉬기: 나뭇잎 + 텍스트 */
       '<style>'+
-      '@keyframes ps-leaf{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}'+
-      '@keyframes ps-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}'+
+      '@keyframes ps-float{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}'+
+      '@keyframes ps-rfade{0%,100%{opacity:0.4}50%{opacity:1}}'+
       '</style>'+
-      '<div style="text-align:center;margin-bottom:16px;">'+
-        '<div style="font-size:4em;animation:ps-float 3s ease-in-out infinite;display:inline-block;margin-bottom:14px;">🍃</div>'+
-        '<div style="font-size:var(--fs-body);color:#5A8A6A;font-weight:700;margin-bottom:8px;">아무것도 안 해도 돼요</div>'+
-        '<div style="font-size:var(--fs-caption);color:#888;line-height:1.9;">창밖을 바라보거나 눈을 감아요<br>생각이 떠올라도 그냥 흘려보내요</div>'+
+      '<div style="text-align:center;margin-bottom:8px;">'+
+        '<div style="font-size:3.5em;animation:ps-float 4s ease-in-out infinite;display:inline-block;margin-bottom:12px;">🍃</div>'+
+        '<div id="ps-r-step" style="font-size:var(--fs-caption);font-weight:700;color:#5A8A6A;margin-bottom:6px;min-height:20px;"></div>'+
+        '<div id="ps-r-msg" style="font-size:var(--fs-body);color:#333;min-height:60px;line-height:1.9;font-weight:600;"></div>'+
+        '<div id="ps-r-sub" style="font-size:var(--fs-caption);color:#aaa;margin-top:6px;min-height:20px;line-height:1.7;"></div>'+
       '</div>'
   };
 
@@ -795,66 +793,191 @@ window.psSilenceStart=function(method,total){
   var btn=$('ps-s'), disp=$('ps-t'), bar=$('ps-b');
   if(btn) btn.style.display='none';
 
-  /* 감사 떠올리기 — 텍스트 순환 */
+  /* 감사 떠올리기 — 단계별 텍스트 */
   if(method==='gratitude'){
-    var msgs=['마음속으로 이름을 불러요…','건강하길 바란다…','감사하다…','고마워요…','보고 싶어요…'];
-    var mi=0;
-    var msgEl=$('ps-gratitude-msg');
-    if(msgEl){ msgEl.style.animation='ps-fade 3s ease infinite'; msgEl.textContent=msgs[0]; }
-    var msgIv=setInterval(function(){
-      mi=(mi+1)%msgs.length;
-      var el=$('ps-gratitude-msg');
-      if(el){
-        el.style.animation='none';
-        setTimeout(function(){
-          var el2=$('ps-gratitude-msg');
-          if(el2){ el2.textContent=msgs[mi]; el2.style.animation='ps-fade 3s ease infinite'; }
-        },50);
-      }
-    },3000);
+    var gSteps=[
+      {at:0,  step:'① 눈을 감아요',     msg:'가장 먼저 떠오르는 사람\n얼굴을 마음속에 그려요',  sub:'가족, 친구, 은인 — 누구든 좋아요'},
+      {at:15, step:'② 이름을 불러요',    msg:'"건강하길 바란다"',                               sub:'소리 내지 않아도 돼요\n마음속으로만 해도 충분해요'},
+      {at:30, step:'③ 또 한 사람',       msg:'고마웠던 순간을 떠올려요\n"감사하다"',              sub:'작은 것도 괜찮아요'},
+      {at:45, step:'④ 그 따뜻함을',      msg:'지금 가슴에서\n느껴지는 온기를 그대로 느껴요',     sub:'이 느낌이 오늘 하루를 바꿔요'}
+    ];
+    var lastGStep=-1;
+    function updateGStep(elapsed){
+      var cur=gSteps[0];
+      for(var i=0;i<gSteps.length;i++){ if(elapsed>=gSteps[i].at) cur=gSteps[i]; }
+      if(cur.at===lastGStep) return;
+      lastGStep=cur.at;
+      var s=$('ps-g-step'), m=$('ps-g-msg'), sb=$('ps-g-sub');
+      if(s) s.textContent=cur.step;
+      if(m) m.innerHTML=cur.msg.replace(/\n/g,'<br>');
+      if(sb) sb.innerHTML=cur.sub?cur.sub.replace(/\n/g,'<br>'):'';
+    }
+    updateGStep(0);
     RS.iv=setInterval(function(){
       rem--;
+      var elapsed=total-rem;
+      updateGStep(elapsed);
       if(disp) disp.textContent=fmt(rem);
       if(bar)  bar.style.width=(rem/total*100)+'%';
-      if(rem<=0){ clearInterval(RS.iv); clearInterval(msgIv); _stepTimerDone(); }
+      if(rem<=0){
+        clearInterval(RS.iv);
+        var s=$('ps-g-step'), m=$('ps-g-msg');
+        if(s) s.textContent='완료 ✅';
+        if(m) m.innerHTML='따뜻한 마음으로<br>오늘을 시작해요 💛';
+        _stepTimerDone();
+      }
+    },1000);
+    return;
+  }
+
+  /* 5분 룰 — 단계별 텍스트 */
+  if(method==='fiverule'){
+    var fSteps=[
+      {at:0,   step:'① 감정 인식',    msg:'지금 느끼는 감정이\n무엇인지 바라봐요',         sub:'화, 슬픔, 불안, 억울함…\n이름을 붙여보세요'},
+      {at:60,  step:'② 몸에서 느끼기', msg:'그 감정을\n몸 어디서 느끼나요?',              sub:'가슴? 목? 배?\n느껴지는 곳에 집중해요'},
+      {at:120, step:'③ 그냥 느끼기',   msg:'억누르지 마세요\n판단하지 마세요',              sub:'눈물이 나도 괜찮아요\n화가 나도 괜찮아요\n그냥 느끼는 게 전부예요'},
+      {at:180, step:'④ 함께 있기',     msg:'그 감정과\n함께 있어요',                       sub:'저항하지 않으면\n감정은 스스로 지나가요'},
+      {at:240, step:'⑤ 마무리 준비',   msg:'타이머가 곧 울려요\n마지막으로 크게 숨 쉬어요', sub:'울리면 "바꿀 수 없다"\n그리고 다음으로 넘어가요'}
+    ];
+    var lastFStep=-1;
+    function updateFStep(elapsed){
+      var cur=fSteps[0];
+      for(var i=0;i<fSteps.length;i++){ if(elapsed>=fSteps[i].at) cur=fSteps[i]; }
+      if(cur.at===lastFStep) return;
+      lastFStep=cur.at;
+      var s=$('ps-f-step'), m=$('ps-f-msg'), sb=$('ps-f-sub');
+      if(s) s.textContent=cur.step;
+      if(m) m.innerHTML=cur.msg.replace(/\n/g,'<br>');
+      if(sb) sb.innerHTML=cur.sub?cur.sub.replace(/\n/g,'<br>'):'';
+    }
+    updateFStep(0);
+    RS.iv=setInterval(function(){
+      rem--;
+      var elapsed=total-rem;
+      updateFStep(elapsed);
+      if(disp) disp.textContent=fmt(rem);
+      if(bar)  bar.style.width=(rem/total*100)+'%';
+      if(rem<=0){
+        clearInterval(RS.iv);
+        var s=$('ps-f-step'), m=$('ps-f-msg');
+        if(s) s.textContent='"바꿀 수 없다"';
+        if(m) m.innerHTML='처리됐어요<br>이제 다음 단계로 넘어가요 🌊';
+        _stepTimerDone();
+      }
+    },1000);
+    return;
+  }
+
+  /* 그냥 쉬기 — 단계별 텍스트 */
+  if(method==='rest'){
+    var rSteps=[
+      {at:0,  step:'① 내려놓기',   msg:'핸드폰을 내려놓아요\n창밖을 바라보거나 눈을 감아요',  sub:'지금 이 순간만 여기 있어요'},
+      {at:20, step:'② 느껴보기',   msg:'새 소리, 햇빛, 바람\n피부에 닿는 공기를 느껴요',     sub:'생각이 떠올라도\n그냥 흘려보내요'},
+      {at:40, step:'③ 그냥 있기',  msg:'아무것도 안 해도 돼요\n여기 있는 것으로 충분해요',    sub:'뇌가 스스로 정렬되고 있어요'}
+    ];
+    var lastRStep=-1;
+    function updateRStep(elapsed){
+      var cur=rSteps[0];
+      for(var i=0;i<rSteps.length;i++){ if(elapsed>=rSteps[i].at) cur=rSteps[i]; }
+      if(cur.at===lastRStep) return;
+      lastRStep=cur.at;
+      var s=$('ps-r-step'), m=$('ps-r-msg'), sb=$('ps-r-sub');
+      if(s) s.textContent=cur.step;
+      if(m) m.innerHTML=cur.msg.replace(/\n/g,'<br>');
+      if(sb) sb.innerHTML=cur.sub?cur.sub.replace(/\n/g,'<br>'):'';
+    }
+    updateRStep(0);
+    RS.iv=setInterval(function(){
+      rem--;
+      var elapsed=total-rem;
+      updateRStep(elapsed);
+      if(disp) disp.textContent=fmt(rem);
+      if(bar)  bar.style.width=(rem/total*100)+'%';
+      if(rem<=0){
+        clearInterval(RS.iv);
+        var s=$('ps-r-step'), m=$('ps-r-msg');
+        if(s) s.textContent='완료 ✅';
+        if(m) m.innerHTML='잘 쉬었어요<br>이제 시작할 수 있어요 🍃';
+        _stepTimerDone();
+      }
     },1000);
     return;
   }
 
   if(method==='breath'){
     var phases=[
-      {n:'들이마시기',s:4,guide:'배가 먼저 올라오고\n가슴이 올라와요'},
-      {n:'참기',s:7,guide:'편안하게 멈춰요'},
-      {n:'내쉬기',s:8,guide:'배가 먼저 들어가고\n가슴이 내려와요'}
+      {n:'들이마시기', s:4,  guide:'코로 천천히 들이마세요\n배가 먼저 올라와요'},
+      {n:'참기',       s:7,  guide:'편안하게 멈춰요'},
+      {n:'내쉬기',     s:8,  guide:'입으로 천천히 내쉬어요\n완전히 비워요'}
     ];
-    var pi=0,ptick=0;
-    RS.iv=setInterval(function(){
-      var ph=phases[pi], left=ph.s-ptick;
-      var txt=$('ps-ba-txt'), outer=$('ps-ba-outer'), inner=$('ps-ba-inner');
-      var phase=$('ps-ba-phase'), guide=$('ps-ba-guide');
-      if(txt) txt.textContent=left;
+    var pi=0, phaseCount=0, tickCount=0;
+
+    /* 각 phase 시작 시 CSS transition 시간을 phase 길이에 맞게 설정 */
+    function startPhase(idx){
+      var ph=phases[idx];
+      var outer=$('ps-ba-outer'), inner=$('ps-ba-inner');
+      var phase=$('ps-ba-phase'), guide=$('ps-ba-guide'), txt=$('ps-ba-txt');
       if(phase) phase.textContent=ph.n;
       if(guide) guide.innerHTML=ph.guide.replace(/\n/g,'<br>');
-      var p=ptick/ph.s;
-      if(pi===0){
-        if(inner){inner.style.width=(70+p*60)+'px';inner.style.height=(70+p*60)+'px';inner.style.opacity=0.15+p*0.25;}
-        if(outer){outer.style.width=(140+p*40)+'px';outer.style.height=(140+p*40)+'px';}
-      } else if(pi===1){
-        if(inner) inner.style.opacity='0.4';
+      phaseCount=0;
+
+      /* transition 시간을 phase 길이에 맞게 */
+      var t=ph.s+'s';
+      if(outer) outer.style.transition='all '+t+' ease-in-out';
+      if(inner) inner.style.transition='all '+t+' ease-in-out';
+
+      if(idx===0){
+        /* 들이마시기: 작→큰 */
+        if(inner){inner.style.width='60px';inner.style.height='60px';inner.style.opacity='0.15';}
+        if(outer){outer.style.width='120px';outer.style.height='120px';}
+        setTimeout(function(){
+          var i=$('ps-ba-inner'), o=$('ps-ba-outer');
+          if(i){i.style.width='130px';i.style.height='130px';i.style.opacity='0.4';}
+          if(o){o.style.width='180px';o.style.height='180px';}
+        }, 50);
+      } else if(idx===1){
+        /* 참기: 크기 유지, 살짝 맥박 */
+        if(outer) outer.style.transition='all 1.5s ease-in-out';
+        if(inner) inner.style.transition='all 1.5s ease-in-out';
       } else {
-        if(inner){inner.style.width=(130-p*60)+'px';inner.style.height=(130-p*60)+'px';inner.style.opacity=0.4-p*0.25;}
-        if(outer){outer.style.width=(180-p*40)+'px';outer.style.height=(180-p*40)+'px';}
+        /* 내쉬기: 큰→작 */
+        setTimeout(function(){
+          var i=$('ps-ba-inner'), o=$('ps-ba-outer');
+          if(i){i.style.width='60px';i.style.height='60px';i.style.opacity='0.1';}
+          if(o){o.style.width='120px';o.style.height='120px';}
+        }, 50);
       }
-      rem--;
-      if(disp) disp.textContent=fmt(Math.max(0,rem));
-      if(bar)  bar.style.width=(rem/total*100)+'%';
-      ptick++;
-      if(ptick>=ph.s){ptick=0;pi=(pi+1)%phases.length;}
-      if(rem<=0){
+    }
+
+    /* phase 시작 */
+    startPhase(0);
+
+    RS.iv=setInterval(function(){
+      phaseCount++;
+      tickCount++;
+      var ph=phases[pi];
+
+      /* 카운트다운 텍스트 */
+      var txt=$('ps-ba-txt');
+      if(txt) txt.textContent=(ph.s - phaseCount + 1);
+
+      /* 타이머 */
+      if(disp) disp.textContent=fmt(Math.max(0, total-tickCount));
+      if(bar)  bar.style.width=((total-tickCount)/total*100)+'%';
+
+      /* phase 전환 */
+      if(phaseCount >= ph.s){
+        pi=(pi+1)%phases.length;
+        startPhase(pi);
+      }
+
+      /* 완료 */
+      if(tickCount >= total){
         clearInterval(RS.iv);
-        if(txt) txt.textContent='✓';
-        if(phase) phase.textContent='완료';
-        if(guide) guide.textContent='';
+        var p=$('ps-ba-phase'), g=$('ps-ba-guide'), t=$('ps-ba-txt');
+        if(p) p.textContent='완료 ✅';
+        if(g) g.textContent='';
+        if(t) t.textContent='';
         _stepTimerDone();
       }
     },1000);
