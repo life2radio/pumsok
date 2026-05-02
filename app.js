@@ -88,13 +88,19 @@ window.psHeaderBgm = function(){
   safeSet('ps_bgm_on', on?'1':'0');
   var btn = document.getElementById('hd-bgm-btn');
   if(btn) btn.textContent = on ? '🎵 소리 켜짐' : '🎵 소리 끄기';
+  if(on){ _startBgm(); } else { _stopBgm(); }
+};
 
-  if(on){
-    /* 빗소리 Web Audio 생성 */
-    _startBgm();
-  } else {
-    _stopBgm();
-  }
+/* 모달 안에서도 BGM 끄기/켜기 */
+window.psModalBgm = function(){
+  var on = safeGet('ps_bgm_on','0')!=='1';
+  safeSet('ps_bgm_on', on?'1':'0');
+  var btn = document.getElementById('ps-bgm-btn');
+  var hdBtn = document.getElementById('hd-bgm-btn');
+  if(btn) btn.textContent = on ? '🎵' : '🔈';
+  if(hdBtn) hdBtn.textContent = on ? '🎵 소리 켜짐' : '🎵 소리 끄기';
+  if(on){ _startBgm(); showToast('🌧 빗소리 켜짐'); }
+  else  { _stopBgm();  showToast('🔈 빗소리 꺼짐'); }
 };
 
 var _bgmCtx=null, _bgmNodes=[];
@@ -481,8 +487,14 @@ function renderStep(){
       '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">'+
         '<button onclick="psClose()" style="background:rgba(255,255,255,.18);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:var(--fs-caption);font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;">✕ 닫기</button>'+
         '<div style="font-size:var(--fs-caption);font-weight:700;color:rgba(255,255,255,.85);">'+r.emoji+' '+r.label+'</div>'+
-        /* TTS 버튼 */
-        '<button id="ps-tts-btn" onclick="psTtsToggle()" style="background:rgba(255,255,255,.18);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:var(--fs-caption);font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;">🔊</button>'+
+        '<div style="display:flex;gap:6px;">'+
+          /* BGM 버튼 */
+          '<button id="ps-bgm-btn" onclick="psModalBgm()" style="background:rgba(255,255,255,.18);color:#fff;border:none;border-radius:8px;padding:7px 10px;font-size:var(--fs-caption);cursor:pointer;-webkit-tap-highlight-color:transparent;">'+
+            (safeGet('ps_bgm_on','0')==='1'?'🎵':'🔈')+
+          '</button>'+
+          /* TTS 버튼 */
+          '<button id="ps-tts-btn" onclick="psTtsToggle()" style="background:rgba(255,255,255,.18);color:#fff;border:none;border-radius:8px;padding:7px 10px;font-size:var(--fs-caption);font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;">🔊</button>'+
+        '</div>'+
       '</div>'+
       '<div style="background:rgba(255,255,255,.2);border-radius:10px;height:6px;overflow:hidden;margin-bottom:8px;">'+
         '<div style="height:100%;background:#fff;border-radius:10px;width:'+pct+'%;transition:width .4s;"></div>'+
@@ -511,12 +523,7 @@ function renderStep(){
 
   var m=getModal(); if(m) m.scrollTop=0;
 
-  /* 자동 TTS — 화면 설명 읽기 */
-  if(_ttsOn){
-    setTimeout(function(){
-      _ttsSpeak(sd.title + '. ' + sd.desc);
-    }, 400);
-  }
+  /* 음성: 사용자가 🔊 버튼으로 실행 */
 }
 
 /* ────────────────────────────────────────
@@ -895,26 +902,22 @@ window.psSilenceDetail=function(){
 };
 
 /* ────────────────────────────────────────
-   TTS (텍스트 읽기)
+   TTS (텍스트 읽기) — iOS 호환
 ──────────────────────────────────────── */
 var _ttsOn = safeGet('ps_tts_on','1')==='1';
 var _ttsPlaying = false;
 
 function _ttsSpeak(text){
   if(!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
   var clean = text.replace(/<[^>]+>/g,'').replace(/\n/g,'. ').replace(/\.{2,}/g,'.').trim();
   if(!clean) return;
+  window.speechSynthesis.cancel();
   var utt = new SpeechSynthesisUtterance(clean);
-  utt.lang = 'ko-KR';
-  utt.rate = 0.85;
-  utt.pitch = 1.05;
-  utt.volume = 1.0;
-  utt.onstart  = function(){ _ttsPlaying=true;  _updateTtsBtn(); };
-  utt.onend    = function(){ _ttsPlaying=false; _updateTtsBtn(); };
-  utt.onerror  = function(){ _ttsPlaying=false; _updateTtsBtn(); };
-  /* iOS Safari 버그 우회 */
-  setTimeout(function(){ window.speechSynthesis.speak(utt); }, 100);
+  utt.lang='ko-KR'; utt.rate=0.85; utt.pitch=1.05; utt.volume=1.0;
+  utt.onstart=function(){ _ttsPlaying=true;  _updateTtsBtn(); };
+  utt.onend  =function(){ _ttsPlaying=false; _updateTtsBtn(); };
+  utt.onerror=function(){ _ttsPlaying=false; _updateTtsBtn(); };
+  window.speechSynthesis.speak(utt);
 }
 
 function _ttsStop(){
@@ -939,35 +942,74 @@ function _updateTtsBtn(){
 }
 
 window.psTtsToggle = function(){
+  /* 카카오톡 인앱 브라우저 감지 */
+  if(/KAKAOTALK/i.test(navigator.userAgent)){
+    showToast('크롬 브라우저에서 열면 음성을 들을 수 있어요 🔊');
+    return;
+  }
+  if(!window.speechSynthesis){
+    showToast('이 기기에서는 음성을 지원하지 않아요');
+    return;
+  }
+
+  /* 읽는 중 → 중지 */
+  if(_ttsPlaying){
+    _ttsStop();
+    return;
+  }
+
+  /* 꺼져 있으면 켜기 */
   if(!_ttsOn){
-    /* 소리 켜기 */
     _ttsOn=true;
     safeSet('ps_tts_on','1');
-    _updateTtsBtn();
     showToast('🔊 음성 안내 켜짐');
-  } else if(_ttsPlaying){
-    /* 읽는 중 → 중지 */
-    _ttsStop();
-  } else {
-    /* 켜져 있고 안 읽는 중 → 끄기 */
-    _ttsOn=false;
-    safeSet('ps_tts_on','0');
-    _ttsStop();
-    showToast('🔇 음성 안내 꺼짐');
+    _updateTtsBtn();
+  }
+
+  /* 현재 화면 텍스트 읽기 */
+  var text = _getTtsText();
+  if(text){
+    /* cancel 후 바로 speak하면 일부 브라우저에서 충돌 → 짧은 대기 */
+    window.speechSynthesis.cancel();
+    _ttsPlaying=false;
+    var utt = new SpeechSynthesisUtterance(text);
+    utt.lang='ko-KR'; utt.rate=0.85; utt.pitch=1.05; utt.volume=1.0;
+    utt.onstart=function(){ _ttsPlaying=true;  _updateTtsBtn(); };
+    utt.onend  =function(){ _ttsPlaying=false; _updateTtsBtn(); };
+    utt.onerror=function(){ _ttsPlaying=false; _updateTtsBtn(); };
+    window.speechSynthesis.speak(utt);
+    _updateTtsBtn();
   }
 };
 
-/* 타이머 화면에서 안내 텍스트 읽기 */
-function _ttsReadTimerGuide(method){
-  if(!_ttsOn) return;
-  var guides={
-    breath:'복식 호흡을 시작합니다. 코로 들이마시고, 참고, 입으로 내쉬어요.',
-    gratitude:'눈을 감고 고마운 사람을 떠올려요. 건강하길 바란다. 감사하다.',
-    fiverule:'타이머가 울릴 때까지 지금 느끼는 감정을 충분히 느껴요. 억누르지 말고 판단하지 마세요.',
-    rest:'핸드폰을 내려놓아요. 창밖을 바라보거나 눈을 감아요. 아무것도 안 해도 돼요.'
-  };
-  _ttsSpeak(guides[method]||'');
+function _getTtsText(){
+  /* 슬라이드 카드 */
+  var card=document.getElementById('ps-slide-card');
+  if(card){
+    /* 카드 텍스트만 (버튼 텍스트 제외) */
+    var title=card.querySelector('[data-tts-title]');
+    var body=card.querySelector('[data-tts-body]');
+    if(title&&body) return title.textContent+'. '+body.textContent;
+    return card.textContent.replace(/🔍.*/,'').trim();
+  }
+  /* 타이머 화면 단계 안내 */
+  var fstep=document.getElementById('ps-f-step')||document.getElementById('ps-g-step')||document.getElementById('ps-r-step');
+  var fmsg =document.getElementById('ps-f-msg') ||document.getElementById('ps-g-msg') ||document.getElementById('ps-r-msg');
+  if(fstep&&fmsg) return fstep.textContent+'. '+fmsg.textContent;
+  /* 복식호흡 안내 */
+  var bphase=document.getElementById('ps-ba-phase');
+  var bguide=document.getElementById('ps-ba-guide');
+  if(bphase) return bphase.textContent+(bguide?'. '+bguide.textContent:'');
+  /* 기본: 현재 단계 설명 */
+  var r=ROUTINES[RS.type];
+  if(r&&r.steps[RS.step]){
+    var sd=r.steps[RS.step];
+    return sd.title+'. '+sd.desc;
+  }
+  return '';
 }
+
+/* 타이머 안내는 사용자가 🔊 버튼으로 직접 읽기 */
 
 window.psSilenceDetail=function(){
   var content=document.getElementById('ps-detail-content');
@@ -976,22 +1018,14 @@ window.psSilenceDetail=function(){
   var isOpen=content.style.display!=='none';
   content.style.display=isOpen?'none':'block';
   btn.textContent=isOpen?'🔍 더 알아보기 ▼':'🔍 접기 ▲';
-  if(!isOpen && _ttsOn){
-    setTimeout(function(){ _ttsSpeak(content.textContent); }, 200);
-  }
+  /* detail 읽기는 사용자가 🔊 버튼으로 직접 실행 */
 };
 
 window.psSilenceSlide=function(id,nextSlide){
   _ttsStop();
   safeSet('ps_silence_slide_'+todayStr(),String(nextSlide));
   renderStep();
-  /* 슬라이드 바뀌면 자동 읽기 */
-  if(_ttsOn){
-    setTimeout(function(){
-      var card=document.getElementById('ps-slide-card');
-      if(card) _ttsSpeak(card.textContent);
-    }, 500);
-  }
+  /* 슬라이드 전환 후 읽기는 사용자가 🔊 버튼으로 */
 };
 
 window.psClearSilence=function(){
@@ -1016,8 +1050,7 @@ window.psSilenceStart=function(method,total){
   var btn=$('ps-s'), disp=$('ps-t'), bar=$('ps-b');
   if(btn) btn.style.display='none';
 
-  /* 타이머 시작 음성 안내 */
-  _ttsReadTimerGuide(method);
+  /* 음성 안내: 사용자가 🔊 버튼으로 */
 
   /* 감사 떠올리기 — 단계별 텍스트 */
   if(method==='gratitude'){
@@ -1146,8 +1179,9 @@ window.psSilenceStart=function(method,total){
       if(guide) guide.innerHTML=ph.guide.replace(/\n/g,'<br>');
       phaseCount=0;
 
-      /* TTS 단계 안내 */
-      if(_ttsOn) _ttsSpeak(ph.n);
+      /* 단계 전환 음성 안내 */
+      var breathTexts=['천천히 들이마시세요','참으세요','천천히 내쉬세요'];
+      _breathSpeak(breathTexts[idx]||'');
 
       if(idx===0){
         /* 들이마시기 4초: 먼저 작은 상태 → transition 4s로 크게 */
@@ -1232,6 +1266,17 @@ window.psWriteTimer=function(total){
   },1000);
 };
 
+
+/* 복식호흡 단계 음성 안내 (TTS) */
+function _breathSpeak(text){
+  if(!window.speechSynthesis) return;
+  try{
+    window.speechSynthesis.cancel();
+    var utt=new SpeechSynthesisUtterance(text);
+    utt.lang='ko-KR'; utt.rate=0.75; utt.pitch=0.95; utt.volume=1.0;
+    window.speechSynthesis.speak(utt);
+  }catch(e){}
+}
 /* 복식호흡 완료 알람 */
 var _alarmCtx=null, _alarmNodes=[];
 function _breathAlarm(){
