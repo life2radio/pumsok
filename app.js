@@ -414,7 +414,8 @@ function buildStepBody(sd,C,CL){
 /* 침묵 — C안: 질문 먼저, 답에 따라 방법 안내 */
 function buildSilence(C){
   var sel=safeGet('ps_silence_method_'+todayStr(),'');
-  var slide=parseInt(safeGet('ps_silence_slide_'+todayStr(),'0'))||0;
+  var slide=parseInt(safeGet('ps_silence_slide_'+todayStr(),'0'));
+  if(isNaN(slide)||slide<0) slide=0;
 
   var METHODS={
     breath:{
@@ -512,14 +513,16 @@ function buildSilence(C){
 
   /* 방법 선택 후 */
   var m=METHODS[sel];
-  if(!m){ safeSet('ps_silence_method_'+todayStr(),''); return buildSilence(C); }
+  if(!m){ safeSet('ps_silence_method_'+todayStr(),''); safeSet('ps_silence_slide_'+todayStr(),'0'); return buildSilence(C); }
 
-  /* 슬라이드 단계: 0=왜, 1=어떻게, 2=타이머 */
+  /* slide 범위 검증 */
   var totalSlides=m.slides.length;
+  if(slide<0) slide=0;
   var isTimerStep=(slide>=totalSlides);
 
   if(!isTimerStep){
     var sd=m.slides[slide];
+    if(!sd){ slide=0; sd=m.slides[0]; } /* 방어 코드 */
     var bgColors={breath:C_GLIGHT,gratitude:'#FDF6E3',fiverule:'#EEF2FA',rest:'#EDF5EF'};
     var accentColors={breath:C_GREEN,gratitude:'#C9A84C',fiverule:'#4A6FA5',rest:'#5A8A6A'};
     var bgCol=bgColors[sel]||C_GLIGHT;
