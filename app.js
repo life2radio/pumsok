@@ -82,53 +82,40 @@ window.switchView = function(name){
   if(name==='settings')     renderSettings();
 };
 
-/* 헤더 BGM 토글 */
-window.psHeaderBgm = function(){
-  var on = safeGet('ps_bgm_on','0')!=='1';
-  safeSet('ps_bgm_on', on?'1':'0');
-  var btn = document.getElementById('hd-bgm-btn');
-  if(btn) btn.textContent = on ? '🎵 소리 켜짐' : '🎵 소리 끄기';
-  if(on){ _startBgm(); } else { _stopBgm(); }
+var _bgmCtx=null, _bgmNodes=[], _bgmType=safeGet('ps_bgm_type','rain');
+
+var BGM_TYPES={
+  rain:  {label:'🌧 빗소리'},
+  waves: {label:'🌊 파도소리'},
+  forest:{label:'🌲 숲 소리'},
+  white: {label:'⬜ 화이트노이즈'}
 };
 
-/* 모달 안에서도 BGM 끄기/켜기 */
-window.psModalBgm = function(){
-  var on = safeGet('ps_bgm_on','0')!=='1';
-  safeSet('ps_bgm_on', on?'1':'0');
-  var btn = document.getElementById('ps-bgm-btn');
-  var hdBtn = document.getElementById('hd-bgm-btn');
-  if(btn) btn.textContent = on ? '🎵' : '🔈';
-  if(hdBtn) hdBtn.textContent = on ? '🎵 소리 켜짐' : '🎵 소리 끄기';
-  if(on){ _startBgm(); showToast('🌧 빗소리 켜짐'); }
-  else  { _stopBgm();  showToast('🔈 빗소리 꺼짐'); }
-};
-
-var _bgmCtx=null, _bgmNodes=[];
 function _startBgm(){
   _stopBgm();
   try{
     _bgmCtx=new(window.AudioContext||window.webkitAudioContext)();
-    /* 화이트노이즈 + 필터로 빗소리 생성 */
-    var bufSize=_bgmCtx.sampleRate*2;
-    var buf=_bgmCtx.createBuffer(1,bufSize,_bgmCtx.sampleRate);
-    var data=buf.getChannelData(0);
-    for(var i=0;i<bufSize;i++) data[i]=(Math.random()*2-1)*0.4;
+    var ctx=_bgmCtx;
+    var bufSize=ctx.sampleRate*2;
+    var buf=ctx.createBuffer(1,bufSize,ctx.sampleRate);
+    var d=buf.getChannelData(0);
+    for(var i=0;i<bufSize;i++) d[i]=(Math.random()*2-1);
+    var src=ctx.createBufferSource(); src.buffer=buf; src.loop=true;
+    var f1=ctx.createBiquadFilter();
+    var gain=ctx.createGain();
 
-    var src=_bgmCtx.createBufferSource();
-    src.buffer=buf; src.loop=true;
-
-    /* 로우패스 필터 → 부드러운 빗소리 */
-    var filter=_bgmCtx.createBiquadFilter();
-    filter.type='lowpass'; filter.frequency.value=800;
-
-    /* 게인 */
-    var gain=_bgmCtx.createGain();
-    gain.gain.value=0.18;
-
-    src.connect(filter); filter.connect(gain); gain.connect(_bgmCtx.destination);
+    if(_bgmType==='rain'){
+      f1.type='lowpass'; f1.frequency.value=900; gain.gain.value=0.18;
+    } else if(_bgmType==='waves'){
+      f1.type='bandpass'; f1.frequency.value=400; f1.Q.value=0.3; gain.gain.value=0.14;
+    } else if(_bgmType==='forest'){
+      f1.type='highpass'; f1.frequency.value=600; gain.gain.value=0.10;
+    } else {
+      f1.type='lowpass'; f1.frequency.value=2000; gain.gain.value=0.12;
+    }
+    src.connect(f1); f1.connect(gain); gain.connect(ctx.destination);
     src.start();
-    _bgmNodes=[src,filter,gain];
-    showToast('🌧 빗소리 켜짐');
+    _bgmNodes=[src,f1,gain];
   }catch(e){ showToast('소리를 재생할 수 없어요'); }
 }
 
@@ -139,6 +126,65 @@ function _stopBgm(){
     if(_bgmCtx){ _bgmCtx.close(); _bgmCtx=null; }
   }catch(e){}
 }
+
+function _updateBgmBtns(on){
+  var icon=on?(BGM_TYPES[_bgmType]||{label:'🎵'}).label.split(' ')[0]:'🔈';
+  var b1=document.getElementById('hd-bgm-btn');
+  var b2=document.getElementById('ps-bgm-btn');
+  if(b1) b1.textContent=on?icon+' 켜짐':'🎵 소리 끄기';
+  if(b2) b2.textContent=on?icon:'🔈';
+}
+
+window.psBgmPicker=function(){
+  if(document.getElementById('ps-bgm-picker')) return;
+  var el=document.createElement('div');
+  el.id='ps-bgm-picker';
+  el.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;z-index:99998;background:rgba(0,0,0,0.45);';
+  var isOn=safeGet('ps_bgm_on','0')==='1';
+  el.innerHTML='<div style="position:absolute;bottom:0;left:0;width:100%;background:#fff;border-radius:20px 20px 0 0;padding:20px 20px 44px;">'+
+    '<div style="text-align:center;font-size:var(--fs-body);font-weight:700;color:#1a1a1a;margin-bottom:16px;">자연 소리 선택</div>'+
+    Object.keys(BGM_TYPES).map(function(k){
+      var isCur=(_bgmType===k&&isOn);
+      return '<button onclick="psBgmSelect(\''+k+'\')" style="'+
+        'width:100%;padding:14px 16px;margin-bottom:8px;border-radius:14px;cursor:pointer;text-align:left;'+
+        'background:'+(isCur?C_GLIGHT:'#f5f5f3')+';border:1.5px solid '+(isCur?C_GREEN:'transparent')+';'+
+        'font-size:var(--fs-body);font-weight:'+(isCur?'700':'500')+';color:'+(isCur?C_GREEN:'#333')+';">'+
+        BGM_TYPES[k].label+(isCur?' ✓':'')+
+      '</button>';
+    }).join('')+
+    (isOn?'<button onclick="psBgmOff()" style="width:100%;padding:12px;margin-top:4px;border:1.5px solid #e0ddd8;border-radius:12px;background:#fff;font-size:var(--fs-caption);color:#888;cursor:pointer;">🔈 소리 끄기</button>':'')+
+    '<button onclick="psBgmPickerClose()" style="width:100%;padding:12px;background:transparent;border:none;font-size:var(--fs-caption);color:#aaa;cursor:pointer;">닫기</button>'+
+  '</div>';
+  el.addEventListener('click',function(e){ if(e.target===el) psBgmPickerClose(); });
+  document.body.appendChild(el);
+};
+
+window.psBgmPickerClose=function(){
+  var el=document.getElementById('ps-bgm-picker'); if(el) el.remove();
+};
+
+window.psBgmSelect=function(type){
+  _bgmType=type; safeSet('ps_bgm_type',type);
+  safeSet('ps_bgm_on','1');
+  psBgmPickerClose();
+  _startBgm();
+  _updateBgmBtns(true);
+  showToast((BGM_TYPES[type]||{label:'🎵'}).label+' 켜짐');
+};
+
+window.psBgmOff=function(){
+  safeSet('ps_bgm_on','0');
+  _stopBgm();
+  psBgmPickerClose();
+  _updateBgmBtns(false);
+  showToast('🔈 소리 꺼짐');
+};
+
+window.psHeaderBgm=function(){ psBgmPicker(); };
+window.psModalBgm=function(){
+  var on=safeGet('ps_bgm_on','0')==='1';
+  if(on){ psBgmOff(); } else { psBgmPicker(); }
+};
 
 /* ────────────────────────────────────────
    헤더 렌더
@@ -486,7 +532,12 @@ function renderStep(){
     '<div style="background:'+C+';padding:20px 20px 14px;position:sticky;top:0;z-index:2;">'+
       '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">'+
         '<button onclick="psClose()" style="background:rgba(255,255,255,.18);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:var(--fs-caption);font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;">✕ 닫기</button>'+
-        '<div style="font-size:var(--fs-caption);font-weight:700;color:rgba(255,255,255,.85);">'+r.emoji+' '+r.label+'</div>'+
+        '<div style="font-size:var(--fs-caption);font-weight:700;color:rgba(255,255,255,.85);">'+(function(){
+          var ML={breath:'복식호흡',gratitude:'감사 떠올리기',fiverule:'5분 룰',rest:'그냥 쉬기'};
+          var sel=safeGet('ps_silence_method_'+todayStr(),'');
+          if(sd.type==='silence'&&sel&&ML[sel]) return ML[sel];
+          return r.emoji+' '+sd.title;
+        }())+'</div>'+
         '<div style="display:flex;gap:6px;">'+
           /* BGM 버튼 */
           '<button id="ps-bgm-btn" onclick="psModalBgm()" style="background:rgba(255,255,255,.18);color:#fff;border:none;border-radius:8px;padding:7px 10px;font-size:var(--fs-caption);cursor:pointer;-webkit-tap-highlight-color:transparent;">'+
@@ -783,26 +834,35 @@ function buildSilence(C){
     dots2+='<div style="width:'+(di2===totalSlides?'24px':'8px')+';height:8px;border-radius:4px;background:'+(di2===totalSlides?acCol2:'#ddd')+';transition:all .3s;"></div>';
   }
 
-  return '<div>'+
-    /* 이전 버튼 */
-    '<div style="display:flex;align-items:center;margin-bottom:16px;">'+
+  return '<div style="display:flex;flex-direction:column;min-height:calc(100vh - 220px);">'+
+    /* 이전 버튼 + 점 */
+    '<div style="display:flex;align-items:center;margin-bottom:12px;">'+
       '<button onclick="psSilenceSlide(\''+sel+'\','+(totalSlides-1)+')" style="background:transparent;border:none;font-size:var(--fs-caption);color:#aaa;cursor:pointer;padding:4px 0;">◀ 이전</button>'+
       '<div style="display:flex;gap:6px;margin:0 auto;">'+dots2+'</div>'+
-      '<div style="width:40px;"></div>'+
+      '<div style="width:44px;"></div>'+
     '</div>'+
 
-    /* 배경 카드 */
-    '<div style="background:'+bgCol2+';border-radius:20px;padding:20px;margin-bottom:16px;text-align:center;">'+
+    /* 애니메이션 + 안내 통합 카드 */
+    '<div style="background:'+bgCol2+';border-radius:24px;padding:20px 16px 16px;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;">'+
       (guideMap[m.guide]||'')+
-      '<div style="font-size:var(--fs-caption);color:#666;">📵 핸드폰을 내려놓고 시작하세요</div>'+
-    '</div>'+
 
-    '<div id="ps-t" style="text-align:center;font-size:3.5em;font-weight:700;color:'+acCol2+';letter-spacing:2px;margin-bottom:10px;">'+fmt(m.sec)+'</div>'+
-    '<div style="background:#e8e4dd;border-radius:10px;height:8px;overflow:hidden;margin-bottom:20px;">'+
-      '<div id="ps-b" style="height:100%;background:'+acCol2+';border-radius:10px;width:100%;transition:width 1s linear;"></div>'+
+      /* 타이머 숫자 */
+      '<div id="ps-t" style="font-size:3em;font-weight:900;color:'+acCol2+';letter-spacing:3px;margin:10px 0 8px;">'+fmt(m.sec)+'</div>'+
+
+      /* 진행 바 */
+      '<div style="width:100%;background:rgba(0,0,0,0.08);border-radius:10px;height:6px;overflow:hidden;margin-bottom:10px;">'+
+        '<div id="ps-b" style="height:100%;background:'+acCol2+';border-radius:10px;width:100%;transition:width 1s linear;"></div>'+
+      '</div>'+
+
+      '<div style="font-size:var(--fs-caption);color:#888;margin-bottom:14px;">📵 핸드폰을 내려놓고 시작하세요</div>'+
+
+      /* 시작 버튼 */
+      '<button id="ps-s" onclick="psSilenceStart(\''+sel+'\','+m.sec+')" style="'+
+        'width:100%;padding:15px;background:'+acCol2+';color:#fff;border:none;'+
+        'border-radius:16px;font-size:var(--fs-body);font-weight:700;cursor:pointer;'+
+        'box-shadow:0 4px 16px rgba(0,0,0,0.15);">▶ 시작하기</button>'+
+      '<button onclick="psClearSilence()" style="width:100%;padding:10px;margin-top:6px;background:transparent;border:none;font-size:var(--fs-caption);color:#aaa;cursor:pointer;">다른 방법으로 →</button>'+
     '</div>'+
-    '<button id="ps-s" onclick="psSilenceStart(\''+sel+'\','+m.sec+')" style="width:100%;padding:16px;background:'+acCol2+';color:#fff;border:none;border-radius:16px;font-size:var(--fs-body);font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.12);">▶ 시작하기</button>'+
-    '<button onclick="psClearSilence()" style="width:100%;padding:10px;margin-top:8px;background:transparent;border:none;font-size:var(--fs-caption);color:#aaa;cursor:pointer;">다른 방법으로 →</button>'+
   '</div>';
 }
 
